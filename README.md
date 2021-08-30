@@ -52,4 +52,6 @@ out/artifact/JMailTM.jar or Use the Release Section
 ```
 
 ## Looking for JavaDoc? 
-[JMailTM JavaDocs](https://google.com)
+[JMailTM JavaDocs](https://shivam1608.github.io/JMailTM/)
+
+# Ouick Start
