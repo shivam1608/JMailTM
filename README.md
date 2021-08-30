@@ -271,4 +271,34 @@ public void onMessageReceived(Message message) {
 Message message = mailer.getMessageById("ID_HERE");
 ```
 
+### Create Account
+- A Random Email
+```java
+JMailTM mailer = JMailBuilder.createDefault("randomPassword"); 
+mailer.init();
+```
+- Custom Email and Password 
+```java
+
+//First Fetch Domain
+JMailTM mailer = JMailBuilder.createAndLogin("thisismychoice@"+ Domains.getRandomDomain() , "MyPassword");
+mailer.init();
+
+//Can Fetch Domains by List Too (Fetches the Domains)
+List<Domain> domains = Domains.fetchDomains();
+    for(Domain domain : domains){
+       // All Domains
+}
+
+//Can Get Saved Domains by mailer.init()
+List<Domain> domainList = Domains.getDomainList();
+
+```
+
+### Login into an Account
+```java
+JMailTM mailer = JMailBuilder.login("YourEmail" , "YourPassword");
+mailer.init();
+
+```
 
