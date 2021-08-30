@@ -101,5 +101,55 @@ public class JMailService {
 - Get Details of Email
 ```java
 
+mailer.openMessageListener(new MessageListener() {
+                @Override
+                public void onMessageReceived(Message message) {
+                    String sender = message.getSenderAddress();
+                    String senderName = message.getSenderName();
+                    String content = message.getContent();
+                    String subject = message.getSubject();
+                    String id = message.getId();
+                    boolean b = message.hasAttachments();
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Some Error Occurred "+error);
+                }
+            });
 
 ```
+- Refer to Docs for all functions
+
+### Some Common Implementation of Message Class Functions
+```java
+ message.markAsRead(status->{
+               if(status) System.out.println("Message Marked as Read");
+           });
+ message.delete(status->{
+              if(status) System.out.println("Message was Deleted");
+           });
+                    
+```
+
+### Working with Attachments
+```java
+@Override
+public void onMessageReceived(Message message) {
+
+ if(message.hasAttachments()){
+    for (Attachment attachment : message.getAttachments()){
+        String filename = attachment.getFilename();
+	String id = attachment.getId();
+	long size = attachment.getSize();
+
+	// Download The Attachment
+	attachment.save(status->{
+   		if (status) System.out.println("File Was Downloaded");
+     	});
+     }
+    }
+ }
+
+```
+
