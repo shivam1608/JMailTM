@@ -301,4 +301,13 @@ JMailTM mailer = JMailBuilder.login("YourEmail" , "YourPassword");
 mailer.init();
 
 ```
+### Refer to JavaDocs For More Info 
+[JMailTM JavaDocs](https://shivam1608.github.io/JMailTM/)
+
+## Open Source Project 
+Author : Shizee
+IDE Used : IntelliJ
+
+### Dependencies
+[JSONSimple](https://github.com/fangyidong/json-simple)
 
