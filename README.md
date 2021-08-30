@@ -301,6 +301,13 @@ JMailTM mailer = JMailBuilder.login("YourEmail" , "YourPassword");
 mailer.init();
 
 ```
+### Delete the self logined Account
+```java
+mailer.delete(status->{
+   if(status) System.out.println("Account was Deleted");
+});
+```
+
 ### Refer to JavaDocs For More Info 
 [JMailTM JavaDocs](https://shivam1608.github.io/JMailTM/)
 
