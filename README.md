@@ -153,3 +153,59 @@ public void onMessageReceived(Message message) {
 
 ```
 
+### Fetching Messages (Synchronous)
+- Fetch All Messages
+```java
+
+    try {
+          JMailTM mailer = JMailBuilder.createDefault("randomPassword");
+          mailer.init();
+          System.out.println("Email : "+mailer.getSelf().getEmail());
+
+           mailer.fetchMessages(new MessageFetchedCallback() {
+              @Override
+               public void onMessagesFetched(List<Message> list) {
+                    for (Message message : list){
+                        // All Message Functions
+                    }
+                }
+
+                @Override
+                public void onError(Response response) {
+
+                }
+            });
+
+       }catch (LoginException | MessageFetchException exception){
+            System.out.println("Exception Caught "+exception);
+      }
+     
+```
+- Fetch a Limited Messages
+```java
+
+    try {
+          JMailTM mailer = JMailBuilder.createDefault("randomPassword");
+          mailer.init();
+          System.out.println("Email : "+mailer.getSelf().getEmail());
+	  
+	  int limit = 4; // The Limit for Messages to Fetch
+           mailer.fetchMessages( limit ,new MessageFetchedCallback() {
+              @Override
+               public void onMessagesFetched(List<Message> list) {
+                    for (Message message : list){
+                        // All Message Functions
+                    }
+                }
+
+                @Override
+                public void onError(Response response) {
+
+                }
+            });
+
+       }catch (LoginException | MessageFetchException exception){
+            System.out.println("Exception Caught "+exception);
+      }
+     
+```
