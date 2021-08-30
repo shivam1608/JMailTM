@@ -181,7 +181,7 @@ public void onMessageReceived(Message message) {
       }
      
 ```
-- Fetch a Limited Messages
+- Fetch Limited Messages
 ```java
 
     try {
@@ -208,4 +208,60 @@ public void onMessageReceived(Message message) {
             System.out.println("Exception Caught "+exception);
       }
      
+```
+
+### Fetching Messages (Asynchronous)
+
+- Fetch All Messages
+```java
+
+   try {
+          JMailTM mailer = JMailBuilder.createDefault("randomPassword");
+            mailer.init();
+            System.out.println("Email : "+mailer.getSelf().getEmail());
+
+            mailer.asyncFetchMessages(new MessageFetchedCallback() {
+                @Override
+                public void onMessagesFetched(List<Message> list) {
+                    for (Message message : list){
+                        // Do anything with Messages
+                    }
+                }
+
+                @Override
+                public void onError(Response response) {
+
+                }
+            });
+
+        }catch (LoginException exception){
+            System.out.println("Exception Caught "+exception);
+       }
+```
+- Fetch Limited Messages
+```java
+
+   try {
+          JMailTM mailer = JMailBuilder.createDefault("randomPassword");
+            mailer.init();
+            System.out.println("Email : "+mailer.getSelf().getEmail());
+	    
+	    int limit = 4; // The Limit for Messages to Fetch
+            mailer.asyncFetchMessages(limit , new MessageFetchedCallback() {
+                @Override
+                public void onMessagesFetched(List<Message> list) {
+                    for (Message message : list){
+                        // Do anything with Messages
+                    }
+                }
+
+                @Override
+                public void onError(Response response) {
+
+                }
+            });
+
+        }catch (LoginException exception){
+            System.out.println("Exception Caught "+exception);
+       }
 ```
