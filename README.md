@@ -1,5 +1,5 @@
 # JMailTM
-JMailTM is a Lightweight Java Wrapper for https://mail.tm API (A Temp Mail Service). It has a easy to use interface and callbacks.
+JMailTM is a Lightweight Java Wrapper for https://mail.tm API (A Temp Mail Service). It has a easy to use interface and callbacks with javaDoc.
 
 ### Version : 0.1
 
@@ -50,3 +50,6 @@ Download the jar from this repo
 ```
 out/artifact/JMailTM.jar or Use the Release Section
 ```
+
+## Looking for JavaDoc? 
+[JMailTM JavaDocs](https://google.com)
