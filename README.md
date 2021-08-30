@@ -265,3 +265,10 @@ public void onMessageReceived(Message message) {
             System.out.println("Exception Caught "+exception);
        }
 ```
+
+### Fetch Message by ID
+```java
+Message message = mailer.getMessageById("ID_HERE");
+```
+
+
