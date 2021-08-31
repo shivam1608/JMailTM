@@ -5,7 +5,7 @@ JMailTM is a Lightweight Java Wrapper for https://mail.tm API (A Temp Mail Servi
 ### Version : 0.1
 
 ### Special Thanks to Mail.tm Team
-![Thanks Mailtm Team](thanks.png)
+<img src="thanks.png" width="100" height="100">
 
 ## Add to your projects
 Easy to add in your projects using gradle, maven or jar
