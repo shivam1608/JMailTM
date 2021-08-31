@@ -1,7 +1,7 @@
 ![JitPack](https://img.shields.io/jitpack/v/github/shivam1608/JMailTM?color=blue&logo=jitpack&style=for-the-badge)
-![GitHub repo size](https://img.shields.io/github/repo-size/shivam1608/JMailTM)
-![JitPack](https://img.shields.io/jitpack/v/github/shivam1608/JMailTM?label=Build&logo=github)
-![Maintenance](https://img.shields.io/maintenance/yes/2021?logo=github)
+![GitHub repo size](https://img.shields.io/github/repo-size/shivam1608/JMailTM?style=for-the-badge)
+![JitPack](https://img.shields.io/jitpack/v/github/shivam1608/JMailTM?label=Build&logo=github&style=for-the-badge)
+![Maintenance](https://img.shields.io/maintenance/yes/2021?logo=github&style=for-the-badge)
 
 # JMailTM
 JMailTM is a Lightweight Java Wrapper for https://mail.tm API (A Temp Mail Service). It has a easy to use interface and callbacks with javaDoc.
