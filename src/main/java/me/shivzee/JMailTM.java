@@ -352,11 +352,11 @@ public class JMailTM {
     private String messageID = "";
 
     /**
-     * (Asynchronous) Opens a MessageListener on a New Thread
-     * @see me.shivzee.callbacks.MessageListener
+     * (Asynchronous) Opens a Message Listener on a New Thread
      * @param messageListener MessageListener Implemented Class
+     * @param refreshInterval The Refresh Time for Fetching Messages
      */
-    public void openMessageListener(MessageListener messageListener){
+    public void openMessageListener(MessageListener messageListener , long refreshInterval){
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -382,8 +382,19 @@ public class JMailTM {
                     messageListener.onError(""+e);
                 }
             }
-        } , 0L, 1500L);
+        } , 0L , refreshInterval);
     }
+
+    /**
+     * (Asynchronous) Opens a MessageListener on a New Thread Default Refresh Time 1.5 seconds
+     * @see me.shivzee.callbacks.MessageListener
+     * @param messageListener MessageListener Implemented Class
+     */
+    public void openMessageListener(MessageListener messageListener){
+        openMessageListener(messageListener , 1500L);
+    }
+
+
 
 
 
