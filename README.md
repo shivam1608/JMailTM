@@ -26,7 +26,7 @@ allprojects {
 - Add the dependency (replace version with the version on top)
 ```gradle
 dependencies {
-	        implementation 'com.github.shivam1608:JMailTM:0.2'
+	        implementation 'com.github.shivam1608:JMailTM:0.3'
 	}
 ```
 
@@ -47,7 +47,7 @@ dependencies {
 	<dependency>
 	    <groupId>com.github.shivam1608</groupId>
 	    <artifactId>JMailTM</artifactId>
-	    <version>0.2</version>
+	    <version>0.3</version>
 	</dependency>
 
 
