@@ -9,22 +9,29 @@
 
 package me.shivzee;
 
+import com.launchdarkly.eventsource.EventSource;
 import me.shivzee.callbacks.MessageFetchedCallback;
 import me.shivzee.callbacks.MessageListener;
 import me.shivzee.callbacks.WorkCallback;
 import me.shivzee.exceptions.AccountNotFoundException;
 import me.shivzee.exceptions.MessageFetchException;
 import me.shivzee.io.IO;
+import me.shivzee.io.IOCallback;
 import me.shivzee.util.*;
+import okhttp3.Headers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /***
@@ -39,6 +46,8 @@ public class JMailTM {
 
     private static final String baseUrl = Config.BASEURL;
     private static final JSONParser parser = Config.parser;
+
+    private ExecutorService pool = Executors.newSingleThreadExecutor();
 
     /**
      * Constructor to be initialised by JMailBuilder
@@ -316,14 +325,11 @@ public class JMailTM {
      * @param callback MessageFetchedCallback Implemented Class
      */
     public void asyncFetchMessages(MessageFetchedCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    fetchMessages(callback);
-                } catch (MessageFetchException e) {
-                    callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
-                }
+        new Thread(()->{
+            try {
+                fetchMessages(callback);
+            } catch (MessageFetchException e) {
+                callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
             }
         }).start();
     }
@@ -335,54 +341,32 @@ public class JMailTM {
      * @param callback MessageFetchedCallback Implemented Class
      */
     public void asyncFetchMessages(int limit , MessageFetchedCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    fetchMessages(limit , callback);
-                } catch (MessageFetchException e) {
-                    callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
-                }
+        new Thread(()->{
+            try {
+                fetchMessages(limit , callback);
+            } catch (MessageFetchException e) {
+                callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
             }
         }).start();
     }
 
 
-
-    private String messageID = "";
-
     /**
      * (Asynchronous) Opens a Message Listener on a New Thread
      * @param messageListener MessageListener Implemented Class
-     * @param refreshInterval The Refresh Time for Fetching Messages
+     * @param retryInterval The Refresh Time for Fetching Messages
      */
-    public void openMessageListener(MessageListener messageListener , long refreshInterval){
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    fetchMessages(1, new MessageFetchedCallback() {
-                        @Override
-                        public void onMessagesFetched(List<Message> messages) {
-                            if(messageID.equals("") && messages.size() == 0){
-                                messageID = "";
-                            }else if(!messageID.equals(messages.get(0).getId())) {
-                                messageListener.onMessageReceived(messages.get(0));
-                                messageID = messages.get(0).getId();
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(Response error) {
-                            messageListener.onError(error.getResponse());
-                        }
-                    });
-                } catch (MessageFetchException e) {
-                    messageListener.onError(""+e);
-                }
-            }
-        } , 0L , refreshInterval);
+    public void openMessageListener(MessageListener messageListener , long retryInterval){
+        if(pool.isShutdown()){
+            pool = Executors.newSingleThreadExecutor();
+        }
+        Map<String , String> headers = new HashMap<>();
+        headers.put("Authorization" , "Bearer "+bearerToken);
+        EventSource.Builder sse = new EventSource.Builder(new IOCallback(messageListener , this), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
+                .reconnectTime(Duration.ofMillis(retryInterval))
+                .headers(Headers.of(headers));
+        EventSource sourceSSE = sse.build();
+        pool.execute(sourceSSE::start);
     }
 
     /**
@@ -391,12 +375,15 @@ public class JMailTM {
      * @param messageListener MessageListener Implemented Class
      */
     public void openMessageListener(MessageListener messageListener){
-        openMessageListener(messageListener , 1500L);
+        openMessageListener(messageListener , 3000);
     }
 
-
-
-
+    /**
+     * Closes the Message Listener
+     */
+    public void closeMessageListener(){
+        pool.shutdown();
+    }
 
 
 }

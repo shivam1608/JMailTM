@@ -211,17 +211,21 @@ public class Message {
     }
 
     /**
-     * (Async) Deletes the Message with no response
+     * (Synchronous) Deletes the Message
+     */
+    public boolean deleteSync(){
+        return IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken).getResponseCode() == 204;
+    }
+
+    /**
+     * (Asynchronous) Deletes the Message with no response
      */
     public void delete(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
-                }catch (Exception e){
-                    System.out.println("|IGNORING EXCEPTION | "+e);
-                }
+        new Thread(()->{
+            try {
+                IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
+            }catch (Exception e){
+                System.out.println("|IGNORING EXCEPTION | "+e);
             }
         }).start();
     }
@@ -231,15 +235,12 @@ public class Message {
      * @param callback The WorkCallback Implementation or Lambda Function
      */
     public void delete(WorkCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Response response = IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
-                    callback.workStatus(response.getResponseCode() == 204);
-                }catch (Exception e){
-                    callback.workStatus(false);
-                }
+        new Thread(()->{
+            try {
+                Response response = IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
+                callback.workStatus(response.getResponseCode() == 204);
+            }catch (Exception e){
+                callback.workStatus(false);
             }
         }).start();
     }
@@ -248,14 +249,11 @@ public class Message {
      * (Async) Marks the Message/Email asRead with no response
      */
     public void markAsRead(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
-                }catch (Exception e){
-                    System.out.println("|IGNORING EXCEPTION | "+e);
-                }
+        new Thread(()->{
+            try {
+                IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
+            }catch (Exception e){
+                System.out.println("|IGNORING EXCEPTION | "+e);
             }
         }).start();
     }
@@ -265,15 +263,12 @@ public class Message {
      * @param callback The WorkCallback Implementation or Lambda Function
      */
     public void markAsRead(WorkCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Response response = IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
-                    callback.workStatus(response.getResponseCode() == 200);
-                }catch (Exception e){
-                    callback.workStatus(false);
-                }
+        new Thread(()->{
+            try {
+                Response response = IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
+                callback.workStatus(response.getResponseCode() == 200);
+            }catch (Exception e){
+                callback.workStatus(false);
             }
         }).start();
     }
