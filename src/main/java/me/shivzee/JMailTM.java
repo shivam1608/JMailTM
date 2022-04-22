@@ -1,7 +1,7 @@
 /*
  * The Following is the JavaWrapper Class for Mail.tm API.
  * OpenSource Library (Make PullRequest if you got something good)
- * All Rights Reserved
+ * MIT Licence
  * Author Shivzee
  * Github : https://github.com/shivam1608
  * Discord : Shivam#8010
