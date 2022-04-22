@@ -14,4 +14,6 @@ public class Config {
      * The instance of JSON Parser (JSONSIMPLE Used)
      */
     public static final JSONParser parser = new JSONParser();
+
+    public static final String MERCURE_URL = "https://mercure.mail.tm/.well-known/mercure";
 }
