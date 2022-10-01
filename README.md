@@ -6,7 +6,7 @@
 # JMailTM
 JMailTM is a Lightweight Java Wrapper for https://mail.tm API (A Temp Mail Service). It has a easy to use interface and callbacks with javaDoc.
 
-### Version : 0.3
+### Version : 0.4
 ### Java 8 or 8+ Required
 ### Special Thanks to Mail.tm Team
 <img src="thanks.png" width="500" height="300">
@@ -47,7 +47,7 @@ dependencies {
 	<dependency>
 	    <groupId>com.github.shivam1608</groupId>
 	    <artifactId>JMailTM</artifactId>
-	    <version>0.3</version>
+	    <version>0.4</version>
 	</dependency>
 
 
