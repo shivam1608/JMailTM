@@ -100,45 +100,70 @@ public class Attachment {
         return "https://api.mail.tm"+downloadUrl;
     }
 
+    /**
+     * (Synchronous) Save the Attachment on System
+     * @param path The Path to Save the File eg("C:/Data/Downloads/")
+     * @param filename The File Name of The Attachment
+     * @return <code>true</code> if download was successful, else <code>false</code>
+     */
+	public boolean saveSync(String path, String filename) {
+		try {
+			URL attachmentUrl = new URL(getDownloadUrl());
+			HttpURLConnection connection = (HttpURLConnection) attachmentUrl.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Authorization", "Bearer " + bearerToken);
+			if (connection.getResponseCode() == 200) {
+				Files.copy(connection.getInputStream(), Paths.get(path + filename));
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
 
     /**
-     * Save the Attachment on System
+     * (Synchronous) Save the Attachment in the Working Directory With Custom Filename
+     * @param filename The filename including extension
+     * @return <code>true</code> if download was successful, else <code>false</code>
+     */
+    public boolean saveSync(String filename){
+        return saveSync("./" , filename);
+    }
+    
+    /**
+     * (Synchronous) Save the Attachment in the Working Directory
+     * @return <code>true</code> if download was successful, else <code>false</code>
+     */
+    public boolean saveSync(){
+        return saveSync("./" , getFilename());
+    }
+
+
+    
+    /**
+     * (Asynchronous) Save the Attachment on System
      * @param path The Path to Save the File eg("C:/Data/Downloads/")
      * @param filename The File Name of The Attachment
      * @param callback The WorkCallback to know the Download Status
      * @see me.shivzee.callbacks.WorkCallback
      */
-    public void save(String path , String filename , WorkCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    URL attachmentUrl = new URL(getDownloadUrl());
-                    HttpURLConnection connection = (HttpURLConnection) attachmentUrl.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("Authorization" , "Bearer "+bearerToken);
-                    if(connection.getResponseCode() == 200) {
-                        Files.copy(connection.getInputStream(), Paths.get(path + filename));
-                        callback.workStatus(true);
-                    }else{
-                        callback.workStatus(false);
-                    }
-                }catch (Exception e){
-                    callback.workStatus(false);
-                }
-            }
-        },"Attachment_Download").start();
-    }
+	public void save(String path, String filename, WorkCallback callback) {
+		new Thread(() -> { callback.workStatus(saveSync(path, filename)); }
+				, "Attachment_Download_" + id).start();
+	}
 
     /**
-     * Save the Attachment in the Working Directory
+     * (Asynchronous) Save the Attachment in the Working Directory
      */
     public void save(){
-        save("./" , getFilename() , (status)->{});
+        save("./" , getFilename() , status -> {});
     }
 
     /**
-     * Save the Attachment in the Working Directory with Callback Status
+     * (Asynchronous) Save the Attachment in the Working Directory with Callback Status
      * @param callback The WorkCallback for Status
      * @see me.shivzee.callbacks.WorkCallback
      */
@@ -147,7 +172,7 @@ public class Attachment {
     }
 
     /**
-     * Save the Attachment in the Working Directory With Custom Filename
+     * (Asynchronous) Save the Attachment in the Working Directory With Custom Filename
      * @param filename The filename including extension
      */
     public void save(String filename){
@@ -155,7 +180,7 @@ public class Attachment {
     }
 
     /**
-     * Save the Attachment in the Working Directory With Custom Filename and Callback
+     * (Asynchronous) Save the Attachment in the Working Directory With Custom Filename and Callback
      * @param filename The Filename including Extension
      * @param callback The WorkCallback for status
      * @see me.shivzee.callbacks.WorkCallback

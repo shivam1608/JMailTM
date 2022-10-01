@@ -289,7 +289,7 @@ mailer.init();
 ```java
 
 //First Fetch Domain
-JMailTM mailer = JMailBuilder.createAndLogin("thisismychoice@"+ Domains.getRandomDomain() , "MyPassword");
+JMailTM mailer = JMailBuilder.createAndLogin("thisismychoice@"+ Domains.getRandomDomain().getDomainName() , "MyPassword");
 mailer.init();
 
 //Can Fetch Domains by List Too (Fetches the Domains)
