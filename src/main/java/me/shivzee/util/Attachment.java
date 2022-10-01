@@ -152,7 +152,7 @@ public class Attachment {
      */
 	public void save(String path, String filename, WorkCallback callback) {
 		new Thread(() -> { callback.workStatus(saveSync(path, filename)); }
-				, "Attachment_Download").start();
+				, "Attachment_Download_" + id).start();
 	}
 
     /**

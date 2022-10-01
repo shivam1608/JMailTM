@@ -227,7 +227,7 @@ public class Message {
             }catch (Exception e){
                 System.out.println("|IGNORING EXCEPTION | "+e);
             }
-        }).start();
+        }, "Delete_Message_" + id).start();
     }
 
     /**
@@ -242,7 +242,7 @@ public class Message {
             }catch (Exception e){
                 callback.workStatus(false);
             }
-        }).start();
+        }, "Delete_Message_" + id).start();
     }
 
     /**
@@ -273,7 +273,7 @@ public class Message {
      * (Async) Marks the Message/Email asRead with no response
      */
     public void markAsRead(){
-        new Thread(this::markAsReadSync).start();
+        new Thread(this::markAsReadSync, "Mark_Message_As_Read_" + id).start();
     }
 
     /**
@@ -281,7 +281,7 @@ public class Message {
      * @param callback The WorkCallback Implementation or Lambda Function
      */
     public void markAsRead(WorkCallback callback){
-        new Thread(() -> { this.markAsReadSync(callback); }).start();
+        new Thread(() -> { this.markAsReadSync(callback); }, "Mark_Message_As_Read_" + id).start();
     }
 
     /**

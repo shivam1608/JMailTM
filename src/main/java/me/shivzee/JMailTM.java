@@ -184,7 +184,7 @@ public class JMailTM {
      * (Asynchronous) Deletes the Self Account
      */
     public void delete(){
-        new Thread(this::deleteSync).start();
+        new Thread(this::deleteSync, "Delete_Account_" + id).start();
     }
 
     
@@ -195,7 +195,7 @@ public class JMailTM {
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
     public void delete(WorkCallback callback){
-        new Thread(() -> { delete(callback); }).start();
+        new Thread(() -> { delete(callback); }, "Delete_Account_" + id).start();
     }
 
     /**
@@ -339,7 +339,7 @@ public class JMailTM {
             } catch (MessageFetchException e) {
                 callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
             }
-        }).start();
+        }, "Fetch_Messages_" + id).start();
     }
 
     /**
@@ -355,7 +355,7 @@ public class JMailTM {
             } catch (MessageFetchException e) {
                 callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
             }
-        }).start();
+        }, "Fetch_Messages_" + id).start();
     }
 
 
