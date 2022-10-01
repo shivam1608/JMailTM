@@ -154,22 +154,40 @@ public class JMailTM {
     }
 
 
+	/**
+	 * (Synchronous) Deletes the Self Account
+	 */
+	public void deleteSync() {
+		try {
+			IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
+		} catch (Exception e) {
+			System.out.println("|EXCEPTION IGNORE | " + e);
+		}
+	}
+
+    /**
+     * (Synchronous) Deletes the Self Account with a Callback Status.
+     * Lambda Expression Works
+     * <code>deleteNow((status)->{ if(status) print true; });</code>
+     * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
+     */
+	public void deleteSync(WorkCallback callback) {
+		try {
+			Response response = IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
+			callback.workStatus(response.getResponseCode() == 204);
+		} catch (Exception e) {
+			callback.workStatus(false);
+		}
+	}
+    
     /**
      * (Asynchronous) Deletes the Self Account
      */
     public void delete(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    IO.requestDELETE(baseUrl+"/accounts/"+id , bearerToken);
-                }catch (Exception e){
-                    System.out.println("|EXCEPTION IGNORE | "+e);
-                }
-            }
-        }).start();
+        new Thread(this::deleteSync).start();
     }
 
+    
     /**
      * (Asynchronous) Deletes the Self Account with a Callback Status.
      * Lambda Expression Works
@@ -177,17 +195,7 @@ public class JMailTM {
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
     public void delete(WorkCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Response response = IO.requestDELETE(baseUrl+"/accounts/"+id , bearerToken);
-                    callback.workStatus(response.getResponseCode() == 204);
-                }catch (Exception e){
-                    callback.workStatus(false);
-                }
-            }
-        }).start();
+        new Thread(() -> { delete(callback); }).start();
     }
 
     /**

@@ -246,16 +246,34 @@ public class Message {
     }
 
     /**
+     * (Sync) Marks the Message/Email asRead with no response
+     */
+	public void markAsReadSync() {
+		try {
+			IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
+		} catch (Exception e) {
+			System.out.println("|IGNORING EXCEPTION | " + e);
+		}
+	}
+
+    /**
+     * (Sync) Marks the Message/Email asRead with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+	public void markAsReadSync(WorkCallback callback) {
+		try {
+			Response response = IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
+			callback.workStatus(response.getResponseCode() == 200);
+		} catch (Exception e) {
+			callback.workStatus(false);
+		}
+	}
+
+    /**
      * (Async) Marks the Message/Email asRead with no response
      */
     public void markAsRead(){
-        new Thread(()->{
-            try {
-                IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
-            }catch (Exception e){
-                System.out.println("|IGNORING EXCEPTION | "+e);
-            }
-        }).start();
+        new Thread(this::markAsReadSync).start();
     }
 
     /**
@@ -263,14 +281,7 @@ public class Message {
      * @param callback The WorkCallback Implementation or Lambda Function
      */
     public void markAsRead(WorkCallback callback){
-        new Thread(()->{
-            try {
-                Response response = IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
-                callback.workStatus(response.getResponseCode() == 200);
-            }catch (Exception e){
-                callback.workStatus(false);
-            }
-        }).start();
+        new Thread(() -> { this.markAsReadSync(callback); }).start();
     }
 
     /**
