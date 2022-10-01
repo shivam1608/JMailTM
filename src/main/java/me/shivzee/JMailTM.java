@@ -157,11 +157,13 @@ public class JMailTM {
 	/**
 	 * (Synchronous) Deletes the Self Account
 	 */
-	public void deleteSync() {
+	public boolean deleteSync() {
 		try {
-			IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
+            Response response = IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
+            return response.getResponseCode() == 204;
 		} catch (Exception e) {
 			System.out.println("|EXCEPTION IGNORE | " + e);
+			return false;
 		}
 	}
 
@@ -172,12 +174,7 @@ public class JMailTM {
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
 	public void deleteSync(WorkCallback callback) {
-		try {
-			Response response = IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
-			callback.workStatus(response.getResponseCode() == 204);
-		} catch (Exception e) {
-			callback.workStatus(false);
-		}
+		callback.workStatus(deleteSync());
 	}
     
     /**
@@ -195,7 +192,7 @@ public class JMailTM {
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
     public void delete(WorkCallback callback){
-        new Thread(() -> { delete(callback); }, "Delete_Account_" + id).start();
+        new Thread(() -> { deleteSync(callback); }, "Delete_Account_" + id).start();
     }
 
     /**

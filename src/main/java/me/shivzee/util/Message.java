@@ -214,20 +214,19 @@ public class Message {
      * (Synchronous) Deletes the Message
      */
     public boolean deleteSync(){
-        return IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken).getResponseCode() == 204;
+        try{
+            return IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken).getResponseCode() == 204;
+        }catch (Exception e){
+            System.out.println("|IGNORING EXCEPTION | "+e);
+            return false;
+        }
     }
 
     /**
      * (Asynchronous) Deletes the Message with no response
      */
     public void delete(){
-        new Thread(()->{
-            try {
-                IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
-            }catch (Exception e){
-                System.out.println("|IGNORING EXCEPTION | "+e);
-            }
-        }, "Delete_Message_" + id).start();
+        new Thread(this::deleteSync, "Delete_Message_" + id).start();
     }
 
     /**
@@ -236,25 +235,23 @@ public class Message {
      */
     public void delete(WorkCallback callback){
         new Thread(()->{
-            try {
-                Response response = IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
-                callback.workStatus(response.getResponseCode() == 204);
-            }catch (Exception e){
-                callback.workStatus(false);
-            }
+            callback.workStatus(deleteSync());
         }, "Delete_Message_" + id).start();
     }
 
     /**
      * (Sync) Marks the Message/Email asRead with no response
      */
-	public void markAsReadSync() {
-		try {
-			IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
-		} catch (Exception e) {
-			System.out.println("|IGNORING EXCEPTION | " + e);
-		}
-	}
+    public boolean markAsReadSync() {
+        try {
+            Response response = IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
+            return response.getResponseCode() == 200;
+        } catch (Exception e) {
+            System.out.println("|IGNORING EXCEPTION | " + e);
+            return false;
+        }
+    }
+
 
     /**
      * (Sync) Marks the Message/Email asRead with a Callback
@@ -262,12 +259,13 @@ public class Message {
      */
 	public void markAsReadSync(WorkCallback callback) {
 		try {
-			Response response = IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
-			callback.workStatus(response.getResponseCode() == 200);
+			callback.workStatus(markAsReadSync());
 		} catch (Exception e) {
 			callback.workStatus(false);
 		}
 	}
+
+
 
     /**
      * (Async) Marks the Message/Email asRead with no response
