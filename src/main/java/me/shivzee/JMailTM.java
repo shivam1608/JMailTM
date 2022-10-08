@@ -159,6 +159,9 @@ public class JMailTM {
 	 * (Synchronous) Deletes the Self Account
 	 */
 	public boolean deleteSync() {
+	    if(getSelf().isDeleted()){
+	        return true;
+        }
 		try {
             Response response = IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
             return response.getResponseCode() == 204;
@@ -357,6 +360,11 @@ public class JMailTM {
     }
 
 
+    /**
+     * (Asynchronous) Open's an event listener on a single thread
+     * @param eventListener EventListener implemented class
+     * @param retryInterval The reconnect timeout if server disconnects by chance
+     */
     public void openEventListener(EventListener eventListener , long retryInterval){
         if(pool.isShutdown()){
             pool = Executors.newSingleThreadExecutor();

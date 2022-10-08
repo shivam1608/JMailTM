@@ -1,5 +1,6 @@
 package me.shivzee.callbacks;
 
+import me.shivzee.util.Account;
 import me.shivzee.util.Message;
 
 /**
@@ -8,9 +9,10 @@ import me.shivzee.util.Message;
 public interface EventListener {
     default void onReady(){}
     default void onClose(){}
-    default void onSSEComment(){}
+    default void onSSEComment(String comment){}
     default void onMessageReceived(Message message){}
-    default void onMessageDelete(Message message){}
-    default void onMessageMarkAsRead(Message message){}
+    default void onMessageDelete(String id){}
+    default void onMessageSeen(Message message){}
+    default void onAccountDelete(Account account){}
     void onError(String error);
 }
