@@ -13,93 +13,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Update: EventListener">
+    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Update: Java Docs">
       <change afterPath="$PROJECT_DIR$/docs/index-files/index-18.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/EventListener.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/EventListener.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/allclasses-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/allclasses-index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/allpackages-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/allpackages-index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/constant-values.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/constant-values.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/deprecated-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/deprecated-list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/help-doc.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/help-doc.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-1.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-10.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-10.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-11.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-11.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-12.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-12.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-13.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-13.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-14.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-14.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-15.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-15.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-16.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-16.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-17.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-17.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-2.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-3.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-4.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-4.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-5.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-5.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-6.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-6.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-7.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-8.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-8.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index-files/index-9.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index-files/index-9.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/Config.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/Config.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/JMailTM.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/JMailTM.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/MessageFetchedCallback.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/MessageFetchedCallback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/MessageListener.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/MessageListener.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/WorkCallback.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/WorkCallback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/MessageFetchedCallback.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/MessageFetchedCallback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/MessageListener.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/MessageListener.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/WorkCallback.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/WorkCallback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/callbacks/package-use.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/package-use.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/class-use/Config.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/class-use/Config.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/class-use/JMailTM.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/class-use/JMailTM.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/AccountNotFoundException.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/AccountNotFoundException.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/DomainNotFoundException.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/DomainNotFoundException.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/MessageFetchException.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/MessageFetchException.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/class-use/AccountNotFoundException.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/class-use/AccountNotFoundException.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/class-use/DomainNotFoundException.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/class-use/DomainNotFoundException.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/class-use/MessageFetchException.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/class-use/MessageFetchException.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/exceptions/package-use.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/exceptions/package-use.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/io/IO.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/io/IO.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/io/IOCallback.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/io/IOCallback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/io/class-use/IO.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/io/class-use/IO.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/io/class-use/IOCallback.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/io/class-use/IOCallback.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/io/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/io/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/io/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/io/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/io/package-use.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/io/package-use.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/package-use.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/package-use.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Account.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Account.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Attachment.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Attachment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Domain.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Domain.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Domains.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Domains.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/JMailBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/JMailBuilder.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Message.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Message.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Receiver.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Receiver.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Response.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Response.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/Utility.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/Utility.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Account.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Account.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Attachment.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Attachment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Domain.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Domain.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Domains.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Domains.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/JMailBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/JMailBuilder.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Message.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Message.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Receiver.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Receiver.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Response.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Response.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Utility.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/class-use/Utility.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/package-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/package-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/me/shivzee/util/package-use.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/me/shivzee/util/package-use.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/member-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/member-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/overview-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/overview-summary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/overview-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/overview-tree.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/serialized-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/serialized-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/type-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/type-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,7 +153,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665243994489</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Update: Java Docs">
+      <created>1665244380531</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1665244380531</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -273,6 +197,7 @@
     <MESSAGE value="Added EventListener" />
     <MESSAGE value="Update: Docs" />
     <MESSAGE value="Update: EventListener" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update: EventListener" />
+    <MESSAGE value="Update: Java Docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update: Java Docs" />
   </component>
 </project>
