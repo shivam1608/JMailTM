@@ -213,7 +213,7 @@ public class Message {
     /**
      * (Synchronous) Deletes the Message
      */
-    public boolean deleteSync(){
+    public boolean delete(){
         if(isDeleted){
             return true;
         }
@@ -226,26 +226,35 @@ public class Message {
     }
 
     /**
-     * (Asynchronous) Deletes the Message with no response
-     */
-    public void delete(){
-        new Thread(this::deleteSync, "Delete_Message_" + id).start();
-    }
-
-    /**
-     * (Async) Deletes the Message with a Callback
+     * (Synchronous) Deletes the Message with a Callback
      * @param callback The WorkCallback Implementation or Lambda Function
      */
     public void delete(WorkCallback callback){
+        callback.workStatus(delete());
+    }
+
+    /**
+     * (Asynchronous) Deletes the Message with no response
+     */
+    public void asyncDelete(){
+        new Thread(this::delete, "Delete_Message_" + id).start();
+    }
+
+    /**
+     * (Asynchronous) Deletes the Message with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+    public void asyncDelete(WorkCallback callback){
         new Thread(()->{
-            callback.workStatus(deleteSync());
+            callback.workStatus(delete());
         }, "Delete_Message_" + id).start();
     }
 
     /**
-     * (Sync) Marks the Message/Email asRead with no response
+     * (Synchronous) Marks the Message/Email asRead with no response
+     * @return Boolean
      */
-    public boolean markAsReadSync() {
+    public boolean markAsRead() {
         if(seen){
             return true;
         }
@@ -264,12 +273,8 @@ public class Message {
      * (Sync) Marks the Message/Email asRead with a Callback
      * @param callback The WorkCallback Implementation or Lambda Function
      */
-	public void markAsReadSync(WorkCallback callback) {
-		try {
-			callback.workStatus(markAsReadSync());
-		} catch (Exception e) {
-			callback.workStatus(false);
-		}
+	public void markAsRead(WorkCallback callback) {
+		callback.workStatus(markAsRead());
 	}
 
 
@@ -277,16 +282,16 @@ public class Message {
     /**
      * (Async) Marks the Message/Email asRead with no response
      */
-    public void markAsRead(){
-        new Thread(this::markAsReadSync, "Mark_Message_As_Read_" + id).start();
+    public void asyncMarkAsRead(){
+        new Thread(this::markAsRead, "Mark_Message_As_Read_" + id).start();
     }
 
     /**
      * (Async) Marks the Message/Email asRead with a Callback
      * @param callback The WorkCallback Implementation or Lambda Function
      */
-    public void markAsRead(WorkCallback callback){
-        new Thread(() -> { this.markAsReadSync(callback); }, "Mark_Message_As_Read_" + id).start();
+    public void asyncMarkAsRead(WorkCallback callback){
+        new Thread(() -> { this.markAsRead(callback); }, "Mark_Message_As_Read_" + id).start();
     }
 
     /**

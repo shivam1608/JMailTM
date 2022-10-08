@@ -157,8 +157,9 @@ public class JMailTM {
 
 	/**
 	 * (Synchronous) Deletes the Self Account
+     * @return Boolean
 	 */
-	public boolean deleteSync() {
+	public boolean delete() {
 	    if(getSelf().isDeleted()){
 	        return true;
         }
@@ -174,30 +175,32 @@ public class JMailTM {
     /**
      * (Synchronous) Deletes the Self Account with a Callback Status.
      * Lambda Expression Works
-     * <code>deleteNow((status)->{ if(status) print true; });</code>
+     * <code>delete((status)->{ if(status) print true; });</code>
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
-	public void deleteSync(WorkCallback callback) {
-		callback.workStatus(deleteSync());
-	}
-    
-    /**
-     * (Asynchronous) Deletes the Self Account
-     */
-    public void delete(){
-        new Thread(this::deleteSync, "Delete_Account_" + id).start();
+    public void delete(WorkCallback callback){
+        callback.workStatus(delete());
     }
 
-    
     /**
      * (Asynchronous) Deletes the Self Account with a Callback Status.
      * Lambda Expression Works
      * <code>delete((status)->{ if(status) print true; });</code>
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
-    public void delete(WorkCallback callback){
-        new Thread(() -> { deleteSync(callback); }, "Delete_Account_" + id).start();
+    public void asyncDelete(WorkCallback callback){
+        new Thread(() -> { callback.workStatus(delete()); }, "Delete_Account_" + id).start();
     }
+
+
+    /**
+     * (Asynchronous) Deletes the Self Account
+     */
+    public void asyncDelete(){
+        new Thread(this::delete, "Delete_Account_" + id).start();
+    }
+
+
 
     /**
      * Gets a UserAccount using UserID
