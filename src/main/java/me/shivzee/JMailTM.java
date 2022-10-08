@@ -389,6 +389,13 @@ public class JMailTM {
         openEventListener(eventListener , 3000L);
     }
 
+    /**
+     * Closes the Message Listener
+     */
+    public void closeMessageListener(){
+        pool.shutdown();
+    }
+
 
 
     /**
@@ -433,11 +440,26 @@ public class JMailTM {
     }
 
     /**
-     * Closes the Message Listener
+     * (Synchronous) Deletes the Self Account
+     * @return Boolean
      */
-    public void closeMessageListener(){
-        pool.shutdown();
+    @Deprecated
+    public boolean deleteSync(){
+        return delete();
     }
+
+    /**
+     * (Synchronous) Deletes the Self Account
+     * @return Boolean
+     * @param callback The work status callback
+     */
+    @Deprecated
+    public void deleteSync(WorkCallback callback){
+        callback.workStatus(deleteSync());
+    }
+
+
+
 
 
 }

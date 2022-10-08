@@ -302,4 +302,41 @@ public class Message {
         return rawJson;
     }
 
+
+    /**
+     * (Synchronous) Deletes the Message
+     */
+    @Deprecated
+    public boolean deleteSync(){
+        return delete();
+    }
+
+    /**
+     * (Synchronous) Deletes the Message with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+    @Deprecated
+    public void deleteSync(WorkCallback callback){
+        callback.workStatus(deleteSync());
+    }
+
+
+    /**
+     * (Synchronous) Marks the Message/Email asRead with no response
+     * @return Boolean
+     */
+    @Deprecated
+    public boolean markAsReadSync(){
+        return markAsRead();
+    }
+
+    /**
+     * (Synchronous) Marks the Message/Email asRead with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+    @Deprecated
+    public void markAsReadSync(WorkCallback callback){
+        callback.workStatus(markAsReadSync());
+    }
+
 }
