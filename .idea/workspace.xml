@@ -13,11 +13,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/shivzee/callbacks/EventListener.java" afterDir="false" />
+    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Fix: Naming Convention">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/shivzee/JMailTM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/shivzee/JMailTM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/shivzee/io/IOCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/shivzee/io/IOCallback.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +85,42 @@
       <option name="presentableId" value="Default" />
       <updated>1638432688160</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added EventListener">
+      <created>1665230796343</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1665230796343</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fix:Patch Request">
+      <created>1665238855835</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1665238855835</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added Checks">
+      <created>1665238951925</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1665238951925</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added: EventListener">
+      <created>1665238999731</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1665238999731</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix: Naming Convention">
+      <created>1665241639966</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1665241639966</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -113,5 +146,13 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added EventListener" />
+    <MESSAGE value="Fix:Patch Request" />
+    <MESSAGE value="Added Checks" />
+    <MESSAGE value="Added: EventListener" />
+    <MESSAGE value="Fix: Naming Convention" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Naming Convention" />
   </component>
 </project>
