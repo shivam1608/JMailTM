@@ -10,6 +10,7 @@
 package me.shivzee;
 
 import com.launchdarkly.eventsource.EventSource;
+import me.shivzee.callbacks.EventListener;
 import me.shivzee.callbacks.MessageFetchedCallback;
 import me.shivzee.callbacks.MessageListener;
 import me.shivzee.callbacks.WorkCallback;
@@ -356,22 +357,28 @@ public class JMailTM {
     }
 
 
-    /**
-     * (Asynchronous) Opens a Message Listener on a New Thread
-     * @param messageListener MessageListener Implemented Class
-     * @param retryInterval The Refresh Time for Fetching Messages
-     */
-    public void openMessageListener(MessageListener messageListener , long retryInterval){
+    public void openEventListener(EventListener eventListener , long retryInterval){
         if(pool.isShutdown()){
             pool = Executors.newSingleThreadExecutor();
         }
         Map<String , String> headers = new HashMap<>();
         headers.put("Authorization" , "Bearer "+bearerToken);
-        EventSource.Builder sse = new EventSource.Builder(new IOCallback(messageListener , this), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
+        EventSource.Builder sse = new EventSource.Builder(new IOCallback(eventListener , this), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
                 .reconnectTime(Duration.ofMillis(retryInterval))
                 .headers(Headers.of(headers));
         EventSource sourceSSE = sse.build();
         pool.execute(sourceSSE::start);
+    }
+
+
+    /**
+     * (Asynchronous) Opens a Message Listener on a New Thread
+     * @param messageListener MessageListener Implemented Class
+     * @param retryInterval The Refresh Time for Fetching Messages
+     */
+    @Deprecated
+    public void openMessageListener(MessageListener messageListener , long retryInterval){
+        openEventListener((EventListener) messageListener , retryInterval);
     }
 
     /**
@@ -379,6 +386,7 @@ public class JMailTM {
      * @see me.shivzee.callbacks.MessageListener
      * @param messageListener MessageListener Implemented Class
      */
+    @Deprecated
     public void openMessageListener(MessageListener messageListener){
         openMessageListener(messageListener , 3000);
     }

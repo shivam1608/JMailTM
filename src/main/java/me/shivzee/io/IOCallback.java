@@ -4,22 +4,24 @@ import com.launchdarkly.eventsource.EventHandler;
 import com.launchdarkly.eventsource.MessageEvent;
 import me.shivzee.Config;
 import me.shivzee.JMailTM;
+import me.shivzee.callbacks.EventListener;
 import me.shivzee.callbacks.MessageListener;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class IOCallback implements EventHandler {
 
-    private final MessageListener listener;
+    private final EventListener listener;
     private final JSONParser parser;
     private final JMailTM mailTM;
 
 
-    public IOCallback(MessageListener listener , JMailTM mailTM){
+    public IOCallback(EventListener listener , JMailTM mailTM){
         this.listener = listener;
         this.parser = Config.parser;
         this.mailTM = mailTM;
     }
+
 
     @Override
     public void onOpen() throws Exception {
