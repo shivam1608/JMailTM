@@ -214,6 +214,9 @@ public class Message {
      * (Synchronous) Deletes the Message
      */
     public boolean deleteSync(){
+        if(isDeleted){
+            return true;
+        }
         try{
             return IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken).getResponseCode() == 204;
         }catch (Exception e){
@@ -243,6 +246,9 @@ public class Message {
      * (Sync) Marks the Message/Email asRead with no response
      */
     public boolean markAsReadSync() {
+        if(seen){
+            return true;
+        }
         try {
             Response response = IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
             return response.getResponseCode() == 200;
@@ -251,6 +257,7 @@ public class Message {
             return false;
         }
     }
+
 
 
     /**
