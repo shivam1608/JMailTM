@@ -381,6 +381,15 @@ public class JMailTM {
         pool.execute(sourceSSE::start);
     }
 
+    /**
+     * (Asynchronous) Open's an event listener on a single thread
+     * @param eventListener EventListener implemented class
+     */
+    public void openEventListener(EventListener eventListener){
+        openEventListener(eventListener , 3000L);
+    }
+
+
 
     /**
      * (Asynchronous) Opens a Message Listener on a New Thread
@@ -389,7 +398,28 @@ public class JMailTM {
      */
     @Deprecated
     public void openMessageListener(MessageListener messageListener , long retryInterval){
-        openEventListener((EventListener) messageListener , retryInterval);
+
+        openEventListener(new EventListener() {
+            @Override
+            public void onReady() {
+                messageListener.onReady();
+            }
+
+            @Override
+            public void onClose() {
+                messageListener.onClose();
+            }
+
+            @Override
+            public void onMessageReceived(Message message) {
+                messageListener.onMessageReceived(message);
+            }
+
+            @Override
+            public void onError(String error) {
+                messageListener.onError(error);
+            }
+        }, retryInterval);
     }
 
     /**
