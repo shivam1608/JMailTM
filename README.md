@@ -68,7 +68,6 @@ out/artifact/JMailTM.jar or Use the Release Section
 ```java
 import me.shivzee.JMailTM;
 import me.shivzee.callbacks.EventListener;
-import me.shivzee.callbacks.MessageListener;
 import me.shivzee.util.JMailBuilder;
 import me.shivzee.util.Message;
 
