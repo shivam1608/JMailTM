@@ -101,13 +101,13 @@ public class IO {
         }
     }
 
-    public static Response requestPATCH(String baseUrl , String auth){
+    public static Response requestPATCH(String baseUrl , String auth , String data){
         try {
 
             URL url = new URL(baseUrl);
             Request.Builder request = new Request.Builder()
                     .url(url)
-                    .method("PATCH" , RequestBody.create("{}" , PATCH))
+                    .patch(RequestBody.create(data , PATCH))
                     .addHeader("accept", "application/json");
 
             if(auth!=null){
@@ -119,5 +119,9 @@ public class IO {
         }catch (Exception e){
             return new Response(0 , "");
         }
+    }
+
+    public static Response requestPATCH(String baseUrl , String auth){
+        return requestPATCH(baseUrl , auth , "{\"seen\" : true}");
     }
 }
