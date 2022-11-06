@@ -38,7 +38,7 @@ public class Attachment {
 
     /**
      * Get the Attachment ID
-     * @return String
+     * @return the id of the attachment in email
      */
     public String getId() {
         return id;
@@ -46,7 +46,7 @@ public class Attachment {
 
     /**
      * Get the Filename
-     * @return String
+     * @return the filename of the attachment
      */
     public String getFilename() {
         return filename;
@@ -54,7 +54,7 @@ public class Attachment {
 
     /**
      * Get the ContentType of Attachment
-     * @return String
+     * @return the content-type/mime of the attachment eg(image/gif , image/png)
      */
     public String getContentType() {
         return contentType;
@@ -62,7 +62,7 @@ public class Attachment {
 
     /**
      * Get The Disposition
-     * @return
+     * @return the disposition
      */
     public String getDisposition() {
         return disposition;
@@ -70,7 +70,7 @@ public class Attachment {
 
     /**
      * Get TransferEncoding Type
-     * @return String
+     * @return the encoding of the attachment
      */
     public String getTransferEncoding() {
         return transferEncoding;
@@ -78,7 +78,7 @@ public class Attachment {
 
     /**
      * Get Related Status
-     * @return boolean
+     * @return true if the attachment is related
      */
     public boolean isRelated() {
         return related;
@@ -86,7 +86,7 @@ public class Attachment {
 
     /**
      * Get the Attachment Size in Killobytes
-     * @return long
+     * @return the size of attachment in KiB
      */
     public long getSize() {
         return size;
@@ -94,7 +94,7 @@ public class Attachment {
 
     /**
      * Get the Download URL for the attachment (Will not work without JWT Token as AuthHead) Check the Attachment.save() Method
-     * @return String
+     * @return the download url
      */
     public String getDownloadUrl() {
         return "https://api.mail.tm"+downloadUrl;

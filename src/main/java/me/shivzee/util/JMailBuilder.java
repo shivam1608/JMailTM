@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javax.security.auth.login.LoginException;
+
 /**
  * The JMailBuilder Class for Login/Signup Operations
  * Check https://api.mail.tm for more info
@@ -22,8 +23,8 @@ public class JMailBuilder {
      * @see me.shivzee.JMailTM
      * @param email the email to login
      * @param password the password
-     * @return me.shivzee.JMailTM
-     * @throws LoginException
+     * @return the JMailTM instance
+     * @throws LoginException when fails to login user
      */
     public static JMailTM login(String email , String password) throws LoginException{
 
@@ -46,10 +47,10 @@ public class JMailBuilder {
      * (Synchronous) Creates a new Account (First Fetch the domain)
      *
      * @see me.shivzee.util.JMailBuilder
-     * @param email The email
-     * @param password The password
-     * @return boolean
-     * @throws LoginException
+     * @param email The email to create
+     * @param password The password to set
+     * @return true if account was created
+     * @throws LoginException when account already exists, invalid inputs or network error
      */
     public static boolean create(String email , String password) throws LoginException{
 
@@ -69,10 +70,10 @@ public class JMailBuilder {
     /**
      * (Synchronous) Creates and Login into an Account
      * @param email the email to create
-     * @param password the password
-     * @return me.shivzee.JMailTM
+     * @param password the password to set
+     * @return the JMailTM instance of the created user
      * @see me.shivzee.JMailTM
-     * @throws LoginException
+     * @throws LoginException when account already exists, invalid inputs or network error
      */
     public static JMailTM createAndLogin(String email , String password) throws LoginException{
 
@@ -98,10 +99,10 @@ public class JMailBuilder {
 
     /**
      * (Synchronous) Creates and Login into a Random Account
-     * @param password
-     * @return me.shivzee.JMailTM
+     * @param password the password to set
+     * @return the JMailTM instance to a randomly generated account
      * @see me.shivzee.JMailTM
-     * @throws LoginException
+     * @throws LoginException when network or api error
      */
     public static JMailTM createDefault(String password) throws LoginException{
         try{

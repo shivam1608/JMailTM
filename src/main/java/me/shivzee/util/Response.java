@@ -16,7 +16,7 @@ public class Response {
 
     /**
      * Get the Response Code
-     * @return int
+     * @return the HTTP response code
      */
     public int getResponseCode() {
         return responseCode;
@@ -24,7 +24,7 @@ public class Response {
 
     /**
      * Get the Response
-     * @return String
+     * @return the response from server
      */
     public String getResponse() {
         return response;

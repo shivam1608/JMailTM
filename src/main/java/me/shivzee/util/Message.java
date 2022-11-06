@@ -63,7 +63,7 @@ public class Message {
 
     /**
      * Get the Email/Message ID
-     * @return String
+     * @return the id of the message
      */
     public String getId() {
         return id;
@@ -80,7 +80,7 @@ public class Message {
 
     /**
      * Get the Sender's Email Address
-     * @return String
+     * @return the email sender's address
      */
     public String getSenderAddress() {
         return senderAddress;
@@ -88,7 +88,7 @@ public class Message {
 
     /**
      * Get the Sender's Name
-     * @return String
+     * @return the email sender's name
      */
     public String getSenderName() {
         return senderName;
@@ -96,7 +96,7 @@ public class Message {
 
     /**
      * Get all the Receivers/send To
-     * @return List<Receiver>
+     * @return the list of all receivers to whom the email was sent (simply carbon copy cc: tag)
      */
     public List<Receiver> getReceivers() {
         return receivers;
@@ -104,7 +104,7 @@ public class Message {
 
     /**
      * Get the Email/Message Subject
-     * @return String
+     * @return the email's subject
      */
     public String getSubject() {
         return subject;
@@ -112,7 +112,7 @@ public class Message {
 
     /**
      * Get the Content of Email/Message
-     * @return String
+     * @return the inside content of email
      */
     public String getContent() {
         return content;
@@ -120,7 +120,7 @@ public class Message {
 
     /**
      * Get the Seen Status
-     * @return boolean
+     * @return true if the message is marked seen
      */
     public boolean isSeen() {
         return seen;
@@ -128,7 +128,7 @@ public class Message {
 
     /**
      * Get the Flagged Status
-     * @return boolean
+     * @return ture if the message is marked as flagged
      */
     public boolean isFlagged() {
         return flagged;
@@ -136,7 +136,7 @@ public class Message {
 
     /**
      * Get the Delete Status
-     * @return boolean
+     * @return true if the message is deleted
      */
     public boolean isDeleted() {
         return isDeleted;
@@ -144,7 +144,7 @@ public class Message {
 
     /**
      * Get retention Status
-     * @return boolean
+     * @return true if enabled retention
      */
     public boolean retention() {
         return retention;
@@ -152,7 +152,7 @@ public class Message {
 
     /**
      * Get Retention Date in String
-     * @return String
+     * @return the retention date
      */
     public String getRetentionDate() {
         return retentionDate;
@@ -160,7 +160,7 @@ public class Message {
 
     /**
      * Get the Email/Message Raw HTML Content
-     * @return String
+     * @return the raw HTML to manually parse the content of mail
      */
     public String getRawHTML() {
         return rawHTML;
@@ -168,7 +168,7 @@ public class Message {
 
     /**
      * Get the Status of Attachments on the Email/Message
-     * @return boolean
+     * @return true if email contains some attachments
      */
     public boolean hasAttachments() {
         return hasAttachments;
@@ -176,7 +176,7 @@ public class Message {
 
     /**
      * Get the list of all Attachments on a Message/Email
-     * @return List<Attachment>
+     * @return the list of all attachments on the email
      * @see me.shivzee.util.Attachment
      */
     public List<Attachment> getAttachments() {
@@ -185,7 +185,7 @@ public class Message {
 
     /**
      * Get the Size of Message
-     * @return long
+     * @return the size in bytes of message content
      */
     public long getSize() {
         return size;
@@ -193,7 +193,7 @@ public class Message {
 
     /**
      * Get the Download URL See API Docs for more info
-     * @return
+     * @return the download url to download the message from server
      */
     public String getDownloadUrl() {
         return downloadUrl;
@@ -201,7 +201,7 @@ public class Message {
 
     /**
      * Get the Message Received Date/Time in String
-     * @return String
+     * @return the date at which the message was sent/created/received
      */
     public String getCreatedAt() {
         return createdAt;
@@ -209,7 +209,8 @@ public class Message {
 
     /**
      * Get the Message Update Date/Time in String
-     * @return
+     * @return the date on which the message was updated (markAsRead fires the update event)
+     * @see me.shivzee.callbacks.EventListener
      */
     public String getUpdatedAt() {
         return updatedAt;
@@ -217,6 +218,7 @@ public class Message {
 
     /**
      * (Synchronous) Deletes the Message
+     * @return true if message was deleted from the server
      */
     public boolean delete(){
         if(isDeleted){
@@ -239,7 +241,7 @@ public class Message {
     }
 
     /**
-     * (Asynchronous) Deletes the Message with no response
+     * (Asynchronous) Silently Deletes the Message with no response
      */
     public void asyncDelete(){
         new Thread(this::delete, "Delete_Message_" + id).start();
@@ -256,8 +258,8 @@ public class Message {
     }
 
     /**
-     * (Synchronous) Marks the Message/Email asRead with no response
-     * @return Boolean
+     * (Synchronous) Marks the Message/Email as Read
+     * @return true if the message was marked as read on server
      */
     public boolean markAsRead() {
         if(seen){
@@ -285,7 +287,7 @@ public class Message {
 
 
     /**
-     * (Async) Marks the Message/Email asRead with no response
+     * (Async) Silently Marks the Message/Email asRead with no response
      */
     public void asyncMarkAsRead(){
         new Thread(this::markAsRead, "Mark_Message_As_Read_" + id).start();
@@ -301,7 +303,7 @@ public class Message {
 
     /**
      * Get the Raw JSON Response For Message
-     * @return String
+     * @return the raw json response to parse manually
      */
     public String getRawJson(){
         return rawJson;

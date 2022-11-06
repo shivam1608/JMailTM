@@ -14,7 +14,7 @@ public class Utility {
      * Generates a Random String
      *
      * @param length the String Length
-     * @return String
+     * @return a randomly generated string
      */
     public static String createRandomString(int length){
         String randomString = "";

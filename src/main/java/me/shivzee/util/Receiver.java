@@ -15,7 +15,7 @@ public class Receiver {
 
     /**
      * Get Email
-     * @return String
+     * @return the email address
      */
     public String getAddress() {
         return address;
@@ -23,7 +23,7 @@ public class Receiver {
 
     /**
      * Get Name
-     * @return String
+     * @return the name
      */
     public String getName() {
         return name;

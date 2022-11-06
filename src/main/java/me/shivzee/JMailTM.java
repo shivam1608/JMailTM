@@ -1,10 +1,27 @@
 /*
- * The Following is the JavaWrapper Class for Mail.tm API.
- * OpenSource Library (Make PullRequest if you got something good)
+ * OpenSource Library
  * MIT Licence
- * Author Shivzee & Community
+ * Author shivzee & Community
  * Github : https://github.com/shivam1608
  * Discord : Shivam#8010
+ *
+ * Copyright 2022 shivzee & contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in the
+ * Software without restriction, including without limitation the rights to use, copy,
+ * modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package me.shivzee;
@@ -40,6 +57,7 @@ import java.util.concurrent.Executors;
 /***
  * The JMailTM Class which have the instance of the API
  * @author shivzee
+ * @see JMailBuilder
  */
 public class JMailTM {
 
@@ -62,7 +80,7 @@ public class JMailTM {
         this.id = id;
     }
 
-    private static Account mailUtility(JSONObject json){
+    private static Account mailUtility(JSONObject json) {
         String id = json.get("id").toString();
         String email = json.get("address").toString();
         String quota = json.get("quota").toString();
@@ -126,7 +144,7 @@ public class JMailTM {
 
     /**
      * Get the ID of the User Account
-     * @return String
+     * @return the id of the user
      */
     public String getId(){
         return this.id;
@@ -140,8 +158,8 @@ public class JMailTM {
     }
 
     /**
-     * Get the SelfAccount (SelfUser)
-     * @return me.shivzee.util.Account
+     * Get the SelfAccount
+     * @return the account instance of the logged in user
      * @see me.shivzee.util.Account
      */
     public Account getSelf(){
@@ -160,7 +178,7 @@ public class JMailTM {
 
 	/**
 	 * (Synchronous) Deletes the Self Account
-     * @return Boolean
+     * @return true if user successfully deleted else false
 	 */
 	public boolean delete() {
 	    if(getSelf().isDeleted()){
@@ -177,7 +195,7 @@ public class JMailTM {
 
     /**
      * (Synchronous) Deletes the Self Account with a Callback Status.
-     * Lambda Expression Works
+     * <br />
      * <code>delete((status)->{ if(status) print true; });</code>
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
@@ -187,7 +205,7 @@ public class JMailTM {
 
     /**
      * (Asynchronous) Deletes the Self Account with a Callback Status.
-     * Lambda Expression Works
+     * <br />
      * <code>delete((status)->{ if(status) print true; });</code>
      * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
      */
@@ -208,10 +226,10 @@ public class JMailTM {
     /**
      * Gets a UserAccount using UserID
      *
-     * @param id
-     * @return me.shivzee.util.Account
+     * @param id the user id of the user
+     * @return account object of the user id
      * @see me.shivzee.util.Account
-     * @throws me.shivzee.exceptions.AccountNotFoundException
+     * @throws me.shivzee.exceptions.AccountNotFoundException when account you're looking for is not found
      */
     public Account getAccountById(String id) throws AccountNotFoundException {
         try{
@@ -232,7 +250,7 @@ public class JMailTM {
     /**
      * Get the Total Number of Messages
      *
-     * @return int
+     * @return the total messages in user's inbox
      */
     public int getTotalMessages(){
         try{
@@ -247,9 +265,9 @@ public class JMailTM {
     /**
      * Get Message by using MessageID
      * @param id The Message ID
-     * @return me.shivzee.util.Message
+     * @return the single message object
      * @see me.shivzee.util.Message
-     * @throws MessageFetchException
+     * @throws MessageFetchException when failed to message due to some reason
      */
     public Message getMessageById(String id) throws MessageFetchException{
         try{
@@ -268,17 +286,19 @@ public class JMailTM {
     /**
      * (Synchronous) Fetches All The Messages
      * Get Messages By Callback
+     * <br />
+     * <code>
+     * fetchMessages(new MessageFetchedCallback(){
+     *  @Override
+     *  public void onMessagesFetched(List<Message> messages){}
      *
-     * <code>fetchMessages(new MessageFetchedCallback(){
-     * @Override
-     * public void onMessagesFetched(List<Message> messages){}
-     *
-     * })</code>
+     *  });
+     * </code>
      *
      * @see me.shivzee.callbacks.MessageFetchedCallback
      * @see me.shivzee.exceptions.MessageFetchException
      * @param callback The MessageFetchedCallback Implemented Class/Function
-     * @throws MessageFetchException
+     * @throws MessageFetchException when fails to fetch any message due to any reason
      */
     public void fetchMessages(MessageFetchedCallback callback) throws MessageFetchException{
         try{
@@ -309,7 +329,7 @@ public class JMailTM {
      * @see me.shivzee.exceptions.MessageFetchException
      * @param limit The Total Number of Message to Fetch (Starts from The TOP)
      * @param callback The MessageFetchedCallback Implemented Class/Function
-     * @throws MessageFetchException
+     * @throws MessageFetchException when fails to fetch any message due to any reason
      */
     public void fetchMessages(int limit , MessageFetchedCallback callback) throws MessageFetchException{
         try{

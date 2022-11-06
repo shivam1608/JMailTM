@@ -36,7 +36,8 @@ public class Domains {
 
     /**
      * Get The Domain List
-     * @return List<Domains>
+     * @see me.shivzee.util.Domain
+     * @return the list containing the domain objects
      */
     public static List<Domain> getDomainList() {
         return domains;
@@ -44,7 +45,7 @@ public class Domains {
 
     /**
      * Updates the Domain List
-     * @return boolean
+     * @return true if the domain list was refreshed from server
      */
     public static boolean updateDomains(){
         domains = new ArrayList<>();
@@ -65,7 +66,7 @@ public class Domains {
 
     /**
      * Fetch and Return Domain List
-     * @return List<Domain>
+     * @return list of domain objects
      * @see me.shivzee.util.Domain
      * @see me.shivzee.exceptions.DomainNotFoundException
      */
@@ -93,10 +94,10 @@ public class Domains {
     /**
      * Fetches the Domain information by DomainID
      * @param id The domain ID to fetch
-     * @return me.shivzee.util.Domain
+     * @return the single Domain object
      * @see me.shivzee.util.Domain
      * @see me.shivzee.exceptions.DomainNotFoundException
-     * @throws DomainNotFoundException
+     * @throws DomainNotFoundException when domain was not found on server
      */
     public static Domain fetchDomainById(String id) throws DomainNotFoundException {
         try{
@@ -118,7 +119,7 @@ public class Domains {
 
     /**
      * Get a Random Domain From List
-     * @return me.shivzee.util.Domain
+     * @return a single random Domain object from the list
      * @see me.shivzee.util.Domain
      */
     public static Domain getRandomDomain(){
