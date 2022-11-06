@@ -14,5 +14,6 @@ public interface EventListener {
     default void onMessageDelete(String id){}
     default void onMessageSeen(Message message){}
     default void onAccountDelete(Account account){}
+    default void onAccountUpdate(Account account){}
     void onError(String error);
 }

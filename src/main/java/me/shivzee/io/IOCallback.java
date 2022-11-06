@@ -26,12 +26,12 @@ public class IOCallback implements EventHandler {
 
 
     @Override
-    public void onOpen() throws Exception {
+    public void onOpen() {
         listener.onReady();
     }
 
     @Override
-    public void onClosed() throws Exception {
+    public void onClosed() {
         listener.onClose();
     }
 
@@ -57,7 +57,12 @@ public class IOCallback implements EventHandler {
                 }else{
                     Method mailUtility = mailTM.getClass().getDeclaredMethod("mailUtility", JSONObject.class);
                     mailUtility.setAccessible(true);
-                    listener.onAccountDelete((Account) mailUtility.invoke(mailTM , json));
+                    Account account = (Account) mailUtility.invoke(mailTM , json);
+                    if(account.isDeleted()){
+                        listener.onAccountDelete(account);
+                    }else{
+                        listener.onAccountUpdate(account);
+                    }
                 }
             }
 
@@ -68,7 +73,7 @@ public class IOCallback implements EventHandler {
     }
 
     @Override
-    public void onComment(String s) throws Exception {
+    public void onComment(String s) {
         listener.onSSEComment(s);
     }
 
