@@ -13,10 +13,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Update: Java Docs">
-      <change afterPath="$PROJECT_DIR$/docs/index-files/index-18.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/EventListener.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/me/shivzee/callbacks/class-use/EventListener.html" afterDir="false" />
+    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Updated: Documentation">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +25,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -160,7 +159,42 @@
       <option name="project" value="LOCAL" />
       <updated>1665244380531</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Update: Version">
+      <created>1665244458145</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1665244458145</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added: onAccountUpdate Event">
+      <created>1667728971707</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1667728971707</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Update: Bind to Logger">
+      <created>1667731044334</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1667731044407</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Fixed: Documentation">
+      <created>1667736017629</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1667736017629</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Updated: Documentation">
+      <created>1667736346217</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1667736346217</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -198,6 +232,12 @@
     <MESSAGE value="Update: Docs" />
     <MESSAGE value="Update: EventListener" />
     <MESSAGE value="Update: Java Docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update: Java Docs" />
+    <MESSAGE value="Update: Version" />
+    <MESSAGE value="Added: onAccountUpdate Event" />
+    <MESSAGE value="Update: Bind to Logger" />
+    <MESSAGE value="Update: Documentation" />
+    <MESSAGE value="Fixed: Documentation" />
+    <MESSAGE value="Updated: Documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated: Documentation" />
   </component>
 </project>
