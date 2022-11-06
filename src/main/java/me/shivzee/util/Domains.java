@@ -6,6 +6,8 @@ import me.shivzee.io.IO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ public class Domains {
     private static final String baseUrl = Config.BASEURL;
     private static final JSONParser parser = Config.parser;
     private static List<Domain> domains = new ArrayList<>();
+
+    private final static Logger LOG = LoggerFactory.getLogger(Domains.class);
 
     private static Domain domainUtility(JSONObject json){
         String id = json.get("id").toString();
@@ -79,7 +83,7 @@ public class Domains {
                }
                return domains;
            }catch (Exception e){
-               System.out.println("|NO LOGGER| Something went wrong! Contact Developer "+e);
+               LOG.warn("Failed to fetch Domains "+e);
            }
            return domains;
 
@@ -108,7 +112,7 @@ public class Domains {
 
 
         }catch (Exception e){
-            throw new DomainNotFoundException("Some error occurred !" + e);
+            throw new DomainNotFoundException(""+e);
         }
     }
 

@@ -3,6 +3,8 @@ package me.shivzee.util;
 import me.shivzee.Config;
 import me.shivzee.callbacks.WorkCallback;
 import me.shivzee.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -11,6 +13,9 @@ import java.util.List;
  * Check https://api.mail.tm for more info
  */
 public class Message {
+
+    private final Logger LOG = LoggerFactory.getLogger(Message.class);
+
     private String id ;
     private String msgid;
     private String senderAddress;
@@ -220,7 +225,7 @@ public class Message {
         try{
             return IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken).getResponseCode() == 204;
         }catch (Exception e){
-            System.out.println("|IGNORING EXCEPTION | "+e);
+            LOG.warn("Failed to Delete message "+e);
             return false;
         }
     }
@@ -262,7 +267,7 @@ public class Message {
             Response response = IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
             return response.getResponseCode() == 200;
         } catch (Exception e) {
-            System.out.println("|IGNORING EXCEPTION | " + e);
+            LOG.warn("Failed to mark message as read "+e);
             return false;
         }
     }

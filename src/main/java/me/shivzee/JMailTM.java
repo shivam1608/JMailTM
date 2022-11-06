@@ -24,6 +24,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
@@ -47,6 +49,7 @@ public class JMailTM {
 
     private static final String baseUrl = Config.BASEURL;
     private static final JSONParser parser = Config.parser;
+    private final Logger LOG = LoggerFactory.getLogger(JMailTM.class);
 
     private ExecutorService pool = Executors.newSingleThreadExecutor();
 
@@ -149,7 +152,7 @@ public class JMailTM {
                 return mailUtility(json);
             }
         }catch (Exception e){
-            System.out.println("|NO LOGGER| Something Went Wrong! Contact Developer "+e);
+            LOG.error(e+"");
         }
         return new Account();
     }
@@ -167,7 +170,7 @@ public class JMailTM {
             Response response = IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
             return response.getResponseCode() == 204;
 		} catch (Exception e) {
-			System.out.println("|EXCEPTION IGNORE | " + e);
+		    LOG.error(e+"");
 			return false;
 		}
 	}
@@ -222,7 +225,7 @@ public class JMailTM {
             }
 
         }catch (Exception e){
-            throw new AccountNotFoundException("Something went wrong!");
+            throw new AccountNotFoundException(""+e);
         }
     }
 
@@ -258,7 +261,7 @@ public class JMailTM {
                 throw new MessageFetchException("Invalid Message ID");
             }
         }catch (Exception e){
-            throw new MessageFetchException("Error While Fetching Messages "+e);
+            throw new MessageFetchException(""+e);
         }
     }
 
@@ -295,7 +298,7 @@ public class JMailTM {
                 callback.onError(new Response(response.getResponseCode() , response.getResponse()));
             }
         } catch (Exception e) {
-            throw new MessageFetchException("Error While Fetching Messages "+e);
+            throw new MessageFetchException(""+e);
         }
     }
 
@@ -327,7 +330,7 @@ public class JMailTM {
                 callback.onError(new Response(response.getResponseCode() , response.getResponse()));
             }
         } catch (Exception e) {
-            throw new MessageFetchException("Error While Fetching Messages "+e);
+            throw new MessageFetchException(""+e);
         }
     }
 
@@ -341,7 +344,7 @@ public class JMailTM {
             try {
                 fetchMessages(callback);
             } catch (MessageFetchException e) {
-                callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
+                callback.onError(new Response(90001 , ""+e) );
             }
         }, "Fetch_Messages_" + id).start();
     }
@@ -357,7 +360,7 @@ public class JMailTM {
             try {
                 fetchMessages(limit , callback);
             } catch (MessageFetchException e) {
-                callback.onError(new Response(90001 , "Lib Error Exception Caught | UPDATE LIB | ASYNC IGNORE. Exception"+e) );
+                callback.onError(new Response(90001 , ""+e) );
             }
         }, "Fetch_Messages_" + id).start();
     }

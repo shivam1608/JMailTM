@@ -34,11 +34,11 @@ public class JMailBuilder {
                 JSONObject json = (JSONObject) parser.parse(response.getResponse());
                 return new JMailTM(json.get("token").toString() , json.get("id").toString());
             }else {
-                throw new LoginException("Login Error! Invalid Email/Password. ResponseCode : "+response.getResponseCode()+" xx "+response.getResponse());
+                throw new LoginException(response.getResponse());
             }
 
         }catch (Exception e){
-            throw new LoginException("Something Went Wrong " + e);
+            throw new LoginException("Network error something went wrong " + e);
         }
     }
 
@@ -91,7 +91,7 @@ public class JMailBuilder {
             }
 
         }catch (Exception e){
-            throw new LoginException("Something went wrong while creating account! Try Again"+e);
+            throw new LoginException(""+e);
         }
 
     }
@@ -109,7 +109,7 @@ public class JMailBuilder {
             return createAndLogin(email , password);
 
         }catch (Exception e){
-            throw new LoginException("Something went wrong while creating account! Try Again "+e);
+            throw new LoginException(""+e);
         }
     }
 

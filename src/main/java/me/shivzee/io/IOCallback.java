@@ -67,7 +67,7 @@ public class IOCallback implements EventHandler {
             }
 
         }catch (Exception e){
-            listener.onError("Error While Parsing "+e);
+            listener.onError(""+e.getMessage());
         }
 
     }
