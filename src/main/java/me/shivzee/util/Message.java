@@ -6,6 +6,7 @@ import me.shivzee.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -34,11 +35,13 @@ public class Message {
     private long size;
     private String downloadUrl;
     private String createdAt;
+    private ZonedDateTime createdDateTime;
     private String updatedAt;
+    private ZonedDateTime updatedDateTime;
     private String bearerToken;
     private String rawJson;
 
-    public Message(String id, String msgid, String senderAddress, String senderName, List<Receiver> receivers, String subject, String content, boolean seen, boolean flagged, boolean isDeleted, boolean retention, String retentionDate, String rawHTML, boolean hasAttachments, List<Attachment> attachments, long size, String downloadUrl, String createdAt, String updatedAt, String bearerToken, String rawJson) {
+    public Message(String id, String msgid, String senderAddress, String senderName, List<Receiver> receivers, String subject, String content, boolean seen, boolean flagged, boolean isDeleted, boolean retention, String retentionDate, String rawHTML, boolean hasAttachments, List<Attachment> attachments, long size, String downloadUrl, String createdAt,ZonedDateTime createdDateTime, String updatedAt,ZonedDateTime updatedDateTime ,String bearerToken, String rawJson) {
         this.id = id;
         this.msgid = msgid;
         this.senderAddress = senderAddress;
@@ -57,7 +60,9 @@ public class Message {
         this.size = size;
         this.downloadUrl = downloadUrl;
         this.createdAt = createdAt;
+        this.createdDateTime = createdDateTime;
         this.updatedAt = updatedAt;
+        this.updatedDateTime = updatedDateTime;
         this.bearerToken = bearerToken;
     }
 
@@ -208,6 +213,31 @@ public class Message {
     }
 
     /**
+     * Get the Message Received Date/Time in ZonedDateTime format
+     * @return the date at which the message was sent/created/received
+     */
+    public ZonedDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(ZonedDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    /**
+     * Get the Message Update Date/Time in  ZonedDateTime format
+     * @return the date on which the message was updated (markAsRead fires the update event)
+     * @see me.shivzee.callbacks.EventListener
+     */
+    public ZonedDateTime getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
+    public void setUpdatedDateTime(ZonedDateTime updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
+    }
+
+    /**
      * Get the Message Update Date/Time in String
      * @return the date on which the message was updated (markAsRead fires the update event)
      * @see me.shivzee.callbacks.EventListener
@@ -280,9 +310,9 @@ public class Message {
      * (Sync) Marks the Message/Email asRead with a Callback
      * @param callback The WorkCallback Implementation or Lambda Function
      */
-	public void markAsRead(WorkCallback callback) {
-		callback.workStatus(markAsRead());
-	}
+    public void markAsRead(WorkCallback callback) {
+        callback.workStatus(markAsRead());
+    }
 
 
 

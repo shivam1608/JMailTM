@@ -1,5 +1,9 @@
 package me.shivzee.util;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 /**
@@ -24,5 +28,22 @@ public class Utility {
         return randomString;
     }
 
+    public static ZonedDateTime parseDateTimeToDefaultTimeZone(String dateTime, String pattern) {
+        try {
+            dateTime = dateTime.replace("am", "AM");
+            dateTime = dateTime.replace("pm", "PM");
+            LocalDateTime objLocalDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern(pattern));
+            return objLocalDateTime.atZone(ZoneId.systemDefault());
+        }catch(Exception ex) {
+            try {
+                dateTime = dateTime.replace("AM", "am");
+                dateTime = dateTime.replace("PM", "pm");
+                LocalDateTime objLocalDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern(pattern));
+                return objLocalDateTime.atZone(ZoneId.systemDefault());
+            }catch(Throwable t) {
+            }
+        }
+        return null;
+    }
 
 }
