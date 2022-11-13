@@ -1,5 +1,11 @@
 package me.shivzee.util;
 
+import me.shivzee.exceptions.DateTimeParserException;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 /**
@@ -24,5 +30,16 @@ public class Utility {
         return randomString;
     }
 
+    public static ZonedDateTime parseToDefaultTimeZone(String dateTime, String pattern) throws DateTimeParserException {
+        ZonedDateTime time = null;
+        try {
+            time = LocalDateTime.parse(dateTime, DateTimeFormatter
+                            .ofPattern(pattern))
+                    .atZone(ZoneId.systemDefault());
+        }catch(Exception ex) {
+           throw new DateTimeParserException("Unable to parse Date for :" + dateTime + " With Pattern " + pattern);
+        }
+        return time;
+    }
 
 }
