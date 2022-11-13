@@ -220,10 +220,6 @@ public class Message {
         return createdDateTime;
     }
 
-    public void setCreatedDateTime(ZonedDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
     /**
      * Get the Message Update Date/Time in  ZonedDateTime format
      * @return the date on which the message was updated (markAsRead fires the update event)
@@ -231,10 +227,6 @@ public class Message {
      */
     public ZonedDateTime getUpdatedDateTime() {
         return updatedDateTime;
-    }
-
-    public void setUpdatedDateTime(ZonedDateTime updatedDateTime) {
-        this.updatedDateTime = updatedDateTime;
     }
 
     /**

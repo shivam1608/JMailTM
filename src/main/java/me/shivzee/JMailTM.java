@@ -32,6 +32,7 @@ import me.shivzee.callbacks.MessageFetchedCallback;
 import me.shivzee.callbacks.MessageListener;
 import me.shivzee.callbacks.WorkCallback;
 import me.shivzee.exceptions.AccountNotFoundException;
+import me.shivzee.exceptions.DateTimeParserException;
 import me.shivzee.exceptions.MessageFetchException;
 import me.shivzee.io.IO;
 import me.shivzee.io.IOCallback;
@@ -93,7 +94,7 @@ public class JMailTM {
         return new Account(id,email,quota,used,isDisabled,isDeleted,createdAt,updatedAt);
     }
 
-    private Message messageUtility(JSONObject json) throws ParseException {
+    private Message messageUtility(JSONObject json) throws ParseException, DateTimeParserException {
         String id = json.get("id").toString();
         String msgid = json.get("msgid").toString();
         JSONObject from = (JSONObject) parser.parse(json.get("from").toString());
@@ -139,8 +140,8 @@ public class JMailTM {
         String createdAt = json.get("createdAt").toString();
         String updatedAt = json.get("updatedAt").toString();
 
-        ZonedDateTime createdDateTime = Utility.parseDateTimeToDefaultTimeZone(createdAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
-        ZonedDateTime updatedDateTime = Utility.parseDateTimeToDefaultTimeZone(updatedAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime createdDateTime = Utility.parseToDefaultTimeZone(createdAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime updatedDateTime = Utility.parseToDefaultTimeZone(updatedAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 
         return new Message(id,msgid,senderAddress,senderName,receivers,subject,content,seen,flagged,isDeleted,retention,retentionDate,rawHTML,hasAttachments,attachments,size,downloadUrl,createdAt,createdDateTime,updatedAt,updatedDateTime,bearerToken,json.toJSONString());
     }

@@ -88,7 +88,7 @@ public class JMailBuilder {
             }else if(response.getResponseCode() == 422){
                 throw new LoginException("Account Already Exists! Error 422");
             }else if (response.getResponseCode() == 429){
-                throw new LoginException("Too Many account create request");
+                throw new LoginException("Too many requests! Error 429 Rate limited");
             }else{
                 throw new LoginException("Something went wrong while creating account! Try Again");
             }
