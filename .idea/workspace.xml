@@ -13,10 +13,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Added: Examples Directory">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/shivzee/util/JMailBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/shivzee/util/JMailBuilder.java" afterDir="false" />
-    </list>
+    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Added: Login with Token" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -223,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671950442254</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Added: Login with Token">
+      <created>1671952647024</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1671952647024</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -269,6 +273,7 @@
     <MESSAGE value="Updated: Documentation" />
     <MESSAGE value="Updated: Version" />
     <MESSAGE value="Added: Examples Directory" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added: Examples Directory" />
+    <MESSAGE value="Added: Login with Token" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added: Login with Token" />
   </component>
 </project>
