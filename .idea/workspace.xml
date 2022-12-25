@@ -13,7 +13,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Updated: Version" />
+    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Updated: Version">
+      <change afterPath="$PROJECT_DIR$/src/examples/java/GetMessagesExample.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examples/java/MessageListenerExample.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/JMailBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/JMailBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Utility.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Utility.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,7 +67,14 @@
     <property name="project.structure.side.proportion" value="0.20689656" />
     <property name="settings.editor.selected.configurable" value="project.propGUI" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Driver (1)">
+    <configuration name="Driver (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Driver" />
+      <module name="JMailTM" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Driver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="me.shivzee.Driver" />
       <module name="JMailTM" />
@@ -73,6 +90,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Driver (1)" />
         <item itemvalue="Application.Driver" />
       </list>
     </recent_temporary>
@@ -198,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667736629241</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Updated: Version">
+      <created>1671950403000</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1671950403000</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
