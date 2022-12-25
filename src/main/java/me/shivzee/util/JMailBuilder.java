@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javax.security.auth.login.LoginException;
+import java.util.Base64;
 
 /**
  * The JMailBuilder Class for Login/Signup Operations
@@ -113,6 +114,29 @@ public class JMailBuilder {
 
         }catch (Exception e){
             throw new LoginException(""+e);
+        }
+    }
+
+
+    /**
+     * Login into an account with token
+     * @param token the jwt token of the account
+     * @return the JMailTM instance to a jwt specifed account
+     * @throws LoginException when network error or token provided is invalid
+     */
+    public static JMailTM loginWithToken(String token) throws LoginException {
+        try{
+            Response response = IO.requestGET(baseUrl + "/me", token);
+            if(response.getResponseCode() == 401){
+                throw new LoginException("Invalid Token Provided");
+            }
+            if(response.getResponseCode() == 200){
+                JSONObject json = (JSONObject) parser.parse(response.getResponse());
+                return new JMailTM(token , json.get("id").toString());
+            }
+            throw new LoginException("Invalid response received");
+        }catch (Exception e){
+            throw new LoginException(e.getMessage());
         }
     }
 

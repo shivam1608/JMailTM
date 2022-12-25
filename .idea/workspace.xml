@@ -13,16 +13,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Updated: Version">
-      <change afterPath="$PROJECT_DIR$/src/examples/java/GetMessagesExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examples/java/MessageListenerExample.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Added: Examples Directory">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/JMailBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/JMailBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Message.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Utility.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Utility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/shivzee/util/JMailBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/shivzee/util/JMailBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671950403000</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Added: Examples Directory">
+      <created>1671950442254</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1671950442254</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -268,6 +268,7 @@
     <MESSAGE value="Fixed: Documentation" />
     <MESSAGE value="Updated: Documentation" />
     <MESSAGE value="Updated: Version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated: Version" />
+    <MESSAGE value="Added: Examples Directory" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added: Examples Directory" />
   </component>
 </project>
