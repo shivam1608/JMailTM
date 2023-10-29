@@ -55,6 +55,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static me.shivzee.util.Utility.*;
+
 
 /***
  * The JMailTM Class which have the instance of the API
@@ -83,65 +85,75 @@ public class JMailTM {
     }
 
     private static Account mailUtility(JSONObject json) {
-        String id = json.get("id").toString();
-        String email = json.get("address").toString();
-        String quota = json.get("quota").toString();
-        String used = json.get("used").toString();
-        boolean isDisabled = (boolean) json.get("isDisabled");
-        boolean isDeleted = (boolean) json.get("isDeleted");
-        String createdAt = json.get("createdAt").toString();
-        String updatedAt = json.get("updatedAt").toString();
-        return new Account(id,email,quota,used,isDisabled,isDeleted,createdAt,updatedAt);
+        String id = safeEval(() -> json.get("id").toString());
+        String email = safeEval(() -> json.get("address").toString());
+        String quota = safeEval(() -> json.get("quota").toString());
+        String used = safeEval(() -> json.get("used").toString());
+        Boolean isDisabled = safeEval(() -> (Boolean) json.get("isDisabled"));
+        Boolean isDeleted = safeEval(() -> (Boolean) json.get("isDeleted"));
+        String createdAt = safeEval(() -> json.get("createdAt").toString());
+        String updatedAt = safeEval(() -> json.get("updatedAt").toString());
+        return new Account(id,email,quota,used, Boolean.TRUE.equals(isDisabled), Boolean.TRUE.equals(isDeleted),createdAt,updatedAt);
     }
 
     private Message messageUtility(JSONObject json) throws ParseException, DateTimeParserException {
-        String id = json.get("id").toString();
-        String msgid = json.get("msgid").toString();
-        JSONObject from = (JSONObject) parser.parse(json.get("from").toString());
-        String senderAddress = from.get("address").toString();
-        String senderName = from.get("name").toString();
+        String id = safeEval(() -> json.get("id").toString());
+        String msgid = safeEval(() -> json.get("msgid").toString());
+        JSONObject from = (JSONObject) parser.parse(safeEval(() -> json.get("from").toString()));
+        String senderAddress = safeEval(() -> from.get("address").toString());
+        String senderName = safeEval(() -> from.get("name").toString());
 
         List<Receiver> receivers = new ArrayList<>();
-        JSONArray receiverArray = (JSONArray) parser.parse(json.get("to").toString());
+        JSONArray receiverArray = (JSONArray) parser.parse(safeEval(() -> json.get("to").toString()));
         Object [] rArray = receiverArray.toArray();
         for(Object jsonObject : rArray){
             JSONObject object = (JSONObject) jsonObject;
-            receivers.add(new Receiver(object.get("address").toString() , object.get("name").toString()));
+            receivers.add(new Receiver(safeEval(() -> object.get("address").toString()) , safeEval(() -> object.get("name").toString())));
         }
-        String subject = json.get("subject").toString();
-        String content = json.get("text").toString();
-        boolean seen = (boolean) json.get("seen");
-        boolean flagged = (boolean) json.get("flagged");
-        boolean isDeleted = (boolean) json.get("isDeleted");
-        boolean retention = (boolean) json.get("retention");
-        String retentionDate = json.get("retentionDate").toString();
-        String rawHTML = json.get("html").toString();
-        boolean hasAttachments = (boolean) json.get("hasAttachments");
+        String subject = safeEval(() -> json.get("subject").toString());
+        String content = safeEval(() -> json.get("text").toString());
+        Boolean seen = safeEval(() -> (Boolean) json.get("seen"));
+        Boolean flagged =  safeEval(() -> (Boolean) json.get("flagged"));
+        Boolean isDeleted = safeEval(() -> (Boolean) json.get("isDeleted"));
+        Boolean retention = safeEval(() -> (Boolean) json.get("retention"));
+        String retentionDate = safeEval(() -> json.get("retentionDate").toString());
+        String rawHTML = safeEval(() -> json.get("html").toString());
+        Boolean hasAttachments = safeEval(() -> (Boolean) json.get("hasAttachments"));
 
         List<Attachment> attachments = new ArrayList<>();
-        JSONArray attachmentArray = (JSONArray) parser.parse(json.get("attachments").toString());
-        Object [] aArray = attachmentArray.toArray();
+        if(Boolean.TRUE.equals(hasAttachments)) {
+            JSONArray attachmentArray = (JSONArray) parser.parse(safeEval(() -> json.get("attachments").toString()));
+            Object[] aArray = attachmentArray.toArray();
 
-        for(Object attachmentObject : aArray){
-            JSONObject object = (JSONObject) attachmentObject;
-            String aId = object.get("id").toString();
-            String aFilename = object.get("filename").toString();
-            String aContentType = object.get("contentType").toString();
-            String aDisposition = object.get("disposition").toString();
-            String aTransferEncoding = object.get("transferEncoding").toString();
-            boolean aRelated = (boolean) object.get("related");
-            long aSize = Long.parseLong(object.get("size").toString());
-            String aDownloadUrl = object.get("downloadUrl").toString();
-            attachments.add(new Attachment(aId , aFilename , aContentType , aDisposition, aTransferEncoding ,aRelated ,aSize , aDownloadUrl ,bearerToken));
+            for (Object attachmentObject : aArray) {
+                JSONObject object = (JSONObject) attachmentObject;
+                String aId = safeEval(() -> object.get("id")).toString();
+                String aFilename = safeEval(() -> object.get("filename").toString());
+                String aContentType = safeEval(() -> object.get("contentType").toString());
+                String aDisposition = safeEval(() -> object.get("disposition").toString());
+                String aTransferEncoding = safeEval(() -> object.get("transferEncoding").toString());
+                Boolean aRelated = safeEval(() -> (Boolean) object.get("related"));
+                String strSize = safeEval(() -> object.get("size").toString());
+                long aSize = 0;
+                if(strSize != null) {
+                    aSize = Long.parseLong(strSize);
+                }
+                String aDownloadUrl = safeEval(() -> object.get("downloadUrl").toString());
+                attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, Boolean.TRUE.equals(aRelated), aSize, aDownloadUrl, bearerToken));
+            }
         }
 
-        long size = Long.parseLong(json.get("size").toString());
-        String downloadUrl = json.get("downloadUrl").toString();
-        String createdAt = json.get("createdAt").toString();
-        String updatedAt = json.get("updatedAt").toString();
+        long size = 0;
+        String strSize = safeEval(() -> json.get("size").toString());
+        if(strSize != null) {
+            size = Long.parseLong(strSize);
+        }
+        String downloadUrl = safeEval(() -> json.get("downloadUrl").toString());
+        String createdAt = safeEval(() -> json.get("createdAt").toString());
+        String updatedAt = safeEval(() -> json.get("updatedAt").toString());
 
-        ZonedDateTime createdDateTime = Utility.parseToDefaultTimeZone(createdAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
-        ZonedDateTime updatedDateTime = Utility.parseToDefaultTimeZone(updatedAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime createdDateTime = parseToDefaultTimeZone(createdAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime updatedDateTime = parseToDefaultTimeZone(updatedAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 
         return new Message(id,msgid,senderAddress,senderName,receivers,subject,content,seen,flagged,isDeleted,retention,retentionDate,rawHTML,hasAttachments,attachments,size,downloadUrl,createdAt,createdDateTime,updatedAt,updatedDateTime,bearerToken,json.toJSONString());
     }
