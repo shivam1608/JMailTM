@@ -134,7 +134,7 @@ public class JMailTM {
                 String aTransferEncoding = safeEval(() -> object.get("transferEncoding").toString());
                 Boolean aRelated = safeEval(() -> (Boolean) object.get("related"));
                 String strSize = safeEval(() -> object.get("size").toString());
-                long aSize = 0;
+                Long aSize = null;
                 if(strSize != null) {
                     aSize = Long.parseLong(strSize);
                 }
