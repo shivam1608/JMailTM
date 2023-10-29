@@ -119,20 +119,22 @@ public class JMailTM {
         boolean hasAttachments = (boolean) json.get("hasAttachments");
 
         List<Attachment> attachments = new ArrayList<>();
-        JSONArray attachmentArray = (JSONArray) parser.parse(json.get("attachments").toString());
-        Object [] aArray = attachmentArray.toArray();
+        if(hasAttachments) {
+            JSONArray attachmentArray = (JSONArray) parser.parse(json.get("attachments").toString());
+            Object[] aArray = attachmentArray.toArray();
 
-        for(Object attachmentObject : aArray){
-            JSONObject object = (JSONObject) attachmentObject;
-            String aId = object.get("id").toString();
-            String aFilename = object.get("filename").toString();
-            String aContentType = object.get("contentType").toString();
-            String aDisposition = object.get("disposition").toString();
-            String aTransferEncoding = object.get("transferEncoding").toString();
-            boolean aRelated = (boolean) object.get("related");
-            long aSize = Long.parseLong(object.get("size").toString());
-            String aDownloadUrl = object.get("downloadUrl").toString();
-            attachments.add(new Attachment(aId , aFilename , aContentType , aDisposition, aTransferEncoding ,aRelated ,aSize , aDownloadUrl ,bearerToken));
+            for (Object attachmentObject : aArray) {
+                JSONObject object = (JSONObject) attachmentObject;
+                String aId = object.get("id").toString();
+                String aFilename = object.get("filename").toString();
+                String aContentType = object.get("contentType").toString();
+                String aDisposition = object.get("disposition").toString();
+                String aTransferEncoding = object.get("transferEncoding").toString();
+                boolean aRelated = (boolean) object.get("related");
+                long aSize = Long.parseLong(object.get("size").toString());
+                String aDownloadUrl = object.get("downloadUrl").toString();
+                attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, aRelated, aSize, aDownloadUrl, bearerToken));
+            }
         }
 
         long size = Long.parseLong(json.get("size").toString());
