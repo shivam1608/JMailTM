@@ -93,7 +93,7 @@ public class JMailTM {
         Boolean isDeleted = safeEval(() -> (Boolean) json.get("isDeleted"));
         String createdAt = safeEval(() -> json.get("createdAt").toString());
         String updatedAt = safeEval(() -> json.get("updatedAt").toString());
-        return new Account(id,email,quota,used, Boolean.TRUE.equals(isDisabled), Boolean.TRUE.equals(isDeleted),createdAt,updatedAt);
+        return new Account(id,email,quota,used, isDisabled, isDeleted,createdAt,updatedAt);
     }
 
     private Message messageUtility(JSONObject json) throws ParseException, DateTimeParserException {
@@ -139,7 +139,7 @@ public class JMailTM {
                     aSize = Long.parseLong(strSize);
                 }
                 String aDownloadUrl = safeEval(() -> object.get("downloadUrl").toString());
-                attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, Boolean.TRUE.equals(aRelated), aSize, aDownloadUrl, bearerToken));
+                attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, aRelated, aSize, aDownloadUrl, bearerToken));
             }
         }
 
