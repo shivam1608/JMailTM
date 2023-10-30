@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 
 /***
@@ -103,10 +104,10 @@ public class JMailTM {
 
         List<Receiver> receivers = new ArrayList<>();
         JSONArray receiverArray = (JSONArray) parser.parse(json.get("to").toString());
-        Object [] rArray = receiverArray.toArray();
-        for(Object jsonObject : rArray){
+        Object[] rArray = receiverArray.toArray();
+        for (Object jsonObject : rArray) {
             JSONObject object = (JSONObject) jsonObject;
-            receivers.add(new Receiver(object.get("address").toString() , object.get("name").toString()));
+            receivers.add(new Receiver(object.get("address").toString(), object.get("name").toString()));
         }
         String subject = json.get("subject").toString();
         String content = json.get("text").toString();
@@ -118,11 +119,14 @@ public class JMailTM {
         String rawHTML = json.get("html").toString();
         boolean hasAttachments = (boolean) json.get("hasAttachments");
 
-        List<Attachment> attachments = new ArrayList<>();
-        JSONArray attachmentArray = (JSONArray) parser.parse(json.get("attachments").toString());
-        Object [] aArray = attachmentArray.toArray();
+        Object[] aArray = new Object[0];
+        if (hasAttachments) {
+            JSONArray attachmentArray = (JSONArray) parser.parse(json.get("attachments").toString());
+            aArray = attachmentArray.toArray();
+        }
 
-        for(Object attachmentObject : aArray){
+        List<Attachment> attachments = new ArrayList<>();
+        for (Object attachmentObject : aArray) {
             JSONObject object = (JSONObject) attachmentObject;
             String aId = object.get("id").toString();
             String aFilename = object.get("filename").toString();
@@ -132,7 +136,7 @@ public class JMailTM {
             boolean aRelated = (boolean) object.get("related");
             long aSize = Long.parseLong(object.get("size").toString());
             String aDownloadUrl = object.get("downloadUrl").toString();
-            attachments.add(new Attachment(aId , aFilename , aContentType , aDisposition, aTransferEncoding ,aRelated ,aSize , aDownloadUrl ,bearerToken));
+            attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, aRelated, aSize, aDownloadUrl, bearerToken));
         }
 
         long size = Long.parseLong(json.get("size").toString());
@@ -140,10 +144,10 @@ public class JMailTM {
         String createdAt = json.get("createdAt").toString();
         String updatedAt = json.get("updatedAt").toString();
 
-        ZonedDateTime createdDateTime = Utility.parseToDefaultTimeZone(createdAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
-        ZonedDateTime updatedDateTime = Utility.parseToDefaultTimeZone(updatedAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime createdDateTime = Utility.parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime updatedDateTime = Utility.parseToDefaultTimeZone(updatedAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 
-        return new Message(id,msgid,senderAddress,senderName,receivers,subject,content,seen,flagged,isDeleted,retention,retentionDate,rawHTML,hasAttachments,attachments,size,downloadUrl,createdAt,createdDateTime,updatedAt,updatedDateTime,bearerToken,json.toJSONString());
+        return new Message(id, msgid, senderAddress, senderName, receivers, subject, content, seen, flagged, isDeleted, retention, retentionDate, rawHTML, hasAttachments, attachments, size, downloadUrl, createdAt, createdDateTime, updatedAt, updatedDateTime, bearerToken, json.toJSONString());
     }
 
     /**
