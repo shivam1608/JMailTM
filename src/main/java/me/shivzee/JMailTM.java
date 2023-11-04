@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import static me.shivzee.util.Utility.*;
 
@@ -104,58 +105,59 @@ public class JMailTM {
         String senderName = safeEval(() -> from.get("name").toString());
 
         List<Receiver> receivers = new ArrayList<>();
-        JSONArray receiverArray = (JSONArray) parser.parse(safeEval(() -> json.get("to").toString()));
-        Object [] rArray = receiverArray.toArray();
-        for(Object jsonObject : rArray){
+        JSONArray receiverArray = (JSONArray) parser.parse(json.get("to").toString());
+        Object[] rArray = receiverArray.toArray();
+        for (Object jsonObject : rArray) {
             JSONObject object = (JSONObject) jsonObject;
-            receivers.add(new Receiver(safeEval(() -> object.get("address").toString()) , safeEval(() -> object.get("name").toString())));
+            receivers.add(new Receiver(object.get("address").toString(), object.get("name").toString()));
         }
         String subject = safeEval(() -> json.get("subject").toString());
         String content = safeEval(() -> json.get("text").toString());
         Boolean seen = safeEval(() -> (Boolean) json.get("seen"));
-        Boolean flagged =  safeEval(() -> (Boolean) json.get("flagged"));
+        Boolean flagged = safeEval(() -> (Boolean) json.get("flagged"));
         Boolean isDeleted = safeEval(() -> (Boolean) json.get("isDeleted"));
         Boolean retention = safeEval(() -> (Boolean) json.get("retention"));
         String retentionDate = safeEval(() -> json.get("retentionDate").toString());
         String rawHTML = safeEval(() -> json.get("html").toString());
         Boolean hasAttachments = safeEval(() -> (Boolean) json.get("hasAttachments"));
 
-        List<Attachment> attachments = new ArrayList<>();
-        if(Boolean.TRUE.equals(hasAttachments)) {
-            JSONArray attachmentArray = (JSONArray) parser.parse(safeEval(() -> json.get("attachments").toString()));
-            Object[] aArray = attachmentArray.toArray();
+        Object[] aArray = new Object[0];
+        if (Boolean.TRUE.equals(hasAttachments)) {
+            JSONArray attachmentArray = (JSONArray) parser.parse(json.get("attachments").toString());
+            aArray = attachmentArray.toArray();
+        }
 
-            for (Object attachmentObject : aArray) {
-                JSONObject object = (JSONObject) attachmentObject;
-                String aId = safeEval(() -> object.get("id")).toString();
-                String aFilename = safeEval(() -> object.get("filename").toString());
-                String aContentType = safeEval(() -> object.get("contentType").toString());
-                String aDisposition = safeEval(() -> object.get("disposition").toString());
-                String aTransferEncoding = safeEval(() -> object.get("transferEncoding").toString());
-                Boolean aRelated = safeEval(() -> (Boolean) object.get("related"));
-                String strSize = safeEval(() -> object.get("size").toString());
-                Long aSize = null;
-                if(strSize != null) {
-                    aSize = Long.parseLong(strSize);
-                }
-                String aDownloadUrl = safeEval(() -> object.get("downloadUrl").toString());
-                attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, aRelated, aSize, aDownloadUrl, bearerToken));
+        List<Attachment> attachments = new ArrayList<>();
+        for (Object attachmentObject : aArray) {
+            JSONObject object = (JSONObject) attachmentObject;
+            String aId = safeEval(() -> object.get("id")).toString();
+            String aFilename = safeEval(() -> object.get("filename").toString());
+            String aContentType = safeEval(() -> object.get("contentType").toString());
+            String aDisposition = safeEval(() -> object.get("disposition").toString());
+            String aTransferEncoding = safeEval(() -> object.get("transferEncoding").toString());
+            Boolean aRelated = safeEval(() -> (Boolean) object.get("related"));
+            String strSize = safeEval(() -> object.get("size").toString());
+            Long aSize = null;
+            if (strSize != null) {
+                aSize = Long.parseLong(strSize);
             }
+            String aDownloadUrl = safeEval(() -> object.get("downloadUrl").toString());
+            attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, aRelated, aSize, aDownloadUrl, bearerToken));
         }
 
         long size = 0;
         String strSize = safeEval(() -> json.get("size").toString());
-        if(strSize != null) {
+        if (strSize != null) {
             size = Long.parseLong(strSize);
         }
         String downloadUrl = safeEval(() -> json.get("downloadUrl").toString());
         String createdAt = safeEval(() -> json.get("createdAt").toString());
         String updatedAt = safeEval(() -> json.get("updatedAt").toString());
 
-        ZonedDateTime createdDateTime = parseToDefaultTimeZone(createdAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
-        ZonedDateTime updatedDateTime = parseToDefaultTimeZone(updatedAt,"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime createdDateTime = parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+        ZonedDateTime updatedDateTime = parseToDefaultTimeZone(updatedAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 
-        return new Message(id,msgid,senderAddress,senderName,receivers,subject,content,seen,flagged,isDeleted,retention,retentionDate,rawHTML,hasAttachments,attachments,size,downloadUrl,createdAt,createdDateTime,updatedAt,updatedDateTime,bearerToken,json.toJSONString());
+        return new Message(id, msgid, senderAddress, senderName, receivers, subject, content, seen, flagged, isDeleted, retention, retentionDate, rawHTML, hasAttachments, attachments, size, downloadUrl, createdAt, createdDateTime, updatedAt, updatedDateTime, bearerToken, json.toJSONString());
     }
 
     /**
