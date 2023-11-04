@@ -19,12 +19,12 @@ public class Attachment {
     private String contentType;
     private String disposition;
     private String transferEncoding;
-    private boolean related;
-    private long size;
+    private Boolean related;
+    private Long size;
     private String downloadUrl;
     private String bearerToken;
 
-    public Attachment(String id, String filename, String contentType, String disposition, String transferEncoding, boolean related, long size, String downloadUrl, String bearerToken) {
+    public Attachment(String id, String filename, String contentType, String disposition, String transferEncoding, Boolean related, Long size, String downloadUrl, String bearerToken) {
         this.id = id;
         this.filename = filename;
         this.contentType = contentType;

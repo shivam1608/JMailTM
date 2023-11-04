@@ -24,15 +24,15 @@ public class Message {
     private List<Receiver> receivers;
     private String subject;
     private String content;
-    private boolean seen;
-    private boolean flagged;
-    private boolean isDeleted;
-    private boolean retention;
+    private Boolean seen;
+    private Boolean flagged;
+    private Boolean isDeleted;
+    private Boolean retention;
     private String retentionDate;
     private String rawHTML;
-    private boolean hasAttachments;
+    private Boolean hasAttachments;
     private List<Attachment> attachments;
-    private long size;
+    private Long size;
     private String downloadUrl;
     private String createdAt;
     private ZonedDateTime createdDateTime;
@@ -41,7 +41,7 @@ public class Message {
     private String bearerToken;
     private String rawJson;
 
-    public Message(String id, String msgid, String senderAddress, String senderName, List<Receiver> receivers, String subject, String content, boolean seen, boolean flagged, boolean isDeleted, boolean retention, String retentionDate, String rawHTML, boolean hasAttachments, List<Attachment> attachments, long size, String downloadUrl, String createdAt,ZonedDateTime createdDateTime, String updatedAt,ZonedDateTime updatedDateTime ,String bearerToken, String rawJson) {
+    public Message(String id, String msgid, String senderAddress, String senderName, List<Receiver> receivers, String subject, String content, Boolean seen, Boolean flagged, Boolean isDeleted, Boolean retention, String retentionDate, String rawHTML, Boolean hasAttachments, List<Attachment> attachments, Long size, String downloadUrl, String createdAt,ZonedDateTime createdDateTime, String updatedAt,ZonedDateTime updatedDateTime ,String bearerToken, String rawJson) {
         this.id = id;
         this.msgid = msgid;
         this.senderAddress = senderAddress;
