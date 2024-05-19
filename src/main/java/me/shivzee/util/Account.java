@@ -8,8 +8,8 @@ public class Account {
     private String email;
     private String quota;
     private String used;
-    private boolean isDisabled;
-    private boolean isDeleted;
+    private Boolean isDisabled;
+    private Boolean isDeleted;
     private String createdAt;
     private String updatedAt;
 
@@ -23,7 +23,7 @@ public class Account {
         this.createdAt = "";
         this.updatedAt = "";
     }
-    public Account(String id, String email, String quota, String used, boolean isDisabled, boolean isDeleted, String createdAt, String updatedAt) {
+    public Account(String id, String email, String quota, String used, Boolean isDisabled, Boolean isDeleted, String createdAt, String updatedAt) {
         this.id = id;
         this.email = email;
         this.quota = quota;
