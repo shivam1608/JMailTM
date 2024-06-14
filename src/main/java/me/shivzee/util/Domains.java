@@ -6,6 +6,8 @@ import me.shivzee.io.IO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,8 @@ public class Domains {
     private static final JSONParser parser = Config.parser;
     private static List<Domain> domains = new ArrayList<>();
 
+    private final static Logger LOG = LoggerFactory.getLogger(Domains.class);
+
     private static Domain domainUtility(JSONObject json){
         String id = json.get("id").toString();
         String domainName = json.get("domain").toString();
@@ -32,7 +36,8 @@ public class Domains {
 
     /**
      * Get The Domain List
-     * @return List<Domains>
+     * @see me.shivzee.util.Domain
+     * @return the list containing the domain objects
      */
     public static List<Domain> getDomainList() {
         return domains;
@@ -40,7 +45,7 @@ public class Domains {
 
     /**
      * Updates the Domain List
-     * @return boolean
+     * @return true if the domain list was refreshed from server
      */
     public static boolean updateDomains(){
         domains = new ArrayList<>();
@@ -61,7 +66,7 @@ public class Domains {
 
     /**
      * Fetch and Return Domain List
-     * @return List<Domain>
+     * @return list of domain objects
      * @see me.shivzee.util.Domain
      * @see me.shivzee.exceptions.DomainNotFoundException
      */
@@ -79,7 +84,7 @@ public class Domains {
                }
                return domains;
            }catch (Exception e){
-               System.out.println("|NO LOGGER| Something went wrong! Contact Developer "+e);
+               LOG.warn("Failed to fetch Domains "+e);
            }
            return domains;
 
@@ -89,10 +94,10 @@ public class Domains {
     /**
      * Fetches the Domain information by DomainID
      * @param id The domain ID to fetch
-     * @return me.shivzee.util.Domain
+     * @return the single Domain object
      * @see me.shivzee.util.Domain
      * @see me.shivzee.exceptions.DomainNotFoundException
-     * @throws DomainNotFoundException
+     * @throws DomainNotFoundException when domain was not found on server
      */
     public static Domain fetchDomainById(String id) throws DomainNotFoundException {
         try{
@@ -108,13 +113,13 @@ public class Domains {
 
 
         }catch (Exception e){
-            throw new DomainNotFoundException("Some error occurred !" + e);
+            throw new DomainNotFoundException(""+e);
         }
     }
 
     /**
      * Get a Random Domain From List
-     * @return me.shivzee.util.Domain
+     * @return a single random Domain object from the list
      * @see me.shivzee.util.Domain
      */
     public static Domain getRandomDomain(){

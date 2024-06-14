@@ -8,8 +8,8 @@ public class Account {
     private String email;
     private String quota;
     private String used;
-    private boolean isDisabled;
-    private boolean isDeleted;
+    private Boolean isDisabled;
+    private Boolean isDeleted;
     private String createdAt;
     private String updatedAt;
 
@@ -23,7 +23,7 @@ public class Account {
         this.createdAt = "";
         this.updatedAt = "";
     }
-    public Account(String id, String email, String quota, String used, boolean isDisabled, boolean isDeleted, String createdAt, String updatedAt) {
+    public Account(String id, String email, String quota, String used, Boolean isDisabled, Boolean isDeleted, String createdAt, String updatedAt) {
         this.id = id;
         this.email = email;
         this.quota = quota;
@@ -36,7 +36,7 @@ public class Account {
 
     /**
      * Get the UserID
-     * @return String
+     * @return the user id of the account
      */
     public String getId() {
         return id;
@@ -44,7 +44,7 @@ public class Account {
 
     /**
      * Get Email
-     * @return String
+     * @return the email address
      */
     public String getEmail() {
         return email;
@@ -52,7 +52,7 @@ public class Account {
 
     /**
      * Get the Storage/Quota
-     * @return String
+     * @return the total amount of allowed storage for mails and attachments
      */
     public String getQuota() {
         return quota;
@@ -60,7 +60,7 @@ public class Account {
 
     /**
      * Get the Occupied Storage/Quota of User
-     * @return String
+     * @return the amount of storage used for mails and attachments
      */
     public String getUsed() {
         return used;
@@ -68,7 +68,7 @@ public class Account {
 
     /**
      * Get User Account Ban/Disabled Status
-     * @return boolean
+     * @return true if account is banned or disabled
      */
     public boolean isDisabled() {
         return isDisabled;
@@ -76,7 +76,7 @@ public class Account {
 
     /**
      * Get User Account Delete Status
-     * @return boolean
+     * @return true if account is deleted from the server
      */
     public boolean isDeleted() {
         return isDeleted;
@@ -84,7 +84,7 @@ public class Account {
 
     /**
      * Get the time of creation of User in String
-     * @return String
+     * @return the account creation date
      */
     public String getCreatedAt() {
         return createdAt;
@@ -92,7 +92,8 @@ public class Account {
 
     /**
      * Get the time of update of User in String
-     * @return String
+     * @return the account update date (delete, message received events triggers the account update event)
+     * @see me.shivzee.callbacks.EventListener
      */
     public String getUpdatedAt() {
         return updatedAt;

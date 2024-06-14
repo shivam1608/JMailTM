@@ -7,6 +7,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javax.security.auth.login.LoginException;
+import java.util.Base64;
+
 /**
  * The JMailBuilder Class for Login/Signup Operations
  * Check https://api.mail.tm for more info
@@ -22,8 +24,8 @@ public class JMailBuilder {
      * @see me.shivzee.JMailTM
      * @param email the email to login
      * @param password the password
-     * @return me.shivzee.JMailTM
-     * @throws LoginException
+     * @return the JMailTM instance
+     * @throws LoginException when fails to login user
      */
     public static JMailTM login(String email , String password) throws LoginException{
 
@@ -34,11 +36,11 @@ public class JMailBuilder {
                 JSONObject json = (JSONObject) parser.parse(response.getResponse());
                 return new JMailTM(json.get("token").toString() , json.get("id").toString());
             }else {
-                throw new LoginException("Login Error! Invalid Email/Password. ResponseCode : "+response.getResponseCode()+" xx "+response.getResponse());
+                throw new LoginException(response.getResponse());
             }
 
         }catch (Exception e){
-            throw new LoginException("Something Went Wrong " + e);
+            throw new LoginException("Network error something went wrong " + e);
         }
     }
 
@@ -46,10 +48,10 @@ public class JMailBuilder {
      * (Synchronous) Creates a new Account (First Fetch the domain)
      *
      * @see me.shivzee.util.JMailBuilder
-     * @param email The email
-     * @param password The password
-     * @return boolean
-     * @throws LoginException
+     * @param email The email to create
+     * @param password The password to set
+     * @return true if account was created
+     * @throws LoginException when account already exists, invalid inputs or network error
      */
     public static boolean create(String email , String password) throws LoginException{
 
@@ -69,10 +71,10 @@ public class JMailBuilder {
     /**
      * (Synchronous) Creates and Login into an Account
      * @param email the email to create
-     * @param password the password
-     * @return me.shivzee.JMailTM
+     * @param password the password to set
+     * @return the JMailTM instance of the created user
      * @see me.shivzee.JMailTM
-     * @throws LoginException
+     * @throws LoginException when account already exists, invalid inputs or network error
      */
     public static JMailTM createAndLogin(String email , String password) throws LoginException{
 
@@ -86,22 +88,24 @@ public class JMailBuilder {
 
             }else if(response.getResponseCode() == 422){
                 throw new LoginException("Account Already Exists! Error 422");
+            }else if (response.getResponseCode() == 429){
+                throw new LoginException("Too many requests! Error 429 Rate limited");
             }else{
                 throw new LoginException("Something went wrong while creating account! Try Again");
             }
 
         }catch (Exception e){
-            throw new LoginException("Something went wrong while creating account! Try Again"+e);
+            throw new LoginException(""+e);
         }
 
     }
 
     /**
      * (Synchronous) Creates and Login into a Random Account
-     * @param password
-     * @return me.shivzee.JMailTM
+     * @param password the password to set
+     * @return the JMailTM instance to a randomly generated account
      * @see me.shivzee.JMailTM
-     * @throws LoginException
+     * @throws LoginException when network or api error
      */
     public static JMailTM createDefault(String password) throws LoginException{
         try{
@@ -109,7 +113,30 @@ public class JMailBuilder {
             return createAndLogin(email , password);
 
         }catch (Exception e){
-            throw new LoginException("Something went wrong while creating account! Try Again "+e);
+            throw new LoginException(""+e);
+        }
+    }
+
+
+    /**
+     * Login into an account with token
+     * @param token the jwt token of the account
+     * @return the JMailTM instance to a jwt specifed account
+     * @throws LoginException when network error or token provided is invalid
+     */
+    public static JMailTM loginWithToken(String token) throws LoginException {
+        try{
+            Response response = IO.requestGET(baseUrl + "/me", token);
+            if(response.getResponseCode() == 401){
+                throw new LoginException("Invalid Token Provided");
+            }
+            if(response.getResponseCode() == 200){
+                JSONObject json = (JSONObject) parser.parse(response.getResponse());
+                return new JMailTM(token , json.get("id").toString());
+            }
+            throw new LoginException("Invalid response received");
+        }catch (Exception e){
+            throw new LoginException(e.getMessage());
         }
     }
 

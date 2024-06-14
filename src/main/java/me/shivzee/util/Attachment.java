@@ -19,12 +19,12 @@ public class Attachment {
     private String contentType;
     private String disposition;
     private String transferEncoding;
-    private boolean related;
-    private long size;
+    private Boolean related;
+    private Long size;
     private String downloadUrl;
     private String bearerToken;
 
-    public Attachment(String id, String filename, String contentType, String disposition, String transferEncoding, boolean related, long size, String downloadUrl, String bearerToken) {
+    public Attachment(String id, String filename, String contentType, String disposition, String transferEncoding, Boolean related, Long size, String downloadUrl, String bearerToken) {
         this.id = id;
         this.filename = filename;
         this.contentType = contentType;
@@ -38,7 +38,7 @@ public class Attachment {
 
     /**
      * Get the Attachment ID
-     * @return String
+     * @return the id of the attachment in email
      */
     public String getId() {
         return id;
@@ -46,7 +46,7 @@ public class Attachment {
 
     /**
      * Get the Filename
-     * @return String
+     * @return the filename of the attachment
      */
     public String getFilename() {
         return filename;
@@ -54,7 +54,7 @@ public class Attachment {
 
     /**
      * Get the ContentType of Attachment
-     * @return String
+     * @return the content-type/mime of the attachment eg(image/gif , image/png)
      */
     public String getContentType() {
         return contentType;
@@ -62,7 +62,7 @@ public class Attachment {
 
     /**
      * Get The Disposition
-     * @return
+     * @return the disposition
      */
     public String getDisposition() {
         return disposition;
@@ -70,7 +70,7 @@ public class Attachment {
 
     /**
      * Get TransferEncoding Type
-     * @return String
+     * @return the encoding of the attachment
      */
     public String getTransferEncoding() {
         return transferEncoding;
@@ -78,7 +78,7 @@ public class Attachment {
 
     /**
      * Get Related Status
-     * @return boolean
+     * @return true if the attachment is related
      */
     public boolean isRelated() {
         return related;
@@ -86,7 +86,7 @@ public class Attachment {
 
     /**
      * Get the Attachment Size in Killobytes
-     * @return long
+     * @return the size of attachment in KiB
      */
     public long getSize() {
         return size;
@@ -94,51 +94,76 @@ public class Attachment {
 
     /**
      * Get the Download URL for the attachment (Will not work without JWT Token as AuthHead) Check the Attachment.save() Method
-     * @return String
+     * @return the download url
      */
     public String getDownloadUrl() {
         return "https://api.mail.tm"+downloadUrl;
     }
 
+    /**
+     * (Synchronous) Save the Attachment on System
+     * @param path The Path to Save the File eg("C:/Data/Downloads/")
+     * @param filename The File Name of The Attachment
+     * @return <code>true</code> if download was successful, else <code>false</code>
+     */
+	public boolean saveSync(String path, String filename) {
+		try {
+			URL attachmentUrl = new URL(getDownloadUrl());
+			HttpURLConnection connection = (HttpURLConnection) attachmentUrl.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Authorization", "Bearer " + bearerToken);
+			if (connection.getResponseCode() == 200) {
+				Files.copy(connection.getInputStream(), Paths.get(path + filename));
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
 
     /**
-     * Save the Attachment on System
+     * (Synchronous) Save the Attachment in the Working Directory With Custom Filename
+     * @param filename The filename including extension
+     * @return <code>true</code> if download was successful, else <code>false</code>
+     */
+    public boolean saveSync(String filename){
+        return saveSync("./" , filename);
+    }
+    
+    /**
+     * (Synchronous) Save the Attachment in the Working Directory
+     * @return <code>true</code> if download was successful, else <code>false</code>
+     */
+    public boolean saveSync(){
+        return saveSync("./" , getFilename());
+    }
+
+
+    
+    /**
+     * (Asynchronous) Save the Attachment on System
      * @param path The Path to Save the File eg("C:/Data/Downloads/")
      * @param filename The File Name of The Attachment
      * @param callback The WorkCallback to know the Download Status
      * @see me.shivzee.callbacks.WorkCallback
      */
-    public void save(String path , String filename , WorkCallback callback){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    URL attachmentUrl = new URL(getDownloadUrl());
-                    HttpURLConnection connection = (HttpURLConnection) attachmentUrl.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("Authorization" , "Bearer "+bearerToken);
-                    if(connection.getResponseCode() == 200) {
-                        Files.copy(connection.getInputStream(), Paths.get(path + filename));
-                        callback.workStatus(true);
-                    }else{
-                        callback.workStatus(false);
-                    }
-                }catch (Exception e){
-                    callback.workStatus(false);
-                }
-            }
-        },"Attachment_Download").start();
-    }
+	public void save(String path, String filename, WorkCallback callback) {
+		new Thread(() -> { callback.workStatus(saveSync(path, filename)); }
+				, "Attachment_Download_" + id).start();
+	}
 
     /**
-     * Save the Attachment in the Working Directory
+     * (Asynchronous) Save the Attachment in the Working Directory
      */
     public void save(){
-        save("./" , getFilename() , (status)->{});
+        save("./" , getFilename() , status -> {});
     }
 
     /**
-     * Save the Attachment in the Working Directory with Callback Status
+     * (Asynchronous) Save the Attachment in the Working Directory with Callback Status
      * @param callback The WorkCallback for Status
      * @see me.shivzee.callbacks.WorkCallback
      */
@@ -147,7 +172,7 @@ public class Attachment {
     }
 
     /**
-     * Save the Attachment in the Working Directory With Custom Filename
+     * (Asynchronous) Save the Attachment in the Working Directory With Custom Filename
      * @param filename The filename including extension
      */
     public void save(String filename){
@@ -155,7 +180,7 @@ public class Attachment {
     }
 
     /**
-     * Save the Attachment in the Working Directory With Custom Filename and Callback
+     * (Asynchronous) Save the Attachment in the Working Directory With Custom Filename and Callback
      * @param filename The Filename including Extension
      * @param callback The WorkCallback for status
      * @see me.shivzee.callbacks.WorkCallback

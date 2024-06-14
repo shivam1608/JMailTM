@@ -23,7 +23,7 @@ public class Domain {
 
     /**
      * Get Domain ID
-     * @return String
+     * @return the id of the domain
      */
     public String getId() {
         return id;
@@ -31,7 +31,7 @@ public class Domain {
 
     /**
      * Get DomainName (eg. tempexample.xyz)
-     * @return String
+     * @return the domain name
      */
     public String getDomainName() {
         return domainName;
@@ -39,7 +39,7 @@ public class Domain {
 
     /**
      * Get Domain Active Status
-     * @return boolean
+     * @return true if the domain is active
      */
     public boolean isActive() {
         return isActive;
@@ -47,7 +47,7 @@ public class Domain {
 
     /**
      * Get the Private Status of Domain
-     * @return boolean
+     * @return true if domain is marked as private
      */
     public boolean isPrivate() {
         return isPrivate;
@@ -55,7 +55,7 @@ public class Domain {
 
     /**
      * Get the domain creation time in String
-     * @return String
+     * @return the date when the domain was added to the server
      */
     public String getCreatedAt() {
         return createdAt;
@@ -63,7 +63,7 @@ public class Domain {
 
     /**
      * Get the domain update time in String
-     * @return String
+     * @return the date when the domain was last updated on server
      */
     public String getUpdatedAt() {
         return updatedAt;

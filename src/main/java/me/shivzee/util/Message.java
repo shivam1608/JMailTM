@@ -3,7 +3,10 @@ package me.shivzee.util;
 import me.shivzee.Config;
 import me.shivzee.callbacks.WorkCallback;
 import me.shivzee.io.IO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -11,6 +14,9 @@ import java.util.List;
  * Check https://api.mail.tm for more info
  */
 public class Message {
+
+    private final Logger LOG = LoggerFactory.getLogger(Message.class);
+
     private String id ;
     private String msgid;
     private String senderAddress;
@@ -18,22 +24,24 @@ public class Message {
     private List<Receiver> receivers;
     private String subject;
     private String content;
-    private boolean seen;
-    private boolean flagged;
-    private boolean isDeleted;
-    private boolean retention;
+    private Boolean seen;
+    private Boolean flagged;
+    private Boolean isDeleted;
+    private Boolean retention;
     private String retentionDate;
     private String rawHTML;
-    private boolean hasAttachments;
+    private Boolean hasAttachments;
     private List<Attachment> attachments;
-    private long size;
+    private Long size;
     private String downloadUrl;
     private String createdAt;
+    private ZonedDateTime createdDateTime;
     private String updatedAt;
+    private ZonedDateTime updatedDateTime;
     private String bearerToken;
     private String rawJson;
 
-    public Message(String id, String msgid, String senderAddress, String senderName, List<Receiver> receivers, String subject, String content, boolean seen, boolean flagged, boolean isDeleted, boolean retention, String retentionDate, String rawHTML, boolean hasAttachments, List<Attachment> attachments, long size, String downloadUrl, String createdAt, String updatedAt, String bearerToken, String rawJson) {
+    public Message(String id, String msgid, String senderAddress, String senderName, List<Receiver> receivers, String subject, String content, Boolean seen, Boolean flagged, Boolean isDeleted, Boolean retention, String retentionDate, String rawHTML, Boolean hasAttachments, List<Attachment> attachments, Long size, String downloadUrl, String createdAt,ZonedDateTime createdDateTime, String updatedAt,ZonedDateTime updatedDateTime ,String bearerToken, String rawJson) {
         this.id = id;
         this.msgid = msgid;
         this.senderAddress = senderAddress;
@@ -52,13 +60,15 @@ public class Message {
         this.size = size;
         this.downloadUrl = downloadUrl;
         this.createdAt = createdAt;
+        this.createdDateTime = createdDateTime;
         this.updatedAt = updatedAt;
+        this.updatedDateTime = updatedDateTime;
         this.bearerToken = bearerToken;
     }
 
     /**
      * Get the Email/Message ID
-     * @return String
+     * @return the id of the message
      */
     public String getId() {
         return id;
@@ -75,7 +85,7 @@ public class Message {
 
     /**
      * Get the Sender's Email Address
-     * @return String
+     * @return the email sender's address
      */
     public String getSenderAddress() {
         return senderAddress;
@@ -83,7 +93,7 @@ public class Message {
 
     /**
      * Get the Sender's Name
-     * @return String
+     * @return the email sender's name
      */
     public String getSenderName() {
         return senderName;
@@ -91,7 +101,7 @@ public class Message {
 
     /**
      * Get all the Receivers/send To
-     * @return List<Receiver>
+     * @return the list of all receivers to whom the email was sent (simply carbon copy cc: tag)
      */
     public List<Receiver> getReceivers() {
         return receivers;
@@ -99,7 +109,7 @@ public class Message {
 
     /**
      * Get the Email/Message Subject
-     * @return String
+     * @return the email's subject
      */
     public String getSubject() {
         return subject;
@@ -107,7 +117,7 @@ public class Message {
 
     /**
      * Get the Content of Email/Message
-     * @return String
+     * @return the inside content of email
      */
     public String getContent() {
         return content;
@@ -115,7 +125,7 @@ public class Message {
 
     /**
      * Get the Seen Status
-     * @return boolean
+     * @return true if the message is marked seen
      */
     public boolean isSeen() {
         return seen;
@@ -123,7 +133,7 @@ public class Message {
 
     /**
      * Get the Flagged Status
-     * @return boolean
+     * @return ture if the message is marked as flagged
      */
     public boolean isFlagged() {
         return flagged;
@@ -131,7 +141,7 @@ public class Message {
 
     /**
      * Get the Delete Status
-     * @return boolean
+     * @return true if the message is deleted
      */
     public boolean isDeleted() {
         return isDeleted;
@@ -139,7 +149,7 @@ public class Message {
 
     /**
      * Get retention Status
-     * @return boolean
+     * @return true if enabled retention
      */
     public boolean retention() {
         return retention;
@@ -147,7 +157,7 @@ public class Message {
 
     /**
      * Get Retention Date in String
-     * @return String
+     * @return the retention date
      */
     public String getRetentionDate() {
         return retentionDate;
@@ -155,7 +165,7 @@ public class Message {
 
     /**
      * Get the Email/Message Raw HTML Content
-     * @return String
+     * @return the raw HTML to manually parse the content of mail
      */
     public String getRawHTML() {
         return rawHTML;
@@ -163,7 +173,7 @@ public class Message {
 
     /**
      * Get the Status of Attachments on the Email/Message
-     * @return boolean
+     * @return true if email contains some attachments
      */
     public boolean hasAttachments() {
         return hasAttachments;
@@ -171,7 +181,7 @@ public class Message {
 
     /**
      * Get the list of all Attachments on a Message/Email
-     * @return List<Attachment>
+     * @return the list of all attachments on the email
      * @see me.shivzee.util.Attachment
      */
     public List<Attachment> getAttachments() {
@@ -180,7 +190,7 @@ public class Message {
 
     /**
      * Get the Size of Message
-     * @return long
+     * @return the size in bytes of message content
      */
     public long getSize() {
         return size;
@@ -188,7 +198,7 @@ public class Message {
 
     /**
      * Get the Download URL See API Docs for more info
-     * @return
+     * @return the download url to download the message from server
      */
     public String getDownloadUrl() {
         return downloadUrl;
@@ -196,15 +206,33 @@ public class Message {
 
     /**
      * Get the Message Received Date/Time in String
-     * @return String
+     * @return the date at which the message was sent/created/received
      */
     public String getCreatedAt() {
         return createdAt;
     }
 
     /**
+     * Get the Message Received Date/Time in ZonedDateTime format
+     * @return the date at which the message was sent/created/received
+     */
+    public ZonedDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    /**
+     * Get the Message Update Date/Time in  ZonedDateTime format
+     * @return the date on which the message was updated (markAsRead fires the update event)
+     * @see me.shivzee.callbacks.EventListener
+     */
+    public ZonedDateTime getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
+    /**
      * Get the Message Update Date/Time in String
-     * @return
+     * @return the date on which the message was updated (markAsRead fires the update event)
+     * @see me.shivzee.callbacks.EventListener
      */
     public String getUpdatedAt() {
         return updatedAt;
@@ -212,73 +240,132 @@ public class Message {
 
     /**
      * (Synchronous) Deletes the Message
+     * @return true if message was deleted from the server
      */
-    public boolean deleteSync(){
-        return IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken).getResponseCode() == 204;
+    public boolean delete(){
+        if(isDeleted){
+            return true;
+        }
+        try{
+            return IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken).getResponseCode() == 204;
+        }catch (Exception e){
+            LOG.warn("Failed to Delete message "+e);
+            return false;
+        }
     }
 
     /**
-     * (Asynchronous) Deletes the Message with no response
-     */
-    public void delete(){
-        new Thread(()->{
-            try {
-                IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
-            }catch (Exception e){
-                System.out.println("|IGNORING EXCEPTION | "+e);
-            }
-        }).start();
-    }
-
-    /**
-     * (Async) Deletes the Message with a Callback
+     * (Synchronous) Deletes the Message with a Callback
      * @param callback The WorkCallback Implementation or Lambda Function
      */
     public void delete(WorkCallback callback){
-        new Thread(()->{
-            try {
-                Response response = IO.requestDELETE(Config.BASEURL+"/messages/"+id , bearerToken);
-                callback.workStatus(response.getResponseCode() == 204);
-            }catch (Exception e){
-                callback.workStatus(false);
-            }
-        }).start();
+        callback.workStatus(delete());
     }
 
     /**
-     * (Async) Marks the Message/Email asRead with no response
+     * (Asynchronous) Silently Deletes the Message with no response
      */
-    public void markAsRead(){
+    public void asyncDelete(){
+        new Thread(this::delete, "Delete_Message_" + id).start();
+    }
+
+    /**
+     * (Asynchronous) Deletes the Message with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+    public void asyncDelete(WorkCallback callback){
         new Thread(()->{
-            try {
-                IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
-            }catch (Exception e){
-                System.out.println("|IGNORING EXCEPTION | "+e);
-            }
-        }).start();
+            callback.workStatus(delete());
+        }, "Delete_Message_" + id).start();
+    }
+
+    /**
+     * (Synchronous) Marks the Message/Email as Read
+     * @return true if the message was marked as read on server
+     */
+    public boolean markAsRead() {
+        if(seen){
+            return true;
+        }
+        try {
+            Response response = IO.requestPATCH(Config.BASEURL + "/messages/" + id, bearerToken);
+            return response.getResponseCode() == 200;
+        } catch (Exception e) {
+            LOG.warn("Failed to mark message as read "+e);
+            return false;
+        }
+    }
+
+
+
+    /**
+     * (Sync) Marks the Message/Email asRead with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+    public void markAsRead(WorkCallback callback) {
+        callback.workStatus(markAsRead());
+    }
+
+
+
+    /**
+     * (Async) Silently Marks the Message/Email asRead with no response
+     */
+    public void asyncMarkAsRead(){
+        new Thread(this::markAsRead, "Mark_Message_As_Read_" + id).start();
     }
 
     /**
      * (Async) Marks the Message/Email asRead with a Callback
      * @param callback The WorkCallback Implementation or Lambda Function
      */
-    public void markAsRead(WorkCallback callback){
-        new Thread(()->{
-            try {
-                Response response = IO.requestPATCH(Config.BASEURL+"/messages/"+id , bearerToken);
-                callback.workStatus(response.getResponseCode() == 200);
-            }catch (Exception e){
-                callback.workStatus(false);
-            }
-        }).start();
+    public void asyncMarkAsRead(WorkCallback callback){
+        new Thread(() -> { this.markAsRead(callback); }, "Mark_Message_As_Read_" + id).start();
     }
 
     /**
      * Get the Raw JSON Response For Message
-     * @return String
+     * @return the raw json response to parse manually
      */
     public String getRawJson(){
         return rawJson;
+    }
+
+
+    /**
+     * (Synchronous) Deletes the Message
+     */
+    @Deprecated
+    public boolean deleteSync(){
+        return delete();
+    }
+
+    /**
+     * (Synchronous) Deletes the Message with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+    @Deprecated
+    public void deleteSync(WorkCallback callback){
+        callback.workStatus(deleteSync());
+    }
+
+
+    /**
+     * (Synchronous) Marks the Message/Email asRead with no response
+     * @return Boolean
+     */
+    @Deprecated
+    public boolean markAsReadSync(){
+        return markAsRead();
+    }
+
+    /**
+     * (Synchronous) Marks the Message/Email asRead with a Callback
+     * @param callback The WorkCallback Implementation or Lambda Function
+     */
+    @Deprecated
+    public void markAsReadSync(WorkCallback callback){
+        callback.workStatus(markAsReadSync());
     }
 
 }
