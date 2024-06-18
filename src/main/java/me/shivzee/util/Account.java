@@ -5,7 +5,7 @@ package me.shivzee.util;
  */
 public class Account {
     private String id;
-    private String email;
+    private String address;
     private String quota;
     private String used;
     private Boolean isDisabled;
@@ -15,7 +15,7 @@ public class Account {
 
     public Account(){
         this.id = "";
-        this.email = "";
+        this.address = "";
         this.quota = "";
         this.used = "";
         this.isDisabled = false;
@@ -23,9 +23,9 @@ public class Account {
         this.createdAt = "";
         this.updatedAt = "";
     }
-    public Account(String id, String email, String quota, String used, Boolean isDisabled, Boolean isDeleted, String createdAt, String updatedAt) {
+    public Account(String id, String address, String quota, String used, Boolean isDisabled, Boolean isDeleted, String createdAt, String updatedAt) {
         this.id = id;
-        this.email = email;
+        this.address = address;
         this.quota = quota;
         this.used = used;
         this.isDisabled = isDisabled;
@@ -47,7 +47,7 @@ public class Account {
      * @return the email address
      */
     public String getEmail() {
-        return email;
+        return address;
     }
 
     /**

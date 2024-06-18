@@ -1,13 +1,17 @@
 package me.shivzee.util;
 
+import com.google.gson.Gson;
 import me.shivzee.Config;
 import me.shivzee.callbacks.WorkCallback;
+import me.shivzee.exceptions.DateTimeParserException;
 import me.shivzee.io.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+
+import static me.shivzee.util.Utility.parseToDefaultTimeZone;
 
 /**
  * The Message Class to Wrap Emails Received
@@ -19,50 +23,43 @@ public class Message {
 
     private String id ;
     private String msgid;
-    private String senderAddress;
-    private String senderName;
-    private List<Receiver> receivers;
+    private Sender from;
+    private List<Receiver> to;
     private String subject;
-    private String content;
+    private String text;
     private Boolean seen;
     private Boolean flagged;
     private Boolean isDeleted;
     private Boolean retention;
     private String retentionDate;
-    private String rawHTML;
+    private List<String> html;
     private Boolean hasAttachments;
     private List<Attachment> attachments;
     private Long size;
     private String downloadUrl;
     private String createdAt;
-    private ZonedDateTime createdDateTime;
     private String updatedAt;
-    private ZonedDateTime updatedDateTime;
     private String bearerToken;
-    private String rawJson;
 
-    public Message(String id, String msgid, String senderAddress, String senderName, List<Receiver> receivers, String subject, String content, Boolean seen, Boolean flagged, Boolean isDeleted, Boolean retention, String retentionDate, String rawHTML, Boolean hasAttachments, List<Attachment> attachments, Long size, String downloadUrl, String createdAt,ZonedDateTime createdDateTime, String updatedAt,ZonedDateTime updatedDateTime ,String bearerToken, String rawJson) {
+    public Message(String id, String msgid, Sender from, List<Receiver> to, String subject, String text, Boolean seen, Boolean flagged, Boolean isDeleted, Boolean retention, String retentionDate, List<String> html, Boolean hasAttachments, List<Attachment> attachments, Long size, String downloadUrl, String createdAt, String updatedAt ,String bearerToken, String rawJson) {
         this.id = id;
         this.msgid = msgid;
-        this.senderAddress = senderAddress;
-        this.senderName = senderName;
-        this.receivers = receivers;
+        this.from = from;
+        this.to = to;
         this.subject = subject;
-        this.content = content;
+        this.text = text;
         this.seen = seen;
         this.flagged = flagged;
         this.isDeleted = isDeleted;
         this.retention = retention;
         this.retentionDate = retentionDate;
-        this.rawHTML = rawHTML;
+        this.html = html;
         this.hasAttachments = hasAttachments;
         this.attachments = attachments;
         this.size = size;
         this.downloadUrl = downloadUrl;
         this.createdAt = createdAt;
-        this.createdDateTime = createdDateTime;
         this.updatedAt = updatedAt;
-        this.updatedDateTime = updatedDateTime;
         this.bearerToken = bearerToken;
     }
 
@@ -88,7 +85,7 @@ public class Message {
      * @return the email sender's address
      */
     public String getSenderAddress() {
-        return senderAddress;
+        return from.getAddress();
     }
 
     /**
@@ -96,7 +93,7 @@ public class Message {
      * @return the email sender's name
      */
     public String getSenderName() {
-        return senderName;
+        return from.getName();
     }
 
     /**
@@ -104,7 +101,7 @@ public class Message {
      * @return the list of all receivers to whom the email was sent (simply carbon copy cc: tag)
      */
     public List<Receiver> getReceivers() {
-        return receivers;
+        return to;
     }
 
     /**
@@ -120,7 +117,7 @@ public class Message {
      * @return the inside content of email
      */
     public String getContent() {
-        return content;
+        return text;
     }
 
     /**
@@ -168,7 +165,7 @@ public class Message {
      * @return the raw HTML to manually parse the content of mail
      */
     public String getRawHTML() {
-        return rawHTML;
+        return html.toString();
     }
 
     /**
@@ -216,8 +213,8 @@ public class Message {
      * Get the Message Received Date/Time in ZonedDateTime format
      * @return the date at which the message was sent/created/received
      */
-    public ZonedDateTime getCreatedDateTime() {
-        return createdDateTime;
+    public ZonedDateTime getCreatedDateTime() throws DateTimeParserException {
+        return parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
     }
 
     /**
@@ -225,8 +222,8 @@ public class Message {
      * @return the date on which the message was updated (markAsRead fires the update event)
      * @see me.shivzee.callbacks.EventListener
      */
-    public ZonedDateTime getUpdatedDateTime() {
-        return updatedDateTime;
+    public ZonedDateTime getUpdatedDateTime() throws DateTimeParserException {
+        return parseToDefaultTimeZone(updatedAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
     }
 
     /**
@@ -328,10 +325,10 @@ public class Message {
      * @return the raw json response to parse manually
      */
     public String getRawJson(){
-        return rawJson;
+        return new Gson().toJson(this);
     }
 
-
+    
     /**
      * (Synchronous) Deletes the Message
      */

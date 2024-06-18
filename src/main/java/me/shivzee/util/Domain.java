@@ -6,15 +6,15 @@ package me.shivzee.util;
  */
 public class Domain {
     private String id;
-    private String domainName;
+    private String domain;
     private boolean isActive;
     private boolean isPrivate;
     private String createdAt;
     private String updatedAt;
 
-    public Domain(String id, String domainName, boolean isActive, boolean isPrivate, String createdAt, String updatedAt) {
+    public Domain(String id, String domain, boolean isActive, boolean isPrivate, String createdAt, String updatedAt) {
         this.id = id;
-        this.domainName = domainName;
+        this.domain = domain;
         this.isActive = isActive;
         this.isPrivate = isPrivate;
         this.createdAt = createdAt;
@@ -34,7 +34,7 @@ public class Domain {
      * @return the domain name
      */
     public String getDomainName() {
-        return domainName;
+        return domain;
     }
 
     /**

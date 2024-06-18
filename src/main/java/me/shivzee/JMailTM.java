@@ -26,37 +26,31 @@
 
 package me.shivzee;
 
+import com.google.gson.*;
 import com.launchdarkly.eventsource.EventSource;
+import me.shivzee.adapters.TokenAdapter;
 import me.shivzee.callbacks.EventListener;
 import me.shivzee.callbacks.MessageFetchedCallback;
 import me.shivzee.callbacks.MessageListener;
 import me.shivzee.callbacks.WorkCallback;
 import me.shivzee.exceptions.AccountNotFoundException;
-import me.shivzee.exceptions.DateTimeParserException;
 import me.shivzee.exceptions.MessageFetchException;
 import me.shivzee.io.IO;
 import me.shivzee.io.IOCallback;
 import me.shivzee.util.*;
 import okhttp3.Headers;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
-import static me.shivzee.util.Utility.*;
 
 
 /***
@@ -69,9 +63,9 @@ public class JMailTM {
 
     private String bearerToken;
     private String id;
+    private final Gson gson;
 
     private static final String baseUrl = Config.BASEURL;
-    private static final JSONParser parser = Config.parser;
     private final Logger LOG = LoggerFactory.getLogger(JMailTM.class);
 
     private ExecutorService pool = Executors.newSingleThreadExecutor();
@@ -83,82 +77,13 @@ public class JMailTM {
     public JMailTM(String bearerToken , String id){
         this.bearerToken = bearerToken;
         this.id = id;
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapterFactory(new TokenAdapter(bearerToken));
+        this.gson = gsonBuilder.create();
+
     }
 
-    private static Account mailUtility(JSONObject json) {
-        String id = safeEval(() -> json.get("id").toString());
-        String email = safeEval(() -> json.get("address").toString());
-        String quota = safeEval(() -> json.get("quota").toString());
-        String used = safeEval(() -> json.get("used").toString());
-        Boolean isDisabled = safeEval(() -> (Boolean) json.get("isDisabled"));
-        Boolean isDeleted = safeEval(() -> (Boolean) json.get("isDeleted"));
-        String createdAt = safeEval(() -> json.get("createdAt").toString());
-        String updatedAt = safeEval(() -> json.get("updatedAt").toString());
-        return new Account(id,email,quota,used, isDisabled, isDeleted,createdAt,updatedAt);
-    }
-
-    private Message messageUtility(JSONObject json) throws ParseException, DateTimeParserException {
-        String id = safeEval(() -> json.get("id").toString());
-        String msgid = safeEval(() -> json.get("msgid").toString());
-        JSONObject from = (JSONObject) parser.parse(safeEval(() -> json.get("from").toString()));
-        String senderAddress = safeEval(() -> from.get("address").toString());
-        String senderName = safeEval(() -> from.get("name").toString());
-
-        List<Receiver> receivers = new ArrayList<>();
-        JSONArray receiverArray = (JSONArray) parser.parse(json.get("to").toString());
-        Object[] rArray = receiverArray.toArray();
-        for (Object jsonObject : rArray) {
-            JSONObject object = (JSONObject) jsonObject;
-            receivers.add(new Receiver(object.get("address").toString(), object.get("name").toString()));
-        }
-        String subject = safeEval(() -> json.get("subject").toString());
-        String content = safeEval(() -> json.get("text").toString());
-        Boolean seen = safeEval(() -> (Boolean) json.get("seen"));
-        Boolean flagged = safeEval(() -> (Boolean) json.get("flagged"));
-        Boolean isDeleted = safeEval(() -> (Boolean) json.get("isDeleted"));
-        Boolean retention = safeEval(() -> (Boolean) json.get("retention"));
-        String retentionDate = safeEval(() -> json.get("retentionDate").toString());
-        String rawHTML = safeEval(() -> json.get("html").toString());
-        Boolean hasAttachments = safeEval(() -> (Boolean) json.get("hasAttachments"));
-
-        Object[] aArray = new Object[0];
-        if (Boolean.TRUE.equals(hasAttachments)) {
-            JSONArray attachmentArray = (JSONArray) parser.parse(json.get("attachments").toString());
-            aArray = attachmentArray.toArray();
-        }
-
-        List<Attachment> attachments = new ArrayList<>();
-        for (Object attachmentObject : aArray) {
-            JSONObject object = (JSONObject) attachmentObject;
-            String aId = safeEval(() -> object.get("id")).toString();
-            String aFilename = safeEval(() -> object.get("filename").toString());
-            String aContentType = safeEval(() -> object.get("contentType").toString());
-            String aDisposition = safeEval(() -> object.get("disposition").toString());
-            String aTransferEncoding = safeEval(() -> object.get("transferEncoding").toString());
-            Boolean aRelated = safeEval(() -> (Boolean) object.get("related"));
-            String strSize = safeEval(() -> object.get("size").toString());
-            Long aSize = null;
-            if (strSize != null) {
-                aSize = Long.parseLong(strSize);
-            }
-            String aDownloadUrl = safeEval(() -> object.get("downloadUrl").toString());
-            attachments.add(new Attachment(aId, aFilename, aContentType, aDisposition, aTransferEncoding, aRelated, aSize, aDownloadUrl, bearerToken));
-        }
-
-        long size = 0;
-        String strSize = safeEval(() -> json.get("size").toString());
-        if (strSize != null) {
-            size = Long.parseLong(strSize);
-        }
-        String downloadUrl = safeEval(() -> json.get("downloadUrl").toString());
-        String createdAt = safeEval(() -> json.get("createdAt").toString());
-        String updatedAt = safeEval(() -> json.get("updatedAt").toString());
-
-        ZonedDateTime createdDateTime = parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
-        ZonedDateTime updatedDateTime = parseToDefaultTimeZone(updatedAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
-
-        return new Message(id, msgid, senderAddress, senderName, receivers, subject, content, seen, flagged, isDeleted, retention, retentionDate, rawHTML, hasAttachments, attachments, size, downloadUrl, createdAt, createdDateTime, updatedAt, updatedDateTime, bearerToken, json.toJSONString());
-    }
 
     /**
      * Get the ID of the User Account
@@ -184,8 +109,7 @@ public class JMailTM {
         try{
             Response response = IO.requestGET(baseUrl + "/me", bearerToken);
             if(response.getResponseCode() == 200){
-                JSONObject json = (JSONObject) parser.parse(response.getResponse());
-                return mailUtility(json);
+                return gson.fromJson(response.getResponse() , Account.class);
             }
         }catch (Exception e){
             LOG.error(e+"");
@@ -254,8 +178,7 @@ public class JMailTM {
 
             Response response = IO.requestGET(baseUrl+"/accounts/"+id , bearerToken);
             if(response.getResponseCode() == 200){
-                JSONObject json = (JSONObject) parser.parse(response.getResponse());
-                return mailUtility(json);
+                return gson.fromJson(response.getResponse() , Account.class);
             }else {
                 throw new AccountNotFoundException("Invalid ID");
             }
@@ -272,8 +195,8 @@ public class JMailTM {
      */
     public int getTotalMessages(){
         try{
-            Response response = IO.requestGET(baseUrl+"/messages/"+id , bearerToken);
-            JSONArray array = (JSONArray) parser.parse(response.getResponse());
+            Response response = IO.requestGET(baseUrl+"/messages" , bearerToken);
+            JsonArray array = JsonParser.parseString(response.getResponse()).getAsJsonArray();
             return array.size();
         }catch (Exception e){
             return 0;
@@ -291,8 +214,7 @@ public class JMailTM {
         try{
             Response response = IO.requestGET(baseUrl+"/messages/"+id , bearerToken);
             if(response.getResponseCode() == 200){
-                JSONObject json = (JSONObject) parser.parse(response.getResponse());
-                return messageUtility(json);
+                return gson.fromJson(response.getResponse() , Message.class);
             }else {
                 throw new MessageFetchException("Invalid Message ID");
             }
@@ -323,11 +245,9 @@ public class JMailTM {
             List<Message> messages = new ArrayList<>();
             Response response = IO.requestGET(baseUrl+"/messages" , bearerToken);
             if(response.getResponseCode() == 200){
-                JSONArray array = (JSONArray) parser.parse(response.getResponse());
-                Object [] json = array.toArray();
-                for(Object object : json){
-                    JSONObject jsonObject = (JSONObject) object;
-                    messages.add(getMessageById(jsonObject.get("id").toString()));
+                JsonArray array = JsonParser.parseString(response.getResponse()).getAsJsonArray();
+                for(JsonElement object : array){
+                    messages.add(getMessageById(object.getAsJsonObject().get("id").getAsString()));
                 }
 
                 callback.onMessagesFetched(messages);
@@ -354,12 +274,10 @@ public class JMailTM {
             List<Message> messages = new ArrayList<>();
             Response response = IO.requestGET(baseUrl+"/messages" , bearerToken);
             if(response.getResponseCode() == 200){
-                JSONArray array = (JSONArray) parser.parse(response.getResponse());
-                Object [] json = array.toArray();
-                int stop = Math.min(json.length, limit);
+                JsonArray array = JsonParser.parseString(response.getResponse()).getAsJsonArray();
+                int stop = Math.min(array.size(), limit);
                 for(int i=0;i<stop;i++){
-                    JSONObject jsonObject = (JSONObject) json[i];
-                    messages.add(getMessageById(jsonObject.get("id").toString()));
+                    messages.add(getMessageById(array.get(i).getAsJsonObject().get("id").getAsString()));
                 }
 
                 callback.onMessagesFetched(messages);
