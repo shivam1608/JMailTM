@@ -9,8 +9,5 @@
         <module name="JMailTM" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="JMailTM" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

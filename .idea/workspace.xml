@@ -13,7 +13,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="Added: Login with Token" />
+    <list default="true" id="f260a61a-c746-4840-8edb-e738ddb4d69f" name="Default Changelist" comment="create release">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/shivzee/Driver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_launchdarkly_okhttp_eventsource_2_5_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp3_okhttp_4_9_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_2_8_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_13_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_4_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_4_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_6_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk8_1_6_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_22.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JMailTM.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/shivzee/io/IO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/shivzee/io/IO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/JMailTM.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/io/IOCallback.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/io/IOCallback.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Account.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Account.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Attachment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Attachment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Domain.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Domain.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Domains.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Domains.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/JMailBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/JMailBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/shivzee/util/Utility.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/shivzee/util/Utility.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,8 +58,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;shivam1608&quot;
+  }
+}</component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -38,6 +79,16 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/shivam1608/JMailTM.git&quot;,
+    &quot;accountId&quot;: &quot;f537e116-5b50-4723-85d5-33ce8edbac68&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="21in9tz7LlAWqZTyroY1wKX08eQ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -46,21 +97,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Artifacts" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.20689656" />
-    <property name="settings.editor.selected.configurable" value="project.propGUI" />
-  </component>
-  <component name="RunManager" selected="Application.Driver (1)">
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Driver (2).executor": "Debug",
+    "Application.Driver.executor": "Run",
+    "git-widget-placeholder": "experimental",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.Driver">
     <configuration name="Driver (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Driver" />
       <module name="JMailTM" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Driver (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="me.shivzee.Driver" />
+      <module name="JMailTM" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="me.shivzee.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -80,8 +142,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Driver" />
+        <item itemvalue="Application.Driver (2)" />
         <item itemvalue="Application.Driver (1)" />
         <item itemvalue="Application.Driver" />
+        <item itemvalue="Application.Driver (2)" />
       </list>
     </recent_temporary>
   </component>
@@ -227,7 +292,31 @@
       <option name="project" value="LOCAL" />
       <updated>1671952647024</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="bump version">
+      <option name="closed" value="true" />
+      <created>1718481347998</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1718481347998</updated>
+    </task>
+    <task id="LOCAL-00021" summary="JSON Simple -&gt; GSON">
+      <option name="closed" value="true" />
+      <created>1718705109642</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1718705109642</updated>
+    </task>
+    <task id="LOCAL-00022" summary="create release">
+      <option name="closed" value="true" />
+      <created>1718707418292</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1718707418292</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -241,7 +330,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="development" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
@@ -252,7 +341,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -274,6 +362,9 @@
     <MESSAGE value="Updated: Version" />
     <MESSAGE value="Added: Examples Directory" />
     <MESSAGE value="Added: Login with Token" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added: Login with Token" />
+    <MESSAGE value="bump version" />
+    <MESSAGE value="JSON Simple -&gt; GSON" />
+    <MESSAGE value="create release" />
+    <option name="LAST_COMMIT_MESSAGE" value="create release" />
   </component>
 </project>
