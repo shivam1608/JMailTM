@@ -1,13 +1,12 @@
 package me.shivzee.util;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import me.shivzee.Config;
 import me.shivzee.JMailTM;
 import me.shivzee.io.IO;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import javax.security.auth.login.LoginException;
-import java.util.Base64;
 
 /**
  * The JMailBuilder Class for Login/Signup Operations
@@ -16,7 +15,6 @@ import java.util.Base64;
 public class JMailBuilder {
 
     private static final String baseUrl = Config.BASEURL;
-    private static final JSONParser parser = Config.parser;
 
     /**
      * (Synchronous) Login into the API and Returns a JMailTM
@@ -33,8 +31,8 @@ public class JMailBuilder {
             String jsonData = "{\"address\" : \""+email.trim()+"\",\"password\" : \""+password.trim()+"\"}";
             Response response = IO.requestPOST(baseUrl+"/token" , jsonData);
             if(response.getResponseCode() == 200){
-                JSONObject json = (JSONObject) parser.parse(response.getResponse());
-                return new JMailTM(json.get("token").toString() , json.get("id").toString());
+                JsonObject json = JsonParser.parseString(response.getResponse()).getAsJsonObject();
+                return new JMailTM(json.get("token").getAsString() , json.get("id").getAsString());
             }else {
                 throw new LoginException(response.getResponse());
             }
@@ -131,8 +129,8 @@ public class JMailBuilder {
                 throw new LoginException("Invalid Token Provided");
             }
             if(response.getResponseCode() == 200){
-                JSONObject json = (JSONObject) parser.parse(response.getResponse());
-                return new JMailTM(token , json.get("id").toString());
+                JsonObject json = JsonParser.parseString(response.getResponse()).getAsJsonObject();
+                return new JMailTM(token , json.get("id").getAsString());
             }
             throw new LoginException("Invalid response received");
         }catch (Exception e){

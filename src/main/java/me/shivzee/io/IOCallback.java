@@ -1,26 +1,24 @@
 package me.shivzee.io;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.launchdarkly.eventsource.EventHandler;
 import com.launchdarkly.eventsource.MessageEvent;
-import me.shivzee.Config;
 import me.shivzee.JMailTM;
 import me.shivzee.callbacks.EventListener;
 import me.shivzee.util.Account;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 public class IOCallback implements EventHandler {
 
     private final EventListener listener;
-    private final JSONParser parser;
     private final JMailTM mailTM;
 
 
     public IOCallback(EventListener listener , JMailTM mailTM){
         this.listener = listener;
-        this.parser = Config.parser;
         this.mailTM = mailTM;
     }
 
@@ -39,13 +37,13 @@ public class IOCallback implements EventHandler {
     public void onMessage(String s, MessageEvent messageEvent) {
         String data = messageEvent.getData().trim();
         try{
-            if(!data.equals("")){
-                JSONObject json = (JSONObject) parser.parse(messageEvent.getData());
-                if(json.get("@type").toString().equals("Message")){
-                    boolean seen = (boolean) json.get("seen");
-                    boolean isDeleted = (boolean) json.get("isDeleted");
+            if(!data.isEmpty()){
+                JsonObject json = JsonParser.parseString(messageEvent.getData()).getAsJsonObject();
+                if(json.get("@type").getAsString().equals("Message")){
+                    boolean seen = json.get("seen").getAsBoolean();
+                    boolean isDeleted = json.get("isDeleted").getAsBoolean();
 
-                    String id = json.get("id").toString();
+                    String id = json.get("id").getAsString();
                     if(isDeleted){
                         listener.onMessageDelete(id);
                     }
@@ -55,9 +53,10 @@ public class IOCallback implements EventHandler {
                         listener.onMessageReceived(mailTM.getMessageById(id));
                     }
                 }else{
-                    Method mailUtility = mailTM.getClass().getDeclaredMethod("mailUtility", JSONObject.class);
-                    mailUtility.setAccessible(true);
-                    Account account = (Account) mailUtility.invoke(mailTM , json);
+                    Field field = mailTM.getClass().getDeclaredField("gson");
+                    field.setAccessible(true);
+                    Gson gson = (Gson) field.get(mailTM);
+                    Account account = gson.fromJson(json , Account.class);
                     if(account.isDeleted()){
                         listener.onAccountDelete(account);
                     }else{

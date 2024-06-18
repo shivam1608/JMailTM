@@ -1,5 +1,6 @@
 package me.shivzee.io;
 
+import com.google.gson.JsonParser;
 import me.shivzee.util.Response;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -19,7 +20,7 @@ public class IO {
 
     private static final OkHttpClient client = new OkHttpClient();
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    private static final MediaType PATCH = MediaType.get("application/ld+json");
+    private static final MediaType PATCH = MediaType.get("application/merge-patch+json");
 
 
 
