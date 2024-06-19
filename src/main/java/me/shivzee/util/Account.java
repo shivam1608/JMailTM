@@ -13,27 +13,6 @@ public class Account {
     private String createdAt;
     private String updatedAt;
 
-    public Account(){
-        this.id = "";
-        this.address = "";
-        this.quota = "";
-        this.used = "";
-        this.isDisabled = false;
-        this.isDeleted = false;
-        this.createdAt = "";
-        this.updatedAt = "";
-    }
-    public Account(String id, String address, String quota, String used, Boolean isDisabled, Boolean isDeleted, String createdAt, String updatedAt) {
-        this.id = id;
-        this.address = address;
-        this.quota = quota;
-        this.used = used;
-        this.isDisabled = isDisabled;
-        this.isDeleted = isDeleted;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     /**
      * Get the UserID
      * @return the user id of the account

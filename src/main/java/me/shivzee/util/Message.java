@@ -41,28 +41,6 @@ public class Message {
     private String updatedAt;
     private String bearerToken;
 
-    public Message(String id, String msgid, Sender from, List<Receiver> to, String subject, String text, Boolean seen, Boolean flagged, Boolean isDeleted, Boolean retention, String retentionDate, List<String> html, Boolean hasAttachments, List<Attachment> attachments, Long size, String downloadUrl, String createdAt, String updatedAt ,String bearerToken, String rawJson) {
-        this.id = id;
-        this.msgid = msgid;
-        this.from = from;
-        this.to = to;
-        this.subject = subject;
-        this.text = text;
-        this.seen = seen;
-        this.flagged = flagged;
-        this.isDeleted = isDeleted;
-        this.retention = retention;
-        this.retentionDate = retentionDate;
-        this.html = html;
-        this.hasAttachments = hasAttachments;
-        this.attachments = attachments;
-        this.size = size;
-        this.downloadUrl = downloadUrl;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.bearerToken = bearerToken;
-    }
-
     /**
      * Get the Email/Message ID
      * @return the id of the message

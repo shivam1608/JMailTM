@@ -12,14 +12,6 @@ public class Domain {
     private String createdAt;
     private String updatedAt;
 
-    public Domain(String id, String domain, boolean isActive, boolean isPrivate, String createdAt, String updatedAt) {
-        this.id = id;
-        this.domain = domain;
-        this.isActive = isActive;
-        this.isPrivate = isPrivate;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     /**
      * Get Domain ID

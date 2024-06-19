@@ -24,17 +24,6 @@ public class Attachment {
     private String downloadUrl;
     private String bearerToken;
 
-    public Attachment(String id, String filename, String contentType, String disposition, String transferEncoding, Boolean related, Long size, String downloadUrl, String bearerToken) {
-        this.id = id;
-        this.filename = filename;
-        this.contentType = contentType;
-        this.disposition = disposition;
-        this.transferEncoding = transferEncoding;
-        this.related = related;
-        this.size = size;
-        this.downloadUrl = downloadUrl;
-        this.bearerToken = bearerToken;
-    }
 
     /**
      * Get the Attachment ID
