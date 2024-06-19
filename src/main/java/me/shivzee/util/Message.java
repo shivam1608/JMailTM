@@ -73,7 +73,8 @@ public class Message {
 
     /**
      * Get the MSGID
-     * @link {https://api.mail.tm} Check for more info
+     * <br />
+     * Check <a href="https://api.mail.tm">API Docs</a> for more info
      * @return String
      */
     public String getMsgid() {

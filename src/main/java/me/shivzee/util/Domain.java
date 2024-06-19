@@ -30,7 +30,7 @@ public class Domain {
     }
 
     /**
-     * Get DomainName (eg. tempexample.xyz)
+     * Get DomainName (eg. example.com)
      * @return the domain name
      */
     public String getDomainName() {

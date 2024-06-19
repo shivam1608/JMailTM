@@ -12,7 +12,8 @@ import java.util.List;
 
 /**
  * The Domains Class Static functions for Domain Operations
- * Check https://api.mail.tm for more info
+ * <br />
+ * Check <a href="https://api.mail.tm">API Docs</a> for more info
  */
 public class Domains {
 

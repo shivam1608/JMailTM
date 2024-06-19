@@ -7,6 +7,11 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
+/**
+ * The TokenAdapter tries to push bearerToken field during deserialization of the json
+ *
+ * @see com.google.gson.TypeAdapterFactory
+ */
 public class TokenAdapter implements TypeAdapterFactory {
 
     private String bearerToken;

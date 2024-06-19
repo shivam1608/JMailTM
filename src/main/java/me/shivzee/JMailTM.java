@@ -71,7 +71,16 @@ public class JMailTM {
     private ExecutorService pool = Executors.newSingleThreadExecutor();
 
     /**
-     * Constructor to be initialised by JMailBuilder
+     * Constructs a new {@code JMailTM} instance with the specified bearer token and ID.
+     * <p>
+     * This constructor is intended to be initialized by the {@code JMailBuilder} class.
+     * It sets up the necessary authentication using the provided bearer token and
+     * configures a Gson instance with a custom type adapter for handling token-related
+     * data.
+     * </p>
+     *
+     * @param bearerToken the bearer token used for authentication.
+     * @param id the unique identifier for the JMailTM instance.
      * @see me.shivzee.util.JMailBuilder
      */
     public JMailTM(String bearerToken , String id){
@@ -86,7 +95,7 @@ public class JMailTM {
 
 
     /**
-     * Get the ID of the User Account
+     * Retrieves the id of the user account
      * @return the id of the user
      */
     public String getId(){
@@ -94,15 +103,22 @@ public class JMailTM {
     }
 
     /**
-     * Initialise JMailTM (Fetches Domains and Etc)
+     * Initializes the {@code JMailTM} instance by performing necessary setup operations.
+     * <p>
+     * This method fetches and updates the available domains for the instance. It should be
+     * called to ensure that the {@code JMailTM} instance is properly configured and ready
+     * to use.
+     * This is only required when using {@code createDefault()}
+     * </p>
      */
     public void init(){
         Domains.updateDomains();
     }
 
     /**
-     * Get the SelfAccount
-     * @return the account instance of the logged in user
+     * Retrieves the account instance of the logged-in user.
+     *
+     * @return the account instance of the logged-in user.
      * @see me.shivzee.util.Account
      */
     public Account getSelf(){
@@ -118,10 +134,15 @@ public class JMailTM {
     }
 
 
-	/**
-	 * (Synchronous) Deletes the Self Account
-     * @return true if user successfully deleted else false
-	 */
+    /**
+     * (Synchronous) Deletes the self account in a <b>synchronous</b> manner.
+     * <p>
+     * This method attempts to delete the account of the logged-in user.
+     * It returns {@code true} if the account is successfully deleted, otherwise {@code false}.
+     * </p>
+     *
+     * @return {@code true} if the account is successfully deleted; {@code false} otherwise.
+     */
 	public boolean delete() {
 	    if(getSelf().isDeleted()){
 	        return true;
@@ -136,28 +157,64 @@ public class JMailTM {
 	}
 
     /**
-     * (Synchronous) Deletes the Self Account with a Callback Status.
-     * <br />
-     * <code>delete((status)->{ if(status) print true; });</code>
-     * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
+     * (Synchronous) Deletes the self account and provides a callback with the status of the operation.
+     * <p>
+     * This method attempts to delete the account of the logged-in user and invokes the provided callback
+     * with the status of the deletion operation. The callback receives {@code true} if the account is
+     * successfully deleted, otherwise {@code false}.
+     * </p>
+     * <p>
+     * Example usage:
+     * <pre>
+     * delete((status) -> {
+     *     if (status) {
+     *         System.out.println("Account deleted successfully.");
+     *     } else {
+     *         System.out.println("Failed to delete account.");
+     *     }
+     * });
+     * </pre>
+     * </p>
+     *
+     * @param callback the {@code WorkCallback} lambda function or an instance created using {@code new WorkCallback()}.
      */
     public void delete(WorkCallback callback){
         callback.workStatus(delete());
     }
 
     /**
-     * (Asynchronous) Deletes the Self Account with a Callback Status.
-     * <br />
-     * <code>delete((status)->{ if(status) print true; });</code>
-     * @param callback The WorkCallback Lambda Function or Using new WorkCallback()
+     * (Asynchronous) Deletes the self account and provides a callback with the status of the operation.
+     * <p>
+     * This method attempts to delete the account of the logged-in user asynchronously and invokes the provided callback
+     * with the status of the deletion operation. The callback receives {@code true} if the account is
+     * successfully deleted, otherwise {@code false}.
+     * </p>
+     * <p>
+     * Example usage:
+     * <pre>
+     * asyncDelete((status) -> {
+     *     if (status) {
+     *         System.out.println("Account deleted successfully.");
+     *     } else {
+     *         System.out.println("Failed to delete account.");
+     *     }
+     * });
+     * </pre>
+     * </p>
+     *
+     * @param callback the {@code WorkCallback} lambda function or an instance created using {@code new WorkCallback()}.
      */
+
     public void asyncDelete(WorkCallback callback){
         new Thread(() -> { callback.workStatus(delete()); }, "Delete_Account_" + id).start();
     }
 
 
     /**
-     * (Asynchronous) Deletes the Self Account
+     * (Asynchronous) Initiates the deletion of the self account in a separate thread.
+     * <p>
+     * This method starts a new thread to delete the account of the logged-in user asynchronously.
+     * </p>
      */
     public void asyncDelete(){
         new Thread(this::delete, "Delete_Account_" + id).start();
@@ -166,12 +223,12 @@ public class JMailTM {
 
 
     /**
-     * Gets a UserAccount using UserID
+     * Retrieves a user account using the specified user ID.
      *
-     * @param id the user id of the user
-     * @return account object of the user id
+     * @param id the user ID of the account to retrieve.
+     * @return the {@code Account} object associated with the given user ID.
+     * @throws AccountNotFoundException if the account with the specified ID is not found or an error occurs during retrieval.
      * @see me.shivzee.util.Account
-     * @throws me.shivzee.exceptions.AccountNotFoundException when account you're looking for is not found
      */
     public Account getAccountById(String id) throws AccountNotFoundException {
         try{
@@ -189,9 +246,9 @@ public class JMailTM {
     }
 
     /**
-     * Get the Total Number of Messages
+     * Retrieves the total number of messages in the user's inbox.
      *
-     * @return the total messages in user's inbox
+     * @return the total number of messages.
      */
     public int getTotalMessages(){
         try{
@@ -204,11 +261,12 @@ public class JMailTM {
     }
 
     /**
-     * Get Message by using MessageID
-     * @param id The Message ID
-     * @return the single message object
+     * Retrieves a single message object using the specified message ID.
+     *
+     * @param id the message ID of the message to retrieve.
+     * @return the {@code Message} object corresponding to the given message ID.
+     * @throws MessageFetchException if the message with the specified ID cannot be fetched due to an error.
      * @see me.shivzee.util.Message
-     * @throws MessageFetchException when failed to message due to some reason
      */
     public Message getMessageById(String id) throws MessageFetchException{
         try{
@@ -224,21 +282,33 @@ public class JMailTM {
     }
 
     /**
-     * (Synchronous) Fetches All The Messages
-     * Get Messages By Callback
-     * <br />
-     * <code>
-     * fetchMessages(new MessageFetchedCallback(){
-     *  @Override
-     *  public void onMessagesFetched(List<Message> messages){}
+     * (Synchronous) Fetches all messages and invokes a callback with the fetched messages or an error response.
+     * <p>
+     * This method synchronously retrieves all messages from the server using a GET request and invokes the provided
+     * {@code MessageFetchedCallback} with either a list of fetched messages or an error response. It handles exceptions
+     * internally and throws a {@code MessageFetchException} if fetching fails for any reason.
+     * </p>
+     * <p>
+     * Example usage:
+     * <pre>
+     * fetchMessages(new MessageFetchedCallback() {
+     *     \@Override
+     *     public void onMessagesFetched(List<Message> messages) {
+     *         // Process fetched messages
+     *     }
      *
-     *  });
-     * </code>
+     *     \@Override
+     *     public void onError(Response errorResponse) {
+     *         // Handle error
+     *     }
+     * });
+     * </pre>
+     * </p>
      *
+     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
+     * @throws MessageFetchException if there's an error while fetching messages from the server.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      * @see me.shivzee.exceptions.MessageFetchException
-     * @param callback The MessageFetchedCallback Implemented Class/Function
-     * @throws MessageFetchException when fails to fetch any message due to any reason
      */
     public void fetchMessages(MessageFetchedCallback callback) throws MessageFetchException{
         try{
@@ -261,13 +331,34 @@ public class JMailTM {
     }
 
     /**
-     * (Synchronous) Fetches First (Limit) Messages
+     * (Synchronous) Fetches the first {@code limit} number of messages and invokes a callback with the fetched messages or an error response.
+     * <p>
+     * This method synchronously retrieves the first {@code limit} number of messages from the server using a GET request
+     * and invokes the provided {@code MessageFetchedCallback} with either a list of fetched messages or an error response.
+     * It handles exceptions internally and throws a {@code MessageFetchException} if fetching fails for any reason.
+     * </p>
+     * <p>
+     * Example usage:
+     * <pre>
+     * fetchMessages(10, new MessageFetchedCallback() {
+     *     \@Override
+     *     public void onMessagesFetched(List<Message> messages) {
+     *         // Process fetched messages
+     *     }
      *
+     *     \@Override
+     *     public void onError(Response errorResponse) {
+     *         // Handle error
+     *     }
+     * });
+     * </pre>
+     * </p>
+     *
+     * @param limit    the maximum number of messages to fetch from the top of the list.
+     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
+     * @throws MessageFetchException if there's an error while fetching messages from the server.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      * @see me.shivzee.exceptions.MessageFetchException
-     * @param limit The Total Number of Message to Fetch (Starts from The TOP)
-     * @param callback The MessageFetchedCallback Implemented Class/Function
-     * @throws MessageFetchException when fails to fetch any message due to any reason
      */
     public void fetchMessages(int limit , MessageFetchedCallback callback) throws MessageFetchException{
         try{
@@ -291,9 +382,32 @@ public class JMailTM {
     }
 
     /**
-     * (Asynchronous) Fetches All The Messages
+     * (Asynchronous) Initiates the fetching of all messages and invokes a callback with the fetched messages or an error response.
+     * <p>
+     * This method asynchronously initiates the fetching of all messages from the server using a separate thread.
+     * It invokes the provided {@code MessageFetchedCallback} with either a list of fetched messages or an error response
+     * once the messages are retrieved. If there's an error during the fetch process, it handles it internally and
+     * invokes the callback's {@code onError} method.
+     * </p>
+     * <p>
+     * Example usage:
+     * <pre>
+     * asyncFetchMessages(new MessageFetchedCallback() {
+     *     \@Override
+     *     public void onMessagesFetched(List<Message> messages) {
+     *         // Process fetched messages
+     *     }
+     *
+     *     \@Override
+     *     public void onError(Response errorResponse) {
+     *         // Handle error
+     *     }
+     * });
+     * </pre>
+     * </p>
+     *
+     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
      * @see me.shivzee.callbacks.MessageFetchedCallback
-     * @param callback MessageFetchedCallback Implemented Class
      */
     public void asyncFetchMessages(MessageFetchedCallback callback){
         new Thread(()->{
@@ -306,10 +420,32 @@ public class JMailTM {
     }
 
     /**
-     * (Asynchronous) Fetches First (Limit) Messages
+     * (Asynchronous) Initiates the fetching of the first {@code limit} number of messages and invokes a callback with the fetched messages or an error response.
+     * <p>
+     * This method asynchronously initiates the fetching of the first {@code limit} number of messages from the server using a separate thread.
+     * It invokes the provided {@code MessageFetchedCallback} with either a list of fetched messages or an error response once the messages are retrieved.
+     * If there's an error during the fetch process, it handles it internally and invokes the callback's {@code onError} method.
+     * </p>
+     * <p>
+     * Example usage:
+     * <pre>
+     * asyncFetchMessages(10, new MessageFetchedCallback() {
+     *     \@Override
+     *     public void onMessagesFetched(List<Message> messages) {
+     *         // Process fetched messages
+     *     }
+     *
+     *     \@Override
+     *     public void onError(Response errorResponse) {
+     *         // Handle error
+     *     }
+     * });
+     * </pre>
+     * </p>
+     *
+     * @param limit    the maximum number of messages to fetch from the top of the list.
+     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
      * @see me.shivzee.callbacks.MessageFetchedCallback
-     * @param limit The Total Number of Message to Fetch (Starts from The TOP)
-     * @param callback MessageFetchedCallback Implemented Class
      */
     public void asyncFetchMessages(int limit , MessageFetchedCallback callback){
         new Thread(()->{
@@ -323,9 +459,28 @@ public class JMailTM {
 
 
     /**
-     * (Asynchronous) Open's an event listener on a single thread
-     * @param eventListener EventListener implemented class
-     * @param retryInterval The reconnect timeout if server disconnects by chance
+     * (Asynchronous) Opens an event listener on a single thread to receive server-sent events (SSE).
+     * <p>
+     * This method asynchronously opens an event listener using SSE (Server-Sent Events) on a single thread.
+     * It initializes an {@code EventSource} with the provided {@code EventListener} implementation and connects
+     * to the specified MERCURE_URL topic associated with the user account. It handles reconnecting to the server
+     * in case of disconnection with the specified {@code retryInterval}.
+     * </p>
+     * <p>
+     * Example usage:
+     * <pre>
+     * openEventListener(new EventListener() {
+     *
+     *     \@Override
+     *     public void onReady() {
+     *         // Handle error
+     *     }
+     * }, 5000); // Retry every 5 seconds if disconnected
+     * </pre>
+     * </p>
+     *
+     * @param eventListener the {@code EventListener} implementation to handle incoming events and errors.
+     * @param retryInterval the reconnect timeout interval in milliseconds if the server disconnects unexpectedly.
      */
     public void openEventListener(EventListener eventListener , long retryInterval){
         if(pool.isShutdown()){
@@ -341,7 +496,7 @@ public class JMailTM {
     }
 
     /**
-     * (Asynchronous) Open's an event listener on a single thread
+     * (Asynchronous) Open's a default event listener on a single thread
      * @param eventListener EventListener implemented class
      */
     public void openEventListener(EventListener eventListener){
@@ -349,7 +504,11 @@ public class JMailTM {
     }
 
     /**
-     * Closes the Message Listener
+     * Closes the message listener, shutting down the thread pool used for event handling.
+     * <p>
+     * This method shuts down the thread pool used for handling events, effectively stopping any ongoing
+     * event processing or listeners initiated by this instance.
+     * </p>
      */
     public void closeMessageListener(){
         pool.shutdown();
