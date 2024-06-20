@@ -93,7 +93,7 @@ public class JMailBuilder {
             }
 
         }catch (Exception e){
-            throw new LoginException(""+e);
+            throw new LoginException(e.toString());
         }
 
     }
@@ -111,7 +111,7 @@ public class JMailBuilder {
             return createAndLogin(email , password);
 
         }catch (Exception e){
-            throw new LoginException(""+e);
+            throw new LoginException(e.toString());
         }
     }
 

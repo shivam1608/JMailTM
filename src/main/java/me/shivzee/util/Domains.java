@@ -101,7 +101,7 @@ public class Domains {
 
 
         }catch (Exception e){
-            throw new DomainNotFoundException(""+e);
+            throw new DomainNotFoundException(e.toString());
         }
     }
 

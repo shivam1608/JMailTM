@@ -128,7 +128,7 @@ public class JMailTM {
                 return gson.fromJson(response.getResponse() , Account.class);
             }
         }catch (Exception e){
-            LOG.error(e+"");
+            LOG.error(e.toString());
         }
         return new Account();
     }
@@ -151,7 +151,7 @@ public class JMailTM {
             Response response = IO.requestDELETE(baseUrl + "/accounts/" + id, bearerToken);
             return response.getResponseCode() == 204;
 		} catch (Exception e) {
-		    LOG.error(e+"");
+		    LOG.error(e.toString());
 			return false;
 		}
 	}
@@ -237,11 +237,11 @@ public class JMailTM {
             if(response.getResponseCode() == 200){
                 return gson.fromJson(response.getResponse() , Account.class);
             }else {
-                throw new AccountNotFoundException("Invalid ID");
+                throw new AccountNotFoundException("Invalid account id. Response : "+response.getResponse());
             }
 
         }catch (Exception e){
-            throw new AccountNotFoundException(""+e);
+            throw new AccountNotFoundException(e.toString());
         }
     }
 
@@ -274,10 +274,10 @@ public class JMailTM {
             if(response.getResponseCode() == 200){
                 return gson.fromJson(response.getResponse() , Message.class);
             }else {
-                throw new MessageFetchException("Invalid Message ID");
+                throw new MessageFetchException("Invalid message id. Response : "+response.getResponse());
             }
         }catch (Exception e){
-            throw new MessageFetchException(""+e);
+            throw new MessageFetchException(e.toString());
         }
     }
 
@@ -325,8 +325,12 @@ public class JMailTM {
             }else {
                 callback.onError(new Response(response.getResponseCode() , response.getResponse()));
             }
-        } catch (Exception e) {
-            throw new MessageFetchException(""+e);
+        }
+        catch (MessageFetchException e){
+            throw e;
+        }
+        catch (Exception e) {
+            throw new MessageFetchException(e.toString());
         }
     }
 
@@ -376,8 +380,12 @@ public class JMailTM {
             }else {
                 callback.onError(new Response(response.getResponseCode() , response.getResponse()));
             }
-        } catch (Exception e) {
-            throw new MessageFetchException(""+e);
+        }
+        catch (MessageFetchException e){
+            throw e;
+        }
+        catch (Exception e) {
+            throw new MessageFetchException(e.toString());
         }
     }
 
@@ -414,7 +422,7 @@ public class JMailTM {
             try {
                 fetchMessages(callback);
             } catch (MessageFetchException e) {
-                callback.onError(new Response(90001 , ""+e) );
+                callback.onError(new Response(90001 , e.toString()) );
             }
         }, "Fetch_Messages_" + id).start();
     }
@@ -452,7 +460,7 @@ public class JMailTM {
             try {
                 fetchMessages(limit , callback);
             } catch (MessageFetchException e) {
-                callback.onError(new Response(90001 , ""+e) );
+                callback.onError(new Response(90001 , e.toString()) );
             }
         }, "Fetch_Messages_" + id).start();
     }
