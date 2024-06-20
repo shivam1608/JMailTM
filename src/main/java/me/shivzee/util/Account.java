@@ -1,5 +1,11 @@
 package me.shivzee.util;
 
+import me.shivzee.exceptions.DateTimeParserException;
+
+import java.time.ZonedDateTime;
+
+import static me.shivzee.util.Utility.parseToDefaultTimeZone;
+
 /**
  * The User Account Class to wrap User Details
  */
@@ -76,5 +82,22 @@ public class Account {
      */
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    /**
+     * Get the account creation Date/Time in ZonedDateTime format
+     * @return the date at which the message was sent/created/received
+     */
+    public ZonedDateTime getCreatedDateTime() throws DateTimeParserException {
+        return parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+    }
+
+    /**
+     * Get the account update Date/Time in  ZonedDateTime format
+     * @return the date on which the message was updated (markAsRead fires the update event)
+     * @see me.shivzee.callbacks.EventListener
+     */
+    public ZonedDateTime getUpdatedDateTime() throws DateTimeParserException {
+        return parseToDefaultTimeZone(updatedAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
     }
 }
