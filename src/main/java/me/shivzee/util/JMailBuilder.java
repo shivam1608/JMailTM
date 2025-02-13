@@ -58,7 +58,7 @@ public class JMailBuilder {
             String jsonData = "{\"address\" : \""+email.trim().toLowerCase()+"\",\"password\" : \""+password.trim().toLowerCase()+"\"}";
             Response response = IO.requestPOST(baseUrl+"/accounts" , jsonData);
 
-            return response.getResponseCode() == 200;
+            return response.getResponseCode() == 200 || response.getResponseCode() == 201;
 
         }catch (Exception e){
             return false;
