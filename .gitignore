@@ -7,3 +7,6 @@
 /JMailTM.userlibraries
 .settings/
 /target/
+
+# IntelliJ
+.idea/*
