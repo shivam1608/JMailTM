@@ -6,20 +6,12 @@ package me.shivzee.util;
  */
 public class Domain {
     private String id;
-    private String domainName;
+    private String domain;
     private boolean isActive;
     private boolean isPrivate;
     private String createdAt;
     private String updatedAt;
 
-    public Domain(String id, String domainName, boolean isActive, boolean isPrivate, String createdAt, String updatedAt) {
-        this.id = id;
-        this.domainName = domainName;
-        this.isActive = isActive;
-        this.isPrivate = isPrivate;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     /**
      * Get Domain ID
@@ -30,11 +22,11 @@ public class Domain {
     }
 
     /**
-     * Get DomainName (eg. tempexample.xyz)
+     * Get DomainName (eg. example.com)
      * @return the domain name
      */
     public String getDomainName() {
-        return domainName;
+        return domain;
     }
 
     /**

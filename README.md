@@ -1,12 +1,12 @@
 ![JitPack](https://img.shields.io/jitpack/v/github/shivam1608/JMailTM?color=blue&logo=jitpack&style=for-the-badge)
 ![GitHub repo size](https://img.shields.io/github/repo-size/shivam1608/JMailTM?style=for-the-badge)
 ![JitPack](https://img.shields.io/jitpack/v/github/shivam1608/JMailTM?label=Build&logo=github&style=for-the-badge)
-![Maintenance](https://img.shields.io/maintenance/yes/2022?logo=github&style=for-the-badge)
+![Maintenance](https://img.shields.io/maintenance/yes/2024?logo=github&style=for-the-badge)
 
 # JMailTM
 JMailTM is a Lightweight Java Wrapper for https://mail.tm API (A Temp Mail Service). It has a easy to use interface and callbacks with javaDoc.
 
-### Version : 0.7.0
+### Version : 0.8.0
 ### Java 8 or 8+ Required
 ### Special Thanks to Mail.tm Team
 <img src="thanks.png" width="500" height="300">
@@ -26,7 +26,7 @@ allprojects {
 - Add the dependency (replace version with the version on top)
 ```gradle
 dependencies {
-	        implementation 'com.github.shivam1608:JMailTM:0.7.0'
+	        implementation 'com.github.shivam1608:JMailTM:0.8.0'
 	}
 ```
 
@@ -47,7 +47,7 @@ dependencies {
 	<dependency>
 	    <groupId>com.github.shivam1608</groupId>
 	    <artifactId>JMailTM</artifactId>
-	    <version>0.7.0</version>
+	    <version>0.8.0</version>
 	</dependency>
 
 
@@ -354,11 +354,16 @@ mailer.delete(status->{
 Author : Shivzee
 <br />
 IDE Used : IntelliJ
+<br />
+[Buy me a coffee](https://buymeacoffee.com/shivzee)
 
 ### Dependencies
-[JSONSimple](https://github.com/fangyidong/json-simple)
+[GSON](https://github.com/google/gson)
 <br>
 [Okhttp](https://square.github.io/okhttp/)
+
+### Old Dependencies Log
+[JSONSimple](https://github.com/fangyidong/json-simple)
 
 
 

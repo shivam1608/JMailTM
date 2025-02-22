@@ -1,5 +1,5 @@
-.idea
 /.project
+/src/main/java/me/shivzee/Driver.java
 
 # Eclipse
 /.classpath

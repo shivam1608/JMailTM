@@ -1,38 +1,23 @@
 package me.shivzee.util;
 
+import me.shivzee.exceptions.DateTimeParserException;
+
+import java.time.ZonedDateTime;
+
+import static me.shivzee.util.Utility.parseToDefaultTimeZone;
+
 /**
  * The User Account Class to wrap User Details
  */
 public class Account {
     private String id;
-    private String email;
+    private String address;
     private String quota;
     private String used;
-    private boolean isDisabled;
-    private boolean isDeleted;
+    private Boolean isDisabled;
+    private Boolean isDeleted;
     private String createdAt;
     private String updatedAt;
-
-    public Account(){
-        this.id = "";
-        this.email = "";
-        this.quota = "";
-        this.used = "";
-        this.isDisabled = false;
-        this.isDeleted = false;
-        this.createdAt = "";
-        this.updatedAt = "";
-    }
-    public Account(String id, String email, String quota, String used, boolean isDisabled, boolean isDeleted, String createdAt, String updatedAt) {
-        this.id = id;
-        this.email = email;
-        this.quota = quota;
-        this.used = used;
-        this.isDisabled = isDisabled;
-        this.isDeleted = isDeleted;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     /**
      * Get the UserID
@@ -47,7 +32,7 @@ public class Account {
      * @return the email address
      */
     public String getEmail() {
-        return email;
+        return address;
     }
 
     /**
@@ -97,5 +82,22 @@ public class Account {
      */
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    /**
+     * Get the account creation Date/Time in ZonedDateTime format
+     * @return the date at which the account was created
+     */
+    public ZonedDateTime getCreatedDateTime() throws DateTimeParserException {
+        return parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+    }
+
+    /**
+     * Get the account update Date/Time in  ZonedDateTime format
+     * @return the date on which the account was updated
+     * @see me.shivzee.callbacks.EventListener
+     */
+    public ZonedDateTime getUpdatedDateTime() throws DateTimeParserException {
+        return parseToDefaultTimeZone(updatedAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
     }
 }

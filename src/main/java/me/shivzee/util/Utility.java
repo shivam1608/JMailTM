@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * The Utility Class for utility ig lmao
@@ -40,6 +41,14 @@ public class Utility {
            throw new DateTimeParserException("Unable to parse Date for :" + dateTime + " With Pattern " + pattern);
         }
         return time;
+    }
+
+    public static <T> T safeEval(Supplier<T> supplier) {
+        try {
+            return supplier.get();
+        } catch (NullPointerException ex) {
+            return null;
+        }
     }
 
 }
