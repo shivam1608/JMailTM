@@ -162,7 +162,6 @@ public class JMailTM {
      * This method attempts to delete the account of the logged-in user and invokes the provided callback
      * with the status of the deletion operation. The callback receives {@code true} if the account is
      * successfully deleted, otherwise {@code false}.
-     * </p>
      * <p>
      * Example usage:
      * <pre>
@@ -174,7 +173,6 @@ public class JMailTM {
      *     }
      * });
      * </pre>
-     * </p>
      *
      * @param callback the {@code WorkCallback} lambda function or an instance created using {@code new WorkCallback()}.
      */
@@ -188,7 +186,6 @@ public class JMailTM {
      * This method attempts to delete the account of the logged-in user asynchronously and invokes the provided callback
      * with the status of the deletion operation. The callback receives {@code true} if the account is
      * successfully deleted, otherwise {@code false}.
-     * </p>
      * <p>
      * Example usage:
      * <pre>
@@ -200,10 +197,10 @@ public class JMailTM {
      *     }
      * });
      * </pre>
-     * </p>
      *
-     * @param callback the {@code WorkCallback} lambda function or an instance created using {@code new WorkCallback()}.
+     * @param callback A {@code WorkCallback<Boolean>} that receives the result of the deletion operation.
      */
+
 
     public void asyncDelete(WorkCallback callback){
         new Thread(() -> { callback.workStatus(delete()); }, "Delete_Account_" + id).start();
@@ -283,33 +280,33 @@ public class JMailTM {
 
     /**
      * (Synchronous) Fetches all messages and invokes a callback with the fetched messages or an error response.
-     * <p>
+     * <br>
      * This method synchronously retrieves all messages from the server using a GET request and invokes the provided
      * {@code MessageFetchedCallback} with either a list of fetched messages or an error response. It handles exceptions
      * internally and throws a {@code MessageFetchException} if fetching fails for any reason.
-     * </p>
-     * <p>
-     * Example usage:
-     * <pre>
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
      * fetchMessages(new MessageFetchedCallback() {
-     *     \@Override
+     *     @Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
-     *
-     *     \@Override
+     *     @Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
      * });
-     * </pre>
-     * </p>
+     * }</pre>
      *
-     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
-     * @throws MessageFetchException if there's an error while fetching messages from the server.
+     * @param callback The {@code MessageFetchedCallback} that receives the fetched messages or an error response.
+     * @throws MessageFetchException If fetching messages fails due to network issues or an invalid server response.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      * @see me.shivzee.exceptions.MessageFetchException
      */
+
+
+
     public void fetchMessages(MessageFetchedCallback callback) throws MessageFetchException{
         try{
             List<Message> messages = new ArrayList<>();
@@ -341,29 +338,28 @@ public class JMailTM {
      * and invokes the provided {@code MessageFetchedCallback} with either a list of fetched messages or an error response.
      * It handles exceptions internally and throws a {@code MessageFetchException} if fetching fails for any reason.
      * </p>
-     * <p>
-     * Example usage:
-     * <pre>
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
      * fetchMessages(10, new MessageFetchedCallback() {
-     *     \@Override
+     *     @Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
-     *
-     *     \@Override
+     *     @Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
      * });
-     * </pre>
-     * </p>
+     * }</pre>
      *
-     * @param limit    the maximum number of messages to fetch from the top of the list.
-     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
-     * @throws MessageFetchException if there's an error while fetching messages from the server.
+     * @param limit    The maximum number of messages to fetch from the top of the list.
+     * @param callback The {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
+     * @throws MessageFetchException If there's an error while fetching messages from the server.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      * @see me.shivzee.exceptions.MessageFetchException
      */
+
     public void fetchMessages(int limit , MessageFetchedCallback callback) throws MessageFetchException{
         try{
             List<Message> messages = new ArrayList<>();
@@ -397,26 +393,26 @@ public class JMailTM {
      * once the messages are retrieved. If there's an error during the fetch process, it handles it internally and
      * invokes the callback's {@code onError} method.
      * </p>
-     * <p>
-     * Example usage:
-     * <pre>
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
      * asyncFetchMessages(new MessageFetchedCallback() {
-     *     \@Override
+     *     @Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
      *
-     *     \@Override
+     *     @Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
      * });
-     * </pre>
-     * </p>
+     * }</pre>
      *
-     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
+     * @param callback The {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      */
+
     public void asyncFetchMessages(MessageFetchedCallback callback){
         new Thread(()->{
             try {
@@ -434,27 +430,27 @@ public class JMailTM {
      * It invokes the provided {@code MessageFetchedCallback} with either a list of fetched messages or an error response once the messages are retrieved.
      * If there's an error during the fetch process, it handles it internally and invokes the callback's {@code onError} method.
      * </p>
-     * <p>
-     * Example usage:
-     * <pre>
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
      * asyncFetchMessages(10, new MessageFetchedCallback() {
-     *     \@Override
+     *     @Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
      *
-     *     \@Override
+     *     @Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
      * });
-     * </pre>
-     * </p>
+     * }</pre>
      *
-     * @param limit    the maximum number of messages to fetch from the top of the list.
-     * @param callback the {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
+     * @param limit The maximum number of messages to fetch from the top of the list.
+     * @param callback The {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      */
+
     public void asyncFetchMessages(int limit , MessageFetchedCallback callback){
         new Thread(()->{
             try {
@@ -474,22 +470,22 @@ public class JMailTM {
      * to the specified MERCURE_URL topic associated with the user account. It handles reconnecting to the server
      * in case of disconnection with the specified {@code retryInterval}.
      * </p>
-     * <p>
-     * Example usage:
-     * <pre>
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
      * openEventListener(new EventListener() {
      *
-     *     \@Override
+     *     @Override
      *     public void onReady() {
-     *         // Handle error
+     *         // Handle event listener readiness
      *     }
      * }, 5000); // Retry every 5 seconds if disconnected
-     * </pre>
-     * </p>
+     * }</pre>
      *
-     * @param eventListener the {@code EventListener} implementation to handle incoming events and errors.
-     * @param retryInterval the reconnect timeout interval in milliseconds if the server disconnects unexpectedly.
+     * @param eventListener The {@code EventListener} implementation to handle incoming events and errors.
+     * @param retryInterval The reconnect timeout interval in milliseconds if the server disconnects unexpectedly.
      */
+
     public void openEventListener(EventListener eventListener , long retryInterval){
         if(pool.isShutdown()){
             pool = Executors.newSingleThreadExecutor();
@@ -575,10 +571,15 @@ public class JMailTM {
     }
 
     /**
-     * (Synchronous) Deletes the Self Account
-     * @return Boolean
-     * @param callback The work status callback
+     * (Synchronous) Deletes the self account.
+     * <p>
+     * This method deletes the currently authenticated user’s account synchronously.
+     * Once the account is deleted, it cannot be recovered.
+     * </p>
+     *
+     * @param callback The callback that receives the work status after the deletion process.
      */
+
     @Deprecated
     public void deleteSync(WorkCallback callback){
         callback.workStatus(deleteSync());

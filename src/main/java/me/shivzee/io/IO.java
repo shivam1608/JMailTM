@@ -12,8 +12,8 @@ import java.util.Objects;
 
 /**
  * The IO Class Written Specifically for JMailTM
- * version <= 0.2 -> Native HttpURLConnection
- * version >= 0.3 -> OkHttp
+ * version &lt;= 0.2 -> Native HttpURLConnection
+ * version &gt;= 0.3 -> OkHttp
  * @author shizee
  */
 public class IO {

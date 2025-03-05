@@ -87,6 +87,7 @@ public class Account {
     /**
      * Get the account creation Date/Time in ZonedDateTime format
      * @return the date at which the account was created
+     * @throws DateTimeParserException when fail to parse
      */
     public ZonedDateTime getCreatedDateTime() throws DateTimeParserException {
         return parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
