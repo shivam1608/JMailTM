@@ -217,6 +217,7 @@ public class Message {
     /**
      * Get the Message Received Date/Time in ZonedDateTime format
      * @return the date at which the message was sent/created/received
+     * @throws DateTimeParserException when fail to parse
      */
     public ZonedDateTime getCreatedDateTime() throws DateTimeParserException {
         return parseToDefaultTimeZone(createdAt, "yyyy-MM-dd'T'HH:mm:ss'+00:00'");
@@ -225,6 +226,7 @@ public class Message {
     /**
      * Get the Message Update Date/Time in  ZonedDateTime format
      * @return the date on which the message was updated (markAsRead fires the update event)
+     * @throws DateTimeParserException when fail to parse
      * @see me.shivzee.callbacks.EventListener
      */
     public ZonedDateTime getUpdatedDateTime() throws DateTimeParserException {
@@ -332,6 +334,7 @@ public class Message {
     
     /**
      * (Synchronous) Deletes the Message
+     * @return {@code true} if the message was successfully deleted; {@code false} otherwise
      */
     @Deprecated
     public boolean deleteSync(){

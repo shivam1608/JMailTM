@@ -112,6 +112,7 @@ public class Account {
     /**
      * Get the account update Date/Time in  ZonedDateTime format
      * @return the date on which the account was updated
+     * @throws DateTimeParserException when fail to parse
      * @see me.shivzee.callbacks.EventListener
      */
     public ZonedDateTime getUpdatedDateTime() throws DateTimeParserException {
