@@ -22,17 +22,25 @@ jobs:
           java-version: '8'
 
       - name: Generate Javadoc
-        run: mvn javadoc:javadoc -DoutputDirectory=docs
+        run: mvn javadoc:javadoc
 
-      - name: Check for Changes
+      - name: Move Javadocs to docs/
         run: |
-          git add docs/
+          rm -rf docs/   # Remove old docs to ensure clean Javadoc generation
+          mv target/site/apidocs docs/
+
+      - name: Check for Changes and Track New Files
+        id: check_changes
+        run: |
+          git add --all docs/   # Ensures new, modified, and deleted files are tracked
           if git diff --cached --quiet; then
             echo "No changes in Javadocs, skipping commit."
-            exit 0
-          fi
+            echo "changed=false" >> $GITHUB_ENV
+          else
+            echo "changed=true" >> $GITHUB_ENV
 
       - name: Commit and Push Javadocs
+        if: env.changed == 'true'
         run: |
           git config --global user.name 'shivam1608'
           git config --global user.email '64302819+shivam1608@users.noreply.github.com'
