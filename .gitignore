@@ -1,9 +1,11 @@
 /.project
 /src/main/java/me/shivzee/Driver.java
 
-# Eclipse
 /.classpath
 /JMailTM.eml
+/JMailTM.iml
 /JMailTM.userlibraries
 .settings/
 /target/
+/out/
+/.idea/
