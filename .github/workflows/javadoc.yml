@@ -1,0 +1,42 @@
+name: Generate Javadoc
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'  # Prevents infinite loop by ignoring Javadoc-only commits
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+
+      - name: Generate Javadoc
+        run: mvn javadoc:javadoc -DoutputDirectory=docs
+
+      - name: Check for Changes
+        run: |
+          git add docs/
+          if git diff --cached --quiet; then
+            echo "No changes in Javadocs, skipping commit."
+            exit 0
+          fi
+
+      - name: Commit and Push Javadocs
+        run: |
+          git config --global user.name 'shivam1608'
+          git config --global user.email '64302819+shivam1608@users.noreply.github.com'
+          git commit -m "Update Javadocs [skip ci]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
