@@ -294,13 +294,15 @@ public class JMailTM {
      * </p>
      * <p>
      * Example usage:
+     * </p>
      * <pre>{@code
      * fetchMessages(new MessageFetchedCallback() {
-     *     @Override
+     *     {@literal @}Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
-     *     @Override
+     *
+     *     {@literal @}Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
@@ -349,13 +351,15 @@ public class JMailTM {
      * </p>
      * <p>
      * Example usage:
+     * </p>
      * <pre>{@code
      * fetchMessages(10, new MessageFetchedCallback() {
-     *     @Override
+     *     {@literal @}Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
-     *     @Override
+     *
+     *     {@literal @}Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
@@ -368,6 +372,7 @@ public class JMailTM {
      * @see me.shivzee.callbacks.MessageFetchedCallback
      * @see me.shivzee.exceptions.MessageFetchException
      */
+
 
     public void fetchMessages(int limit , MessageFetchedCallback callback) throws MessageFetchException{
         try{
@@ -406,12 +411,12 @@ public class JMailTM {
      * <p>Example usage:</p>
      * <pre>{@code
      * asyncFetchMessages(new MessageFetchedCallback() {
-     *     @Override
+     *     {@literal @}Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
      *
-     *     @Override
+     *     {@literal @}Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
@@ -421,6 +426,7 @@ public class JMailTM {
      * @param callback The {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      */
+
 
     public void asyncFetchMessages(MessageFetchedCallback callback){
         new Thread(()->{
@@ -443,12 +449,12 @@ public class JMailTM {
      * <p>Example usage:</p>
      * <pre>{@code
      * asyncFetchMessages(10, new MessageFetchedCallback() {
-     *     @Override
+     *     {@literal @}Override
      *     public void onMessagesFetched(List<Message> messages) {
      *         // Process fetched messages
      *     }
      *
-     *     @Override
+     *     {@literal @}Override
      *     public void onError(Response errorResponse) {
      *         // Handle error
      *     }
@@ -459,6 +465,7 @@ public class JMailTM {
      * @param callback The {@code MessageFetchedCallback} implementation to receive the fetched messages or handle errors.
      * @see me.shivzee.callbacks.MessageFetchedCallback
      */
+
 
     public void asyncFetchMessages(int limit , MessageFetchedCallback callback){
         new Thread(()->{
@@ -483,7 +490,7 @@ public class JMailTM {
      * Example usage:
      * <pre>{@code
      * openEventListener(new EventListener() {
-     *     @Override
+     *     {@literal @}Override
      *     public void onReady() {
      *         // Handle event listener readiness
      *     }
@@ -493,6 +500,7 @@ public class JMailTM {
      * @param eventListener the {@code EventListener} to handle incoming events and errors
      * @param retryInterval the reconnect timeout interval in milliseconds if the server disconnects
      */
+
 
     public void openEventListener(EventListener eventListener , long retryInterval){
         if(pool.isShutdown()){
