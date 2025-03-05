@@ -9,21 +9,32 @@ import me.shivzee.io.IO;
 import javax.security.auth.login.LoginException;
 
 /**
- * The JMailBuilder Class for Login/Signup Operations
- * Check https://api.mail.tm for more info
+ * The JMailBuilder class provides methods for account creation and authentication.
+ * <p>
+ * This class handles login, signup, and account management operations for the mail.tm API.
+ * It provides both synchronous and asynchronous methods for these operations.
+ * </p>
+ * <p>
+ * For more information about the API, see <a href="https://api.mail.tm">API Documentation</a>.
+ * </p>
  */
 public class JMailBuilder {
 
     private static final String baseUrl = Config.BASEURL;
 
     /**
-     * (Synchronous) Login into the API and Returns a JMailTM
+     * Logs in to the API and returns a JMailTM instance.
+     * <p>
+     * This method synchronously authenticates the user with the provided email and password.
+     * Upon successful authentication, it returns a new JMailTM instance that can be used
+     * for further operations.
+     * </p>
      *
+     * @param email the email address to log in with
+     * @param password the password for authentication
+     * @return a new JMailTM instance for the authenticated user
+     * @throws LoginException if authentication fails or network errors occur
      * @see me.shivzee.JMailTM
-     * @param email the email to login
-     * @param password the password
-     * @return the JMailTM instance
-     * @throws LoginException when fails to login user
      */
     public static JMailTM login(String email , String password) throws LoginException{
 
@@ -43,13 +54,16 @@ public class JMailBuilder {
     }
 
     /**
-     * (Synchronous) Creates a new Account (First Fetch the domain)
+     * Creates a new account with the specified email and password.
+     * <p>
+     * This method synchronously creates a new account on the mail.tm service.
+     * The email address is automatically converted to lowercase before creation.
+     * </p>
      *
-     * @see me.shivzee.util.JMailBuilder
-     * @param email The email to create
-     * @param password The password to set
-     * @return true if account was created
-     * @throws LoginException when account already exists, invalid inputs or network error
+     * @param email the email address for the new account
+     * @param password the password for the new account
+     * @return {@code true} if the account was created successfully; {@code false} otherwise
+     * @throws LoginException if the account already exists or invalid inputs are provided
      */
     public static boolean create(String email , String password) throws LoginException{
 
@@ -67,12 +81,17 @@ public class JMailBuilder {
     }
 
     /**
-     * (Synchronous) Creates and Login into an Account
-     * @param email the email to create
-     * @param password the password to set
-     * @return the JMailTM instance of the created user
+     * Creates a new account and logs in to it.
+     * <p>
+     * This method combines account creation and login into a single operation.
+     * The email address is automatically converted to lowercase before creation.
+     * </p>
+     *
+     * @param email the email address for the new account
+     * @param password the password for the new account
+     * @return a new JMailTM instance for the created and authenticated user
+     * @throws LoginException if account creation or login fails
      * @see me.shivzee.JMailTM
-     * @throws LoginException when account already exists, invalid inputs or network error
      */
     public static JMailTM createAndLogin(String email , String password) throws LoginException{
 
@@ -99,11 +118,16 @@ public class JMailBuilder {
     }
 
     /**
-     * (Synchronous) Creates and Login into a Random Account
-     * @param password the password to set
-     * @return the JMailTM instance to a randomly generated account
+     * Creates and logs in to a randomly generated account.
+     * <p>
+     * This method creates a new account with a randomly generated email address
+     * and the specified password, then logs in to that account.
+     * </p>
+     *
+     * @param password the password for the new account
+     * @return a new JMailTM instance for the created and authenticated user
+     * @throws LoginException if account creation or login fails
      * @see me.shivzee.JMailTM
-     * @throws LoginException when network or api error
      */
     public static JMailTM createDefault(String password) throws LoginException{
         try{

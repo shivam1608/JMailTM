@@ -11,9 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Domains Class Static functions for Domain Operations
- * <br />
- * Check <a href="https://api.mail.tm">API Docs</a> for more info
+ * The Domains class provides functionality for managing email domains.
+ * <p>
+ * This class handles operations related to email domains, including fetching and updating
+ * the list of available domains from the mail.tm API.
+ * </p>
+ * <p>
+ * For more information about the API, see <a href="https://api.mail.tm">API Documentation</a>.
+ * </p>
  */
 public class Domains {
 
@@ -25,17 +30,23 @@ public class Domains {
 
 
     /**
-     * Get The Domain List
+     * Gets the list of available domains.
+     *
+     * @return the list of domain objects
      * @see me.shivzee.util.Domain
-     * @return the list containing the domain objects
      */
     public static List<Domain> getDomainList() {
         return domains;
     }
 
     /**
-     * Updates the Domain List
-     * @return true if the domain list was refreshed from server
+     * Updates the list of available domains from the server.
+     * <p>
+     * This method fetches the latest list of domains from the mail.tm API and updates
+     * the internal domain list.
+     * </p>
+     *
+     * @return {@code true} if the domain list was successfully updated; {@code false} otherwise
      */
     public static boolean updateDomains(){
         domains = new ArrayList<>();
@@ -54,10 +65,13 @@ public class Domains {
     }
 
     /**
-     * Fetch and Return Domain List
-     * @return list of domain objects
+     * Fetches and returns the list of available domains.
+     * <p>
+     * This method first updates the domain list from the server, then returns the updated list.
+     * </p>
+     *
+     * @return the list of domain objects
      * @see me.shivzee.util.Domain
-     * @see me.shivzee.exceptions.DomainNotFoundException
      */
     public static List<Domain> fetchDomains(){
         domains = new ArrayList<>();

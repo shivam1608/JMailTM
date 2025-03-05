@@ -10,8 +10,15 @@ import java.nio.file.Paths;
 
 
 /**
- * The Attachment Class to Wrap Attachments
- * Check @link{https://api.mail.tm} for more info
+ * The Attachment class represents an email attachment.
+ * <p>
+ * This class wraps attachment information including metadata such as filename, content type,
+ * size, and download URL. It provides methods to access attachment properties and download
+ * the attachment content.
+ * </p>
+ * <p>
+ * For more information about the API, see <a href="https://api.mail.tm">API Documentation</a>.
+ * </p>
  */
 public class Attachment {
     private String id;
@@ -26,15 +33,17 @@ public class Attachment {
 
 
     /**
-     * Get the Attachment ID
-     * @return the id of the attachment in email
+     * Gets the attachment ID.
+     *
+     * @return the ID of the attachment in the email
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Get the Filename
+     * Gets the filename of the attachment.
+     *
      * @return the filename of the attachment
      */
     public String getFilename() {
@@ -42,48 +51,58 @@ public class Attachment {
     }
 
     /**
-     * Get the ContentType of Attachment
-     * @return the content-type/mime of the attachment eg(image/gif , image/png)
+     * Gets the content type (MIME type) of the attachment.
+     *
+     * @return the content type of the attachment (e.g., "image/gif", "image/png")
      */
     public String getContentType() {
         return contentType;
     }
 
     /**
-     * Get The Disposition
-     * @return the disposition
+     * Gets the disposition of the attachment.
+     *
+     * @return the disposition value of the attachment
      */
     public String getDisposition() {
         return disposition;
     }
 
     /**
-     * Get TransferEncoding Type
-     * @return the encoding of the attachment
+     * Gets the transfer encoding type of the attachment.
+     *
+     * @return the transfer encoding of the attachment
      */
     public String getTransferEncoding() {
         return transferEncoding;
     }
 
     /**
-     * Get Related Status
-     * @return true if the attachment is related
+     * Checks if the attachment is related to the email content.
+     *
+     * @return {@code true} if the attachment is related; {@code false} otherwise
      */
     public boolean isRelated() {
         return related;
     }
 
     /**
-     * Get the Attachment Size in Killobytes
-     * @return the size of attachment in KiB
+     * Gets the size of the attachment in kilobytes.
+     *
+     * @return the size of the attachment in KiB
      */
     public long getSize() {
         return size;
     }
 
     /**
-     * Get the Download URL for the attachment (Will not work without JWT Token as AuthHead) Check the Attachment.save() Method
-     * @return the download url
+     * Gets the download URL for the attachment.
+     * <p>
+     * Note: This URL will not work without a valid JWT token as an authorization header.
+     * Use the {@link #save(String)} method to download the attachment.
+     * </p>
+     *
+     * @return the download URL for the attachment
      */
     public String getDownloadUrl() {
         return "https://api.mail.tm"+downloadUrl;

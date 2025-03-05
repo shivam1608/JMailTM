@@ -7,7 +7,11 @@ import java.time.ZonedDateTime;
 import static me.shivzee.util.Utility.parseToDefaultTimeZone;
 
 /**
- * The User Account Class to wrap User Details
+ * The Account class represents a user account in the email system.
+ * <p>
+ * This class encapsulates user account information including email address, storage quota,
+ * account status, and timestamps. It provides methods to access and manage account properties.
+ * </p>
  */
 public class Account {
     private String id;
@@ -20,23 +24,26 @@ public class Account {
     private String updatedAt;
 
     /**
-     * Get the UserID
-     * @return the user id of the account
+     * Gets the user ID.
+     *
+     * @return the user ID of the account
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Get Email
-     * @return the email address
+     * Gets the email address.
+     *
+     * @return the email address of the account
      */
     public String getEmail() {
         return address;
     }
 
     /**
-     * Get the Storage/Quota
+     * Gets the total storage quota.
+     *
      * @return the total amount of allowed storage for mails and attachments
      */
     public String getQuota() {
@@ -44,7 +51,8 @@ public class Account {
     }
 
     /**
-     * Get the Occupied Storage/Quota of User
+     * Gets the amount of storage used.
+     *
      * @return the amount of storage used for mails and attachments
      */
     public String getUsed() {
@@ -52,23 +60,26 @@ public class Account {
     }
 
     /**
-     * Get User Account Ban/Disabled Status
-     * @return true if account is banned or disabled
+     * Checks if the account is disabled or banned.
+     *
+     * @return {@code true} if the account is disabled; {@code false} otherwise
      */
     public boolean isDisabled() {
         return isDisabled;
     }
 
     /**
-     * Get User Account Delete Status
-     * @return true if account is deleted from the server
+     * Checks if the account has been deleted.
+     *
+     * @return {@code true} if the account is deleted; {@code false} otherwise
      */
     public boolean isDeleted() {
         return isDeleted;
     }
 
     /**
-     * Get the time of creation of User in String
+     * Gets the account creation timestamp.
+     *
      * @return the account creation date
      */
     public String getCreatedAt() {
@@ -76,8 +87,13 @@ public class Account {
     }
 
     /**
-     * Get the time of update of User in String
-     * @return the account update date (delete, message received events triggers the account update event)
+     * Gets the account last update timestamp.
+     * <p>
+     * This timestamp is updated when the account is modified, such as when messages are received
+     * or when the account is deleted.
+     * </p>
+     *
+     * @return the account update date
      * @see me.shivzee.callbacks.EventListener
      */
     public String getUpdatedAt() {

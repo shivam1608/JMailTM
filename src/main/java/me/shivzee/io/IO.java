@@ -11,19 +11,29 @@ import java.net.URL;
 import java.util.Objects;
 
 /**
- * The IO Class Written Specifically for JMailTM
- * version &lt;= 0.2 -> Native HttpURLConnection
- * version &gt;= 0.3 -> OkHttp
- * @author shizee
+ * The IO class handles HTTP communication for the JMailTM library.
+ * <p>
+ * This class provides methods for making HTTP requests to the mail.tm API. It uses OkHttp
+ * for HTTP communication (version {@literal >=} 0.3) and previously used HttpURLConnection (version {@literal <=} 0.2).
+ * </p>
+ *
+ * @author shivzee
  */
+
 public class IO {
 
     private static final OkHttpClient client = new OkHttpClient();
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static final MediaType PATCH = MediaType.get("application/merge-patch+json");
 
-
-
+    /**
+     * Makes a POST request to the specified URL with authentication and JSON content.
+     *
+     * @param baseUrl the URL to send the request to
+     * @param auth the authentication token (can be null)
+     * @param contentJSON the JSON content to send in the request body
+     * @return a Response object containing the server's response
+     */
     public static Response requestPOST(String baseUrl, String auth, String contentJSON){
         try {
             URL url = new URL(baseUrl);
@@ -43,6 +53,13 @@ public class IO {
         }
     }
 
+    /**
+     * Makes a POST request to the specified URL with JSON content.
+     *
+     * @param baseUrl the URL to send the request to
+     * @param contentJSON the JSON content to send in the request body
+     * @return a Response object containing the server's response
+     */
     public static Response requestPOST(String baseUrl , String contentJSON){
         try {
             return requestPOST(baseUrl , null , contentJSON);

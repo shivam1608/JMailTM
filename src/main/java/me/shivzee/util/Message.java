@@ -14,8 +14,15 @@ import java.util.List;
 import static me.shivzee.util.Utility.parseToDefaultTimeZone;
 
 /**
- * The Message Class to Wrap Emails Received
- * Check https://api.mail.tm for more info
+ * The Message class represents an email message in the system.
+ * <p>
+ * This class encapsulates all information about an email message, including sender and recipient
+ * details, content, attachments, and various metadata. It provides methods to access and manage
+ * message properties.
+ * </p>
+ * <p>
+ * For more information about the API, see <a href="https://api.mail.tm">API Documentation</a>.
+ * </p>
  */
 public class Message {
 
@@ -42,147 +49,166 @@ public class Message {
     private String bearerToken;
 
     /**
-     * Get the Email/Message ID
-     * @return the id of the message
+     * Gets the message ID.
+     *
+     * @return the unique identifier of the message
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Get the MSGID
-     * <br />
-     * Check <a href="https://api.mail.tm">API Docs</a> for more info
-     * @return String
+     * Gets the message ID from the email headers.
+     * <p>
+     * This is the Message-ID field from the email headers, which is used for email threading
+     * and tracking.
+     * </p>
+     *
+     * @return the message ID from the email headers
      */
     public String getMsgid() {
         return msgid;
     }
 
     /**
-     * Get the Sender's Email Address
-     * @return the email sender's address
+     * Gets the sender's email address.
+     *
+     * @return the email address of the sender
      */
     public String getSenderAddress() {
         return from.getAddress();
     }
 
     /**
-     * Get the Sender's Name
-     * @return the email sender's name
+     * Gets the sender's display name.
+     *
+     * @return the display name of the sender
      */
     public String getSenderName() {
         return from.getName();
     }
 
     /**
-     * Get all the Receivers/send To
-     * @return the list of all receivers to whom the email was sent (simply carbon copy cc: tag)
+     * Gets the list of recipients.
+     *
+     * @return the list of recipients to whom the email was sent
      */
     public List<Receiver> getReceivers() {
         return to;
     }
 
     /**
-     * Get the Email/Message Subject
-     * @return the email's subject
+     * Gets the email subject.
+     *
+     * @return the subject line of the email
      */
     public String getSubject() {
         return subject;
     }
 
     /**
-     * Get the Content of Email/Message
-     * @return the inside content of email
+     * Gets the plain text content of the email.
+     *
+     * @return the plain text version of the email content
      */
     public String getContent() {
         return text;
     }
 
     /**
-     * Get the Seen Status
-     * @return true if the message is marked seen
+     * Checks if the message has been read.
+     *
+     * @return {@code true} if the message has been read; {@code false} otherwise
      */
     public boolean isSeen() {
         return seen;
     }
 
     /**
-     * Get the Flagged Status
-     * @return ture if the message is marked as flagged
+     * Checks if the message has been flagged.
+     *
+     * @return {@code true} if the message has been flagged; {@code false} otherwise
      */
     public boolean isFlagged() {
         return flagged;
     }
 
     /**
-     * Get the Delete Status
-     * @return true if the message is deleted
+     * Checks if the message has been deleted.
+     *
+     * @return {@code true} if the message has been deleted; {@code false} otherwise
      */
     public boolean isDeleted() {
         return isDeleted;
     }
 
     /**
-     * Get retention Status
-     * @return true if enabled retention
+     * Gets the retention status of the message.
+     *
+     * @return {@code true} if the message is retained; {@code false} otherwise
      */
     public boolean retention() {
         return retention;
     }
 
     /**
-     * Get Retention Date in String
-     * @return the retention date
+     * Gets the retention date of the message.
+     *
+     * @return the date when the message will be retained until
      */
     public String getRetentionDate() {
         return retentionDate;
     }
 
     /**
-     * Get the Email/Message Raw HTML Content
-     * @return the raw HTML to manually parse the content of mail
+     * Gets the HTML content of the email.
+     *
+     * @return the list of HTML parts of the email content
      */
     public String getRawHTML() {
         return html.toString();
     }
 
     /**
-     * Get the Status of Attachments on the Email/Message
-     * @return true if email contains some attachments
+     * Checks if the message has attachments.
+     *
+     * @return {@code true} if the message has attachments; {@code false} otherwise
      */
     public boolean hasAttachments() {
         return hasAttachments;
     }
 
     /**
-     * Get the list of all Attachments on a Message/Email
-     * @return the list of all attachments on the email
-     * @see me.shivzee.util.Attachment
+     * Gets the list of attachments.
+     *
+     * @return the list of attachments in the message
      */
     public List<Attachment> getAttachments() {
         return attachments;
     }
 
     /**
-     * Get the Size of Message
-     * @return the size in bytes of message content
+     * Gets the size of the message in bytes.
+     *
+     * @return the size of the message
      */
     public long getSize() {
         return size;
     }
 
     /**
-     * Get the Download URL See API Docs for more info
-     * @return the download url to download the message from server
+     * Gets the download URL for the message.
+     *
+     * @return the URL where the message can be downloaded
      */
     public String getDownloadUrl() {
         return downloadUrl;
     }
 
     /**
-     * Get the Message Received Date/Time in String
-     * @return the date at which the message was sent/created/received
+     * Gets the creation timestamp of the message.
+     *
+     * @return the date and time when the message was created
      */
     public String getCreatedAt() {
         return createdAt;
@@ -272,8 +298,6 @@ public class Message {
         }
     }
 
-
-
     /**
      * (Sync) Marks the Message/Email asRead with a Callback
      * @param callback The WorkCallback Implementation or Lambda Function
@@ -281,8 +305,6 @@ public class Message {
     public void markAsRead(WorkCallback callback) {
         callback.workStatus(markAsRead());
     }
-
-
 
     /**
      * (Async) Silently Marks the Message/Email asRead with no response
