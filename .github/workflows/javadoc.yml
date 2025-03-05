@@ -26,8 +26,9 @@ jobs:
 
       - name: Move Javadocs to docs/
         run: |
-          rm -rf docs/   # Remove old docs to ensure clean Javadoc generation
-          mv target/site/apidocs docs/
+          rm -rf docs/
+          mv target/reports/apidocs docs/
+      
 
       - name: Check for Changes and Track New Files
         id: check_changes
