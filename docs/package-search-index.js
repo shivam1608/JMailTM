@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"me.shivzee"},{"l":"me.shivzee.adapters"},{"l":"me.shivzee.callbacks"},{"l":"me.shivzee.exceptions"},{"l":"me.shivzee.io"},{"l":"me.shivzee.util"}];updateSearchResults();
