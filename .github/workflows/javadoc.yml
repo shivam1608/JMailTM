@@ -29,13 +29,14 @@ jobs:
           rm -rf docs/
           mv target/reports/apidocs docs/
 
-
       - name: Commit and Push Javadocs
         run: |
           git config --global user.name 'shivam1608'
           git config --global user.email '64302819+shivam1608@users.noreply.github.com'
 
-          git add docs/*.html docs/*.js docs/*.css docs/**/*.html docs/**/*.js docs/**/*.css
+          git checkout -B javadoc  # Switch to javadoc branch (create if missing)
+
+          git add docs/**
 
           # Check if there are actual changes
           if git diff --cached --quiet; then
@@ -44,17 +45,6 @@ jobs:
           fi
 
           git commit -m "Update Javadocs [skip ci]"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Commit and Push Javadocs
-        if: env.changed == 'true'
-        run: |
-          git config --global user.name 'shivam1608'
-          git config --global user.email '64302819+shivam1608@users.noreply.github.com'
-          git commit -m "Update Javadocs [skip ci]"
-          git push
+          git push -u origin javadoc -f
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
