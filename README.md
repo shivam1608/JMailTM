@@ -26,7 +26,7 @@ allprojects {
 - Add the dependency (replace version with the version on top)
 ```gradle
 dependencies {
-	        implementation 'com.github.shivam1608:JMailTM:0.8.0'
+	        implementation 'com.github.shivam1608:JMailTM:0.8.1'
 	}
 ```
 
@@ -56,7 +56,7 @@ dependencies {
 ### Jar 
 Download the jar `releases` section.
 ```
-out/artifact/JMailTM.jar or Use the Release Section
+Use the Release Section
 ```
 
 ## Looking for JavaDoc? 
