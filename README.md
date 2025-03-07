@@ -54,7 +54,7 @@ dependencies {
 ```
 
 ### Jar 
-Download the jar from this repo 
+Download the jar `releases` section.
 ```
 out/artifact/JMailTM.jar or Use the Release Section
 ```
