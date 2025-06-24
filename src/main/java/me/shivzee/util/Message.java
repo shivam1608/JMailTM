@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 import static me.shivzee.util.Utility.parseToDefaultTimeZone;
 
@@ -31,7 +33,7 @@ public class Message {
     private String id ;
     private String msgid;
     private Sender from;
-    private List<Receiver> to;
+    private Object to;
     private String subject;
     private String text;
     private Boolean seen;
@@ -94,7 +96,29 @@ public class Message {
      * @return the list of recipients to whom the email was sent
      */
     public List<Receiver> getReceivers() {
-        return to;
+        List<Receiver> receivers = new ArrayList<>();
+
+        if (to instanceof List) {
+            List<?> toList = (List<?>) to;
+            for (Object item : toList) {
+                if (item instanceof String) {
+                    // Handle string format: "email@example.com"
+                    Receiver receiver = new Receiver();
+                    receiver.setAddress((String) item);
+                    receiver.setName("");
+                    receivers.add(receiver);
+                } else if (item instanceof Map) {
+                    // Handle object format: {"address": "email", "name": "name"}
+                    Map<?, ?> map = (Map<?, ?>) item;
+                    Receiver receiver = new Receiver();
+                    receiver.setAddress((String) map.get("address"));
+                    receiver.setName((String) map.get("name"));
+                    receivers.add(receiver);
+                }
+            }
+        }
+
+        return receivers;
     }
 
     /**
@@ -331,7 +355,7 @@ public class Message {
         return new Gson().toJson(this);
     }
 
-    
+
     /**
      * (Synchronous) Deletes the Message
      * @return {@code true} if the message was successfully deleted; {@code false} otherwise
