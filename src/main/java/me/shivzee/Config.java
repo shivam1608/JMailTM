@@ -1,7 +1,5 @@
 package me.shivzee;
 
-import com.google.gson.Gson;
-
 /**
  * The Config Class for Global Data
  */

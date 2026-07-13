@@ -9,12 +9,14 @@ package me.shivzee.exceptions;
  */
 public class DomainNotFoundException extends Exception{
 
-    /**
-     * Constructs a DomainNotFoundException with the specified error message.
-     *
-     * @param errorMessage the error message
-     */
-    public DomainNotFoundException(String errorMessage){
+	private static final long serialVersionUID = 1904142261026219625L;
+
+	/**
+	 * Constructs a DomainNotFoundException with the specified error message.
+	 *
+	 * @param errorMessage the error message
+	 */
+	public DomainNotFoundException(String errorMessage){
         super(errorMessage);
     }
     
