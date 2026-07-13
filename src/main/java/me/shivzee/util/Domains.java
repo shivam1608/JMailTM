@@ -48,49 +48,26 @@ public class Domains {
      *
      * @return {@code true} if the domain list was successfully updated; {@code false} otherwise
      */
-    public static boolean updateDomains(){
+    public static boolean updateDomains() throws DomainNotFoundException {
         domains = new ArrayList<>();
-        try{
-            Response response = IO.requestGET(baseUrl+"/domains?page=1");
+        try {
+            Response response = IO.requestGET(baseUrl+"/domains?page=1"); // TODO : search for multiple pages.
             if(response.getResponseCode() == 200){
                 JsonArray json = JsonParser.parseString(response.getResponse()).getAsJsonArray();
+                if(json.size() == 0)
+                    throw new DomainNotFoundException(baseUrl+"/domains?page=1 has no available domain!");
+                
                 for(JsonElement domain : json){
                     domains.add(gson.fromJson(domain.getAsJsonObject() , Domain.class));
                 }
+                return true;
             }
-            return true;
-        }catch (Exception e){
-            return false;
+            throw new DomainNotFoundException(baseUrl+"/domains?page=1 responded : " + response.getResponseCode());
+        } catch (DomainNotFoundException e) {
+            throw e;
+        } catch (Exception other) {
+            throw new DomainNotFoundException("Failed to parse domain list: " + other.getMessage(), other);
         }
-    }
-
-    /**
-     * Fetches and returns the list of available domains.
-     * <p>
-     * This method first updates the domain list from the server, then returns the updated list.
-     * </p>
-     *
-     * @return the list of domain objects
-     * @see me.shivzee.util.Domain
-     */
-    public static List<Domain> fetchDomains(){
-        domains = new ArrayList<>();
-
-           try{
-               Response response = IO.requestGET(baseUrl+"/domains?page=1");
-               if(response.getResponseCode() == 200){
-                   JsonArray json = JsonParser.parseString(response.getResponse()).getAsJsonArray();
-                   for(JsonElement domain : json){
-                       domains.add(gson.fromJson(domain.getAsJsonObject() , Domain.class));
-                   }
-               }
-               return domains;
-           }catch (Exception e){
-               LOG.warn("Failed to fetch Domains "+e);
-           }
-           return domains;
-
-
     }
 
     /**
@@ -124,7 +101,7 @@ public class Domains {
      * @return a single random Domain object from the list
      * @see me.shivzee.util.Domain
      */
-    public static Domain getRandomDomain(){
+    public static Domain getRandomDomain() throws DomainNotFoundException {
         updateDomains();
         return domains.get(0);
     }

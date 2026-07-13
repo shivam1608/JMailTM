@@ -133,9 +133,10 @@ public class JMailBuilder {
         try{
             String email = Utility.createRandomString(8)+"@"+Domains.getRandomDomain().getDomainName();
             return createAndLogin(email , password);
-
-        }catch (Exception e){
-            throw new LoginException(e.toString());
+        } catch (LoginException e) {
+            throw e;
+        } catch (Exception other) {
+            throw new LoginException(other.toString());
         }
     }
 
