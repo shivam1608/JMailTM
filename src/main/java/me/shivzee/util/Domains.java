@@ -51,18 +51,19 @@ public class Domains {
     public static boolean updateDomains() throws DomainNotFoundException {
         domains = new ArrayList<>();
         try {
-            Response response = IO.requestGET(baseUrl+"/domains?page=1"); // TODO : search for multiple pages.
-            if(response.getResponseCode() == 200){
-                JsonArray json = JsonParser.parseString(response.getResponse()).getAsJsonArray();
-                if(json.size() == 0)
-                    throw new DomainNotFoundException(baseUrl+"/domains?page=1 has no available domain!");
-                
-                for(JsonElement domain : json){
-                    domains.add(gson.fromJson(domain.getAsJsonObject() , Domain.class));
-                }
-                return true;
+            Response response = IO.requestGET(baseUrl + "/domains?page=1");
+            if (response.getResponseCode() != 200)
+                throw new DomainNotFoundException(baseUrl + "/domains?page=1 responded : " + response.getResponseCode());
+
+            JsonArray array = JsonParser.parseString(response.getResponse()).getAsJsonArray();
+            for (JsonElement domain : array) {
+                domains.add(gson.fromJson(domain, Domain.class));
             }
-            throw new DomainNotFoundException(baseUrl+"/domains?page=1 responded : " + response.getResponseCode());
+
+            if (domains.isEmpty())
+                throw new DomainNotFoundException("No available domains found!");
+
+            return true;
         } catch (DomainNotFoundException e) {
             throw e;
         } catch (Exception other) {
