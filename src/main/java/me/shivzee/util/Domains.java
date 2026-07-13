@@ -4,8 +4,6 @@ import com.google.gson.*;
 import me.shivzee.Config;
 import me.shivzee.exceptions.DomainNotFoundException;
 import me.shivzee.io.IO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +23,6 @@ public class Domains {
     private static final String baseUrl = Config.BASEURL;
     private static final Gson gson = new Gson();
     private static List<Domain> domains = new ArrayList<>();
-
-    private final static Logger LOG = LoggerFactory.getLogger(Domains.class);
-
 
     /**
      * Gets the list of available domains.
@@ -51,13 +46,19 @@ public class Domains {
     public static boolean updateDomains() throws DomainNotFoundException {
         domains = new ArrayList<>();
         try {
-            Response response = IO.requestGET(baseUrl + "/domains?page=1");
-            if (response.getResponseCode() != 200)
-                throw new DomainNotFoundException(baseUrl + "/domains?page=1 responded : " + response.getResponseCode());
+            int page = 1;
+            while (true) {
+                Response response = IO.requestGET(baseUrl + "/domains?page=" + page);
+                if (response.getResponseCode() != 200)
+                    throw new DomainNotFoundException(baseUrl + "/domains?page=" + page + " responded : " + response.getResponseCode());
 
-            JsonArray array = JsonParser.parseString(response.getResponse()).getAsJsonArray();
-            for (JsonElement domain : array) {
-                domains.add(gson.fromJson(domain, Domain.class));
+                JsonArray array = JsonParser.parseString(response.getResponse()).getAsJsonArray();
+                if (array.isEmpty()) break;
+
+                for (JsonElement domain : array) {
+                    domains.add(gson.fromJson(domain, Domain.class));
+                }
+                page++;
             }
 
             if (domains.isEmpty())
