@@ -68,6 +68,7 @@ public class JMailTM {
     private static final String baseUrl = Config.BASEURL;
     private final Logger LOG = LoggerFactory.getLogger(JMailTM.class);
 
+    // TODO : do not remove. reuse for JMailTM.asyn* method
     private ExecutorService pool = Executors.newSingleThreadExecutor();
 
     /**
@@ -487,60 +488,55 @@ public class JMailTM {
 
 
     /**
-     * (Asynchronous) Opens an event listener on a single thread to receive server-sent events (SSE).
+     * (Asynchronous) Opens an event listener to receive server-sent events (SSE).
      * <p>
-     * This method asynchronously opens an event listener using SSE (Server-Sent Events) on a single thread.
-     * It initializes an {@code EventSource} with the provided {@code EventListener} implementation and connects
-     * to the specified MERCURE_URL topic associated with the user account. It handles reconnecting to the server
-     * in case of disconnection with the specified {@code retryInterval}.
+     * Creates and starts an {@code EventSource} backed by the provided {@code EventListener}.
+     * The {@code EventSource} is started before returned,
+     * and the caller is responsible for closing the returned {@code EventSource} via
+     * {@link EventSource#close()} when the listener should be terminated.
+     * </p>
+     * <p>
+     * Reconnection is handled automatically by the {@code EventSource} using the specified
+     * {@code retryInterval} on disconnect.
      * </p>
      * <p>
      * Example usage:
      * <pre>{@code
-     * openEventListener(new EventListener() {
+     * EventSource source = mailer.openEventListener(new EventListener() {
      *     {@literal @}Override
      *     public void onReady() {
      *         // Handle event listener readiness
      *     }
      * }, 5000); // Retry every 5 seconds if disconnected
+     * // Do other jobs... 
+     * source.close();
      * }</pre>
      *
      * @param eventListener the {@code EventListener} to handle incoming events and errors
      * @param retryInterval the reconnect timeout interval in milliseconds if the server disconnects
+     * @return the active(running) {@code EventSource} instance
      */
-
-
-    public void openEventListener(EventListener eventListener , long retryInterval){
-        if(pool.isShutdown()){
-            pool = Executors.newSingleThreadExecutor();
-        }
+    public EventSource openEventListener(EventListener eventListener , long retryInterval){
         Map<String , String> headers = new HashMap<>();
         headers.put("Authorization" , "Bearer "+bearerToken);
         EventSource.Builder sse = new EventSource.Builder(new IOCallback(eventListener , this), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
                 .reconnectTime(Duration.ofMillis(retryInterval))
                 .headers(Headers.of(headers));
         EventSource sourceSSE = sse.build();
-        pool.execute(sourceSSE::start);
+        sourceSSE.start();
+        return sourceSSE;
     }
 
     /**
-     * (Asynchronous) Open's a default event listener on a single thread
-     * @param eventListener EventListener implemented class
+     * (Asynchronous) Opens an SSE event listener with a default retry interval of 3 seconds.
+     * @see JMailTM#openEventListener(EventListener, long)
+     *
+     * @param eventListener the {@code EventListener} to handle incoming events and errors
+     * @return the active(running) {@code EventSource} instance
      */
-    public void openEventListener(EventListener eventListener){
-        openEventListener(eventListener , 3000L);
+    public EventSource openEventListener(EventListener eventListener){
+        return openEventListener(eventListener , 3000L);
     }
-
-    /**
-     * Closes the message listener, shutting down the thread pool used for event handling.
-     * <p>
-     * This method is deprecated. Use {@link #openEventListener(EventListener, long)} instead.
-     * </p>
-     */
-    public void closeMessageListener(){
-        pool.shutdown();
-    }
-
 
 
     /**
