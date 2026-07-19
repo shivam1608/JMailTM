@@ -307,7 +307,11 @@ public void onMessageReceived(Message message) {
 
 ### Fetch Message by ID
 ```java
-Message message = mailer.getMessageById("ID_HERE");
+try {
+    Message message = mailer.getMessageById("ID_HERE");
+} catch (MessageFetchException e) {
+    System.out.println("Failed to fetch message: " + e.getMessage());
+}
 ```
 
 ### Create Account
@@ -320,13 +324,21 @@ mailer.init();
 ```java
 
 //First Fetch Domain
-JMailTM mailer = JMailBuilder.createAndLogin("thisismychoice@"+ Domains.getRandomDomain().getDomainName() , "MyPassword");
-mailer.init();
+try{
+    JMailTM mailer = JMailBuilder.createAndLogin("thisismychoice@"+ Domains.getRandomDomain().getDomainName(), "MyPassword");
+    mailer.init();
+} catch (DomainNotFoundException e) {
+    System.out.println("Failed to fetch domain: " + e.getMessage());
+}
 
 //Can Fetch Domains by List Too (Fetches the Domains)
-List<Domain> domains = Domains.fetchDomains();
+try{
+    List<Domain> domains = Domains.fetchDomains();
     for(Domain domain : domains){
        // All Domains
+    }
+} catch (DomainNotFoundException e){
+    System.out.println("Failed to fetch domains: " + e.getMessage());
 }
 
 //Can Get Saved Domains by mailer.init()
