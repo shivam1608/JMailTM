@@ -114,6 +114,11 @@ public class JMailTM {
      * to use.
      * </p>
      * <p>
+     * If the domain list cannot be fetched, the failure is logged and the method
+     * continues silently. Existing accounts can still be used, but creating new
+     * accounts may fail.
+     * </p>
+     * <p>
      * Note: This is only required when using {@code createDefault()}
      * </p>
      */

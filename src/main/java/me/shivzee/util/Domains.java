@@ -42,8 +42,9 @@ public class Domains {
     /**
      * Updates and returns the list of available domains.
      * <p>
-     * This method updates the domain list from the server and returns the updated list.
-     * On failure, it throws {@link DomainNotFoundException}
+     * This method delegates to {@link #updateDomains()} to fetch the domain list,
+     * then returns the updated list. If the update fails, {@link DomainNotFoundException} propagates
+     * to the caller.
      * </p>
      *
      * @return the list of available domain objects
@@ -51,7 +52,7 @@ public class Domains {
      * @see me.shivzee.exceptions.DomainNotFoundException
      * @throws DomainNotFoundException if the domain list cannot be fetched or no domains are available
      */
-    public static List<Domain> fetchDomains() throws DomainNotFoundException{
+    public static List<Domain> fetchDomains() throws DomainNotFoundException {
     	updateDomains();
         return getDomainList();
     }
@@ -123,15 +124,19 @@ public class Domains {
     }
 
     /**
-     * Get a Random Domain From List
+     * Returns a random domain from the cached domain list.
+     * <p>
+     * This method refreshes the domain list via {@link #updateDomains()} before
+     * selecting a random domain.
+     * </p>
+     *
      * @return a single random Domain object from the list
      * @throws DomainNotFoundException if the domain list cannot be fetched or is empty
      * @see me.shivzee.util.Domain
      * @see me.shivzee.exceptions.DomainNotFoundException
      */
     public static Domain getRandomDomain() throws DomainNotFoundException {
-        updateDomains();
-        return domains.get(0);
+        return fetchDomains().get(0);
     }
 
 }

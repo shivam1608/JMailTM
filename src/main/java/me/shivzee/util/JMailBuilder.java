@@ -123,6 +123,10 @@ public class JMailBuilder {
      * This method creates a new account with a randomly generated email address
      * and the specified password, then logs in to that account.
      * </p>
+     * <p>
+     * If the underlying {@link me.shivzee.exceptions.DomainNotFoundException} is thrown,
+     * it is wrapped in a {@code LoginException} and propagated.
+     * </p>
      *
      * @param password the password for the new account
      * @return a new JMailTM instance for the created and authenticated user
