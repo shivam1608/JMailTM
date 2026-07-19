@@ -34,6 +34,7 @@ import me.shivzee.callbacks.MessageFetchedCallback;
 import me.shivzee.callbacks.MessageListener;
 import me.shivzee.callbacks.WorkCallback;
 import me.shivzee.exceptions.AccountNotFoundException;
+import me.shivzee.exceptions.DomainNotFoundException;
 import me.shivzee.exceptions.MessageFetchException;
 import me.shivzee.io.IO;
 import me.shivzee.io.IOCallback;
@@ -113,11 +114,21 @@ public class JMailTM {
      * to use.
      * </p>
      * <p>
+     * If the domain list cannot be fetched, the failure is logged and the method
+     * continues silently. Existing accounts can still be used, but creating new
+     * accounts may fail.
+     * </p>
+     * <p>
      * Note: This is only required when using {@code createDefault()}
      * </p>
      */
     public void init(){
-        Domains.updateDomains();
+        try {
+            Domains.updateDomains();
+        } catch (DomainNotFoundException e) {
+            LOG.error("Failed to initialize domain list: " + e.getMessage());
+            LOG.error("Logging in with existing accounts will work, but creating a new account might not!");
+        }
     }
 
     /**

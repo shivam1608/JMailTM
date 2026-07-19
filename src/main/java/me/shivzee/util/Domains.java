@@ -1,14 +1,17 @@
 package me.shivzee.util;
 
-import com.google.gson.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import me.shivzee.Config;
 import me.shivzee.exceptions.DomainNotFoundException;
 import me.shivzee.io.IO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Domains class provides functionality for managing email domains.
@@ -26,9 +29,6 @@ public class Domains {
     private static final Gson gson = new Gson();
     private static List<Domain> domains = new ArrayList<>();
 
-    private final static Logger LOG = LoggerFactory.getLogger(Domains.class);
-
-
     /**
      * Gets the list of available domains.
      *
@@ -40,57 +40,61 @@ public class Domains {
     }
 
     /**
+     * Updates and returns the list of available domains.
+     * <p>
+     * This method delegates to {@link #updateDomains()} to fetch the domain list,
+     * then returns the updated list. If the update fails, {@link DomainNotFoundException} propagates
+     * to the caller.
+     * </p>
+     *
+     * @return the list of available domain objects
+     * @see me.shivzee.util.Domain
+     * @see me.shivzee.exceptions.DomainNotFoundException
+     * @throws DomainNotFoundException if the domain list cannot be fetched or no domains are available
+     */
+    public static List<Domain> fetchDomains() throws DomainNotFoundException {
+    	updateDomains();
+        return getDomainList();
+    }
+
+    /**
      * Updates the list of available domains from the server.
      * <p>
      * This method fetches the latest list of domains from the mail.tm API and updates
      * the internal domain list.
      * </p>
      *
-     * @return {@code true} if the domain list was successfully updated; {@code false} otherwise
+     * @return {@code true} if the domain list was successfully updated
+     * @see me.shivzee.exceptions.DomainNotFoundException
+     * @throws DomainNotFoundException if the domain list cannot be fetched or no domains are available
      */
-    public static boolean updateDomains(){
+    public static boolean updateDomains() throws DomainNotFoundException {
         domains = new ArrayList<>();
-        try{
-            Response response = IO.requestGET(baseUrl+"/domains?page=1");
-            if(response.getResponseCode() == 200){
-                JsonArray json = JsonParser.parseString(response.getResponse()).getAsJsonArray();
-                for(JsonElement domain : json){
-                    domains.add(gson.fromJson(domain.getAsJsonObject() , Domain.class));
+        try {
+            int page = 1;
+            while (true) {
+                Response response = IO.requestGET(baseUrl + "/domains?page=" + page);
+                if (response.getResponseCode() != 200)
+                    throw new DomainNotFoundException(baseUrl + "/domains?page=" + page + " responded : " + response.getResponseCode());
+
+                JsonArray array = JsonParser.parseString(response.getResponse()).getAsJsonArray();
+                if (array.isEmpty()) break;
+
+                for (JsonElement domain : array) {
+                    domains.add(gson.fromJson(domain, Domain.class));
                 }
+                page++;
             }
+
+            if (domains.isEmpty())
+                throw new DomainNotFoundException("No available domains found!");
+
             return true;
-        }catch (Exception e){
-            return false;
+        } catch (DomainNotFoundException e) {
+            throw e;
+        } catch (Exception other) {
+            throw new DomainNotFoundException("Failed to parse domain list: " + other.getMessage(), other);
         }
-    }
-
-    /**
-     * Fetches and returns the list of available domains.
-     * <p>
-     * This method first updates the domain list from the server, then returns the updated list.
-     * </p>
-     *
-     * @return the list of domain objects
-     * @see me.shivzee.util.Domain
-     */
-    public static List<Domain> fetchDomains(){
-        domains = new ArrayList<>();
-
-           try{
-               Response response = IO.requestGET(baseUrl+"/domains?page=1");
-               if(response.getResponseCode() == 200){
-                   JsonArray json = JsonParser.parseString(response.getResponse()).getAsJsonArray();
-                   for(JsonElement domain : json){
-                       domains.add(gson.fromJson(domain.getAsJsonObject() , Domain.class));
-                   }
-               }
-               return domains;
-           }catch (Exception e){
-               LOG.warn("Failed to fetch Domains "+e);
-           }
-           return domains;
-
-
     }
 
     /**
@@ -120,13 +124,19 @@ public class Domains {
     }
 
     /**
-     * Get a Random Domain From List
+     * Returns a random domain from the cached domain list.
+     * <p>
+     * This method refreshes the domain list via {@link #updateDomains()} before
+     * selecting a random domain.
+     * </p>
+     *
      * @return a single random Domain object from the list
+     * @throws DomainNotFoundException if the domain list cannot be fetched or is empty
      * @see me.shivzee.util.Domain
+     * @see me.shivzee.exceptions.DomainNotFoundException
      */
-    public static Domain getRandomDomain(){
-        updateDomains();
-        return domains.get(0);
+    public static Domain getRandomDomain() throws DomainNotFoundException {
+        return fetchDomains().get(0);
     }
 
 }
