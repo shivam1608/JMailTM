@@ -1,12 +1,17 @@
 package me.shivzee.util;
 
-import com.google.gson.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import me.shivzee.Config;
 import me.shivzee.exceptions.DomainNotFoundException;
 import me.shivzee.io.IO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Domains class provides functionality for managing email domains.
@@ -35,13 +40,32 @@ public class Domains {
     }
 
     /**
+     * Updates and returns the list of available domains.
+     * <p>
+     * This method updates the domain list from the server and returns the updated list.
+     * On failure, it throws {@link DomainNotFoundException}
+     * </p>
+     *
+     * @return the list of available domain objects
+     * @see me.shivzee.util.Domain
+     * @see me.shivzee.exceptions.DomainNotFoundException
+     * @throws DomainNotFoundException if the domain list cannot be fetched or no domains are available
+     */
+    public static List<Domain> fetchDomains() throws DomainNotFoundException{
+    	updateDomains();
+        return getDomainList();
+    }
+
+    /**
      * Updates the list of available domains from the server.
      * <p>
      * This method fetches the latest list of domains from the mail.tm API and updates
      * the internal domain list.
      * </p>
      *
-     * @return {@code true} if the domain list was successfully updated; {@code false} otherwise
+     * @return {@code true} if the domain list was successfully updated
+     * @see me.shivzee.exceptions.DomainNotFoundException
+     * @throws DomainNotFoundException if the domain list cannot be fetched or no domains are available
      */
     public static boolean updateDomains() throws DomainNotFoundException {
         domains = new ArrayList<>();
@@ -101,7 +125,9 @@ public class Domains {
     /**
      * Get a Random Domain From List
      * @return a single random Domain object from the list
+     * @throws DomainNotFoundException if the domain list cannot be fetched or is empty
      * @see me.shivzee.util.Domain
+     * @see me.shivzee.exceptions.DomainNotFoundException
      */
     public static Domain getRandomDomain() throws DomainNotFoundException {
         updateDomains();
