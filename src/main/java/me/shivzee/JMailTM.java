@@ -518,7 +518,7 @@ public class JMailTM {
     public EventSource openEventListener(EventListener eventListener , long retryInterval){
         Map<String , String> headers = new HashMap<>();
         headers.put("Authorization" , "Bearer "+bearerToken);
-        EventSource.Builder sse = new EventSource.Builder(new IOCallback(eventListener , this), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
+        EventSource.Builder sse = new EventSource.Builder(new IOCallback(eventListener , this, gson), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
                 .reconnectTime(Duration.ofMillis(retryInterval))
                 .headers(Headers.of(headers));
         EventSource sourceSSE = sse.build();
