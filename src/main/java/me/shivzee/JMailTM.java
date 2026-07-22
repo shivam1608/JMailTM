@@ -491,9 +491,8 @@ public class JMailTM {
      * (Asynchronous) Opens an event listener to receive server-sent events (SSE).
      * <p>
      * Creates and starts an {@code EventSource} backed by the provided {@code EventListener}.
-     * The {@code EventSource} is started before returned,
-     * and the caller is responsible for closing the returned {@code EventSource} via
-     * {@link EventSource#close()} when the listener should be terminated.
+     * The returned {@code EventSource} is already started; the caller is responsible for
+     * closing it via {@link EventSource#close()} when the listener should be terminated.
      * </p>
      * <p>
      * Reconnection is handled automatically by the {@code EventSource} using the specified
@@ -540,9 +539,13 @@ public class JMailTM {
 
 
     /**
-     * (Asynchronous) Opens a Message Listener on a New Thread
-     * @param messageListener MessageListener Implemented Class
-     * @param retryInterval The Refresh Time for Fetching Messages
+     * (Asynchronous) Opens a message listener polling for new messages.
+     * <p>
+     * Deprecated. Use {@link #openEventListener(EventListener, long)} instead.
+     * </p>
+     *
+     * @param messageListener the {@code MessageListener} to handle message events
+     * @param retryInterval   the refresh interval in milliseconds for fetching messages
      */
     @Deprecated
     public void openMessageListener(MessageListener messageListener , long retryInterval){
