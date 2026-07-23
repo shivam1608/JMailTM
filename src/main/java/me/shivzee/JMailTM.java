@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -68,8 +69,57 @@ public class JMailTM {
     private static final String baseUrl = Config.BASEURL;
     private final Logger LOG = LoggerFactory.getLogger(JMailTM.class);
 
-    // TODO : do not remove. reuse for JMailTM.asyn* method
-    private ExecutorService pool = Executors.newSingleThreadExecutor();
+    /**
+     * Thread pool for async IO worker tasks ({@code asyncDelete}, {@code asyncFetchMessages}, ...).
+     * Default is a single-thread executor preserving FIFO order of submitted tasks.
+     * Replace via {@link #setThreadPool(ExecutorService)} to change concurrency behavior.
+     */
+    private volatile ExecutorService pool = Executors.newSingleThreadExecutor();
+
+    /**
+     * Replaces the async operation thread pool with the given executor.
+     * The default pool is {@link java.util.concurrent.Executors#newSingleThreadExecutor()}
+     * which executes async operations in FIFO order.
+     * <p>
+     * The previous pool is shut down and drained in the background.
+     * The first task submitted to the given pool is a drain job that waits
+     * for the old pool to finish all queued work before shutting it down.
+     * If the new pool is a single-thread executor, this drain occupies the only thread
+     * until the old pool completes; subsequent async operations queue behind it.
+     * </p>
+     * <p>
+     * Note the difference in choices of executor type:
+     * <ul>
+     *   <li><b>Single-thread</b> - FIFO ordering, no concurrency. Tasks are guaranteed to execute
+     *       one after another in submission order. Safe when later tasks depend on earlier ones, as in:
+     *       <pre>{@code
+     *       mailer.asyncFetchMessages(cb1);
+     *       mailer.asyncDelete(cb2);
+     *       }</pre>
+     *   </li>
+     *   <li><b>Fixed/Cached thread pool</b> - Multiple threads are in the pool. The order of tasks is
+     *   not guaranteed. Use it when more concurrency and throughput is needed,
+     *   and it is OK for multiple requests to be done simultaneously.
+     *   </li>
+     * </ul>
+     * </p>
+     *
+     * @param newPool the new {@code ExecutorService} for async operations
+     */
+    public void setThreadPool(ExecutorService newPool) {
+        ExecutorService old = this.pool;
+        this.pool = newPool;
+        newPool.execute(() -> {
+            old.shutdown();
+            try {
+                if (!old.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS))
+                    old.shutdownNow();
+            } catch (InterruptedException e) {
+                old.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
 
     /**
      * Constructs a new {@code JMailTM} instance with the specified bearer token and ID.
@@ -219,7 +269,7 @@ public class JMailTM {
 
 
     public void asyncDelete(WorkCallback callback){
-        new Thread(() -> { callback.workStatus(delete()); }, "Delete_Account_" + id).start();
+        pool.execute(() -> callback.workStatus(delete()));
     }
 
 
@@ -230,7 +280,7 @@ public class JMailTM {
      * </p>
      */
     public void asyncDelete(){
-        new Thread(this::delete, "Delete_Account_" + id).start();
+        pool.execute(this::delete);
     }
 
 
@@ -438,13 +488,13 @@ public class JMailTM {
 
 
     public void asyncFetchMessages(MessageFetchedCallback callback){
-        new Thread(()->{
+        pool.execute(()->{
             try {
                 fetchMessages(callback);
             } catch (MessageFetchException e) {
                 callback.onError(new Response(90001 , e.toString()) );
             }
-        }, "Fetch_Messages_" + id).start();
+        });
     }
 
     /**
@@ -477,13 +527,13 @@ public class JMailTM {
 
 
     public void asyncFetchMessages(int limit , MessageFetchedCallback callback){
-        new Thread(()->{
+        pool.execute(()->{
             try {
                 fetchMessages(limit , callback);
             } catch (MessageFetchException e) {
                 callback.onError(new Response(90001 , e.toString()) );
             }
-        }, "Fetch_Messages_" + id).start();
+        });
     }
 
 
