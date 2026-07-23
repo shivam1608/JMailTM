@@ -1,6 +1,5 @@
 package me.shivzee.io;
 
-import com.google.gson.JsonParser;
 import me.shivzee.util.Response;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
