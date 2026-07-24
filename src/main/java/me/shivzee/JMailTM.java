@@ -643,28 +643,29 @@ public class JMailTM {
     @Deprecated
     public EventSource openMessageListener(MessageListener messageListener , long retryInterval){
 
-        return openEventListener(new EventListener() {
-            @Override
-            public void onReady() {
-                messageListener.onReady();
-            }
+		return openEventListener(new EventListener() {
+			@Override
+			public void onReady() {
+				messageListener.onReady();
+			}
 
-            @Override
-            public void onClose() {
-                messageListener.onClose();
-            }
+			@Override
+			public void onClose() {
+				messageListener.onClose();
+			}
 
-            @Override
-            public void onMessageReceived(Message message) {
-                messageListener.onMessageReceived(message);
-            }
+			@Override
+			public void onMessageReceived(Message message) {
+				messageListener.onMessageReceived(message);
+			}
 
-            @Override
-            public void onError(String error) {
-                messageListener.onError(error);
-                }
-            }, retryInterval);
-    }
+			@Override
+			public void onError(String error) {
+				messageListener.onError(error);
+			}
+		}, retryInterval);
+		
+	}
 
     /**
      * (Asynchronous) Opens a MessageListener with a default refresh interval of 3 seconds.
