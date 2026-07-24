@@ -617,6 +617,17 @@ public class JMailTM {
     }
 
     /**
+     * (Asynchronous) Opens an SSE event listener with a default retry interval of 3 seconds.
+     * @see JMailTM#openEventListener(EventListener, long)
+     *
+     * @param eventListener the {@code EventListener} to handle incoming events and errors
+     * @return the active(running) {@code EventSource} instance
+     */
+    public EventSource openEventListener(EventListener eventListener){
+        return openEventListener(eventListener , 3000L);
+    }
+
+    /**
      * Closes the message listener, shutting down the thread pool used for event handling.
      * <p>
      * This method is deprecated. Use {@link #awaitThreadPool(long, TimeUnit)}
@@ -626,17 +637,6 @@ public class JMailTM {
     @Deprecated
     public void closeMessageListener(){
         pool.shutdown();
-    }
-
-    /**
-     * (Asynchronous) Opens an SSE event listener with a default retry interval of 3 seconds.
-     * @see JMailTM#openEventListener(EventListener, long)
-     *
-     * @param eventListener the {@code EventListener} to handle incoming events and errors
-     * @return the active(running) {@code EventSource} instance
-     */
-    public EventSource openEventListener(EventListener eventListener){
-        return openEventListener(eventListener , 3000L);
     }
 
 
