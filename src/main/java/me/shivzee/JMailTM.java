@@ -72,7 +72,7 @@ public class JMailTM {
     /**
      * Thread pool for async IO worker tasks ({@code asyncDelete}, {@code asyncFetchMessages}, ...).
      * Default is a single-thread executor preserving FIFO order of submitted tasks.
-     * Replace via {@link #setThreadPool(ExecutorService)} to change concurrency behavior.
+     * Replace via {@link #setThreadPool(ExecutorService)} or terminate via {@link #awaitAsyncThreadPool()}.
      */
     private volatile ExecutorService pool = Executors.newSingleThreadExecutor();
 
@@ -90,7 +90,7 @@ public class JMailTM {
      * <p>
      * Note the difference in choices of executor type:
      * <ul>
-     *   <li><b>Single-thread</b> - FIFO ordering, no concurrency. Tasks are guaranteed to execute
+     *   <li><b>Single-thread</b> - FIFO ordering, no concurrency among the tasks. Tasks are guaranteed to execute
      *       one after another in submission order. Safe when later tasks depend on earlier ones, as in:
      *       <pre>{@code
      *       mailer.asyncFetchMessages(cb1);
@@ -119,6 +119,46 @@ public class JMailTM {
                 Thread.currentThread().interrupt();
             }
         });
+    }
+
+    /**
+     * Shuts down the async thread pool and waits for queued tasks to complete.
+     * <p>
+     * After this method returns, the pool is terminated and will reject new tasks.
+     * Call {@link #setThreadPool(ExecutorService)} if further async operations are needed.
+     * </p>
+     *
+     * @param timeout the maximum time to wait for task completion
+     * @param unit    the time unit of the timeout argument
+     * @return {@code true} if all tasks completed within the timeout, {@code false} otherwise
+     */
+    public boolean awaitThreadPool(long timeout, TimeUnit unit) {
+        pool.shutdown();
+        try {
+            if (!pool.awaitTermination(timeout, unit)) {
+                pool.shutdownNow();
+                return false;
+            }
+        } catch (InterruptedException e) {
+            pool.shutdownNow();
+            Thread.currentThread().interrupt();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Attempts to stop all actively executing async tasks immediately and returns
+     * the list of tasks that were awaiting execution.
+     * <p>
+     * After this method returns, the pool is terminated and will reject new tasks.
+     * Call {@link #setThreadPool(ExecutorService)} if further async operations are needed.
+     * </p>
+     *
+     * @return list of tasks that never commenced execution
+     */
+    public List<Runnable> shutdownThreadPoolNow() {
+    	return pool.shutdownNow();
     }
 
     /**
