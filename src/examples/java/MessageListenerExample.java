@@ -7,6 +7,8 @@ import me.shivzee.util.Message;
 
 import javax.security.auth.login.LoginException;
 
+import com.launchdarkly.eventsource.EventSource;
+
 public class MessageListenerExample {
     public static void main(String [] args){
         try{
@@ -14,7 +16,7 @@ public class MessageListenerExample {
             System.out.println();
             System.out.println("Logged into "+mailer.getSelf().getEmail());
             System.out.println();
-            mailer.openEventListener(new EventListener() {
+            EventSource es = mailer.openEventListener(new EventListener() {
                 @Override
                 public void onReady() {
                     System.out.println("Server is Ready to listen to events");
@@ -74,8 +76,16 @@ public class MessageListenerExample {
                     System.out.println("Something went wrong "+error);
                 }
             });
+            
+            // wait for 10 seconds, and close the event listener
+            Thread.sleep(10 * 1000);
+            es.close();
+            
+            System.out.println("Account Deleted :" + mailer.delete());
         }catch (LoginException e){
             System.out.println("Login Failed "+e.getMessage());
-        }
+        } catch (InterruptedException e1) {
+            System.out.println("Main thread waiting Failed "+e1.getMessage());
+		}
     }
 }

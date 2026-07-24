@@ -9,17 +9,17 @@ import me.shivzee.JMailTM;
 import me.shivzee.callbacks.EventListener;
 import me.shivzee.util.Account;
 
-import java.lang.reflect.Field;
-
 public class IOCallback implements EventHandler {
 
     private final EventListener listener;
     private final JMailTM mailTM;
+    private final Gson gson;
 
 
-    public IOCallback(EventListener listener , JMailTM mailTM){
+    public IOCallback(EventListener listener , JMailTM mailTM, Gson gson){
         this.listener = listener;
         this.mailTM = mailTM;
+        this.gson = gson;
     }
 
 
@@ -53,9 +53,6 @@ public class IOCallback implements EventHandler {
                         listener.onMessageReceived(mailTM.getMessageById(id));
                     }
                 }else{
-                    Field field = mailTM.getClass().getDeclaredField("gson");
-                    field.setAccessible(true);
-                    Gson gson = (Gson) field.get(mailTM);
                     Account account = gson.fromJson(json , Account.class);
                     if(account.isDeleted()){
                         listener.onAccountDelete(account);

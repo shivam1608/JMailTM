@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -68,7 +69,97 @@ public class JMailTM {
     private static final String baseUrl = Config.BASEURL;
     private final Logger LOG = LoggerFactory.getLogger(JMailTM.class);
 
-    private ExecutorService pool = Executors.newSingleThreadExecutor();
+    /**
+     * Thread pool for async IO worker tasks ({@code asyncDelete}, {@code asyncFetchMessages}, ...).
+     * Default is a single-thread executor preserving FIFO order of submitted tasks.
+     * Replace via {@link #setThreadPool(ExecutorService)} or terminate via {@link #awaitThreadPool(long, TimeUnit)}.
+     */
+    private volatile ExecutorService pool = Executors.newSingleThreadExecutor();
+
+    /**
+     * Replaces the async operation thread pool with the given executor.
+     * The default pool is {@link java.util.concurrent.Executors#newSingleThreadExecutor()}
+     * which executes async operations in FIFO order.
+     * <p>
+     * The previous pool is shut down and drained in the background.
+     * The first task submitted to the given pool is a drain job that waits
+     * for the old pool to finish all queued work before shutting it down.
+     * If the new pool is a single-thread executor, this drain occupies the only thread
+     * until the old pool completes; subsequent async operations queue behind it.
+     * </p>
+     * <p>
+     * Note the difference in choices of executor type:
+     * <ul>
+     *   <li><b>Single-thread</b> - FIFO ordering, no concurrency among the tasks. Tasks are guaranteed to execute
+     *       one after another in submission order. Safe when later tasks depend on earlier ones, as in:
+     *       <pre>{@code
+     *       mailer.asyncFetchMessages(cb1);
+     *       mailer.asyncDelete(cb2);
+     *       }</pre>
+     *   </li>
+     *   <li><b>Fixed/Cached thread pool</b> - Multiple threads are in the pool. The order of tasks is
+     *   not guaranteed. Use it when more concurrency and throughput is needed,
+     *   and it is OK for multiple requests to be done simultaneously.
+     *   </li>
+     * </ul>
+     * </p>
+     *
+     * @param newPool the new {@code ExecutorService} for async operations
+     */
+    public void setThreadPool(ExecutorService newPool) {
+        ExecutorService old = this.pool;
+        this.pool = newPool;
+        newPool.execute(() -> {
+            old.shutdown();
+            try {
+                if (!old.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS))
+                    old.shutdownNow();
+            } catch (InterruptedException e) {
+                old.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+
+    /**
+     * Shuts down the async thread pool and waits for queued tasks to complete.
+     * <p>
+     * After this method returns, the pool is terminated and will reject new tasks.
+     * Call {@link #setThreadPool(ExecutorService)} if further async operations are needed.
+     * </p>
+     *
+     * @param timeout the maximum time to wait for task completion
+     * @param unit    the time unit of the timeout argument
+     * @return {@code true} if all tasks completed within the timeout, {@code false} otherwise
+     */
+    public boolean awaitThreadPool(long timeout, TimeUnit unit) {
+        pool.shutdown();
+        try {
+            if (!pool.awaitTermination(timeout, unit)) {
+                pool.shutdownNow();
+                return false;
+            }
+        } catch (InterruptedException e) {
+            pool.shutdownNow();
+            Thread.currentThread().interrupt();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Attempts to stop all actively executing async tasks immediately and returns
+     * the list of tasks that were awaiting execution.
+     * <p>
+     * After this method returns, the pool is terminated and will reject new tasks.
+     * Call {@link #setThreadPool(ExecutorService)} if further async operations are needed.
+     * </p>
+     *
+     * @return list of tasks that never commenced execution
+     */
+    public List<Runnable> shutdownThreadPoolNow() {
+    	return pool.shutdownNow();
+    }
 
     /**
      * Constructs a new {@code JMailTM} instance with the specified bearer token and ID.
@@ -218,7 +309,7 @@ public class JMailTM {
 
 
     public void asyncDelete(WorkCallback callback){
-        new Thread(() -> { callback.workStatus(delete()); }, "Delete_Account_" + id).start();
+        pool.execute(() -> callback.workStatus(delete()));
     }
 
 
@@ -229,7 +320,7 @@ public class JMailTM {
      * </p>
      */
     public void asyncDelete(){
-        new Thread(this::delete, "Delete_Account_" + id).start();
+        pool.execute(this::delete);
     }
 
 
@@ -437,13 +528,13 @@ public class JMailTM {
 
 
     public void asyncFetchMessages(MessageFetchedCallback callback){
-        new Thread(()->{
+        pool.execute(()->{
             try {
                 fetchMessages(callback);
             } catch (MessageFetchException e) {
                 callback.onError(new Response(90001 , e.toString()) );
             }
-        }, "Fetch_Messages_" + id).start();
+        });
     }
 
     /**
@@ -476,112 +567,117 @@ public class JMailTM {
 
 
     public void asyncFetchMessages(int limit , MessageFetchedCallback callback){
-        new Thread(()->{
+        pool.execute(()->{
             try {
                 fetchMessages(limit , callback);
             } catch (MessageFetchException e) {
                 callback.onError(new Response(90001 , e.toString()) );
             }
-        }, "Fetch_Messages_" + id).start();
+        });
     }
 
 
     /**
-     * (Asynchronous) Opens an event listener on a single thread to receive server-sent events (SSE).
+     * (Asynchronous) Opens an event listener to receive server-sent events (SSE).
      * <p>
-     * This method asynchronously opens an event listener using SSE (Server-Sent Events) on a single thread.
-     * It initializes an {@code EventSource} with the provided {@code EventListener} implementation and connects
-     * to the specified MERCURE_URL topic associated with the user account. It handles reconnecting to the server
-     * in case of disconnection with the specified {@code retryInterval}.
+     * Creates and starts an {@code EventSource} backed by the provided {@code EventListener}.
+     * The returned {@code EventSource} is already started; the caller is responsible for
+     * closing it via {@link EventSource#close()} when the listener should be terminated.
+     * </p>
+     * <p>
+     * Reconnection is handled automatically by the {@code EventSource} using the specified
+     * {@code retryInterval} on disconnect.
      * </p>
      * <p>
      * Example usage:
      * <pre>{@code
-     * openEventListener(new EventListener() {
+     * EventSource source = mailer.openEventListener(new EventListener() {
      *     {@literal @}Override
      *     public void onReady() {
      *         // Handle event listener readiness
      *     }
      * }, 5000); // Retry every 5 seconds if disconnected
+     * // Do other jobs... 
+     * source.close();
      * }</pre>
      *
      * @param eventListener the {@code EventListener} to handle incoming events and errors
      * @param retryInterval the reconnect timeout interval in milliseconds if the server disconnects
+     * @return the active(running) {@code EventSource} instance
      */
-
-
-    public void openEventListener(EventListener eventListener , long retryInterval){
-        if(pool.isShutdown()){
-            pool = Executors.newSingleThreadExecutor();
-        }
+    public EventSource openEventListener(EventListener eventListener , long retryInterval){
         Map<String , String> headers = new HashMap<>();
         headers.put("Authorization" , "Bearer "+bearerToken);
-        EventSource.Builder sse = new EventSource.Builder(new IOCallback(eventListener , this), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
+        EventSource.Builder sse = new EventSource.Builder(new IOCallback(eventListener , this, gson), URI.create(Config.MERCURE_URL+"?topic=/accounts/"+id))
                 .reconnectTime(Duration.ofMillis(retryInterval))
                 .headers(Headers.of(headers));
         EventSource sourceSSE = sse.build();
-        pool.execute(sourceSSE::start);
+        sourceSSE.start();
+        return sourceSSE;
     }
 
     /**
-     * (Asynchronous) Open's a default event listener on a single thread
-     * @param eventListener EventListener implemented class
+     * (Asynchronous) Opens an SSE event listener with a default retry interval of 3 seconds.
+     * @see JMailTM#openEventListener(EventListener, long)
+     *
+     * @param eventListener the {@code EventListener} to handle incoming events and errors
+     * @return the active (running) {@code EventSource} instance
      */
-    public void openEventListener(EventListener eventListener){
-        openEventListener(eventListener , 3000L);
+    public EventSource openEventListener(EventListener eventListener){
+        return openEventListener(eventListener , 3000L);
     }
 
+
+
     /**
-     * Closes the message listener, shutting down the thread pool used for event handling.
+     * (Asynchronous) Opens a message listener polling for new messages.
      * <p>
-     * This method is deprecated. Use {@link #openEventListener(EventListener, long)} instead.
+     * Deprecated. Use {@link #openEventListener(EventListener, long)} instead.
      * </p>
-     */
-    public void closeMessageListener(){
-        pool.shutdown();
-    }
-
-
-
-    /**
-     * (Asynchronous) Opens a Message Listener on a New Thread
-     * @param messageListener MessageListener Implemented Class
-     * @param retryInterval The Refresh Time for Fetching Messages
+     *
+     * @deprecated Use {@link #openEventListener(EventListener, long)} instead.
+     * @param messageListener the {@code MessageListener} to handle message events
+     * @param retryInterval   the refresh interval in milliseconds for fetching messages
+     * @return the active (running) {@code EventSource} instance
      */
     @Deprecated
-    public void openMessageListener(MessageListener messageListener , long retryInterval){
+    public EventSource openMessageListener(MessageListener messageListener , long retryInterval){
 
-        openEventListener(new EventListener() {
-            @Override
-            public void onReady() {
-                messageListener.onReady();
-            }
+		return openEventListener(new EventListener() {
+			@Override
+			public void onReady() {
+				messageListener.onReady();
+			}
 
-            @Override
-            public void onClose() {
-                messageListener.onClose();
-            }
+			@Override
+			public void onClose() {
+				messageListener.onClose();
+			}
 
-            @Override
-            public void onMessageReceived(Message message) {
-                messageListener.onMessageReceived(message);
-            }
+			@Override
+			public void onMessageReceived(Message message) {
+				messageListener.onMessageReceived(message);
+			}
 
-            @Override
-            public void onError(String error) {
-                messageListener.onError(error);
-            }
-        }, retryInterval);
-    }
+			@Override
+			public void onError(String error) {
+				messageListener.onError(error);
+			}
+		}, retryInterval);
+		
+	}
 
     /**
-     * (Asynchronous) Opens a MessageListener on a New Thread Default Refresh Time 1.5 seconds
+     * (Asynchronous) Opens a MessageListener with a default refresh interval of 3 seconds.
+     *
+     * @deprecated Use {@link #openEventListener(EventListener)} instead.
      * @see me.shivzee.callbacks.MessageListener
-     * @param messageListener MessageListener Implemented Class
+     * @param messageListener the {@code MessageListener} to handle message events
+     * @return the active (running) {@code EventSource} instance
      */
     @Deprecated
-    public void openMessageListener(MessageListener messageListener){
-        openMessageListener(messageListener , 3000);
+    public EventSource openMessageListener(MessageListener messageListener){
+        return openMessageListener(messageListener , 3000);
     }
 
     /**
