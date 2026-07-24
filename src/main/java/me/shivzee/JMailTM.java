@@ -621,23 +621,12 @@ public class JMailTM {
      * @see JMailTM#openEventListener(EventListener, long)
      *
      * @param eventListener the {@code EventListener} to handle incoming events and errors
-     * @return the active(running) {@code EventSource} instance
+     * @return the active (running) {@code EventSource} instance
      */
     public EventSource openEventListener(EventListener eventListener){
         return openEventListener(eventListener , 3000L);
     }
 
-    /**
-     * Closes the message listener, shutting down the thread pool used for event handling.
-     * <p>
-     * This method is deprecated. Use {@link #awaitThreadPool(long, TimeUnit)}
-     * or {@link #shutdownThreadPoolNow()} instead.
-     * </p>
-     */
-    @Deprecated
-    public void closeMessageListener(){
-        pool.shutdown();
-    }
 
 
     /**
@@ -646,13 +635,15 @@ public class JMailTM {
      * Deprecated. Use {@link #openEventListener(EventListener, long)} instead.
      * </p>
      *
+     * @deprecated Use {@link #openEventListener(EventListener, long)} instead.
      * @param messageListener the {@code MessageListener} to handle message events
      * @param retryInterval   the refresh interval in milliseconds for fetching messages
+     * @return the active (running) {@code EventSource} instance
      */
     @Deprecated
-    public void openMessageListener(MessageListener messageListener , long retryInterval){
+    public EventSource openMessageListener(MessageListener messageListener , long retryInterval){
 
-        openEventListener(new EventListener() {
+        return openEventListener(new EventListener() {
             @Override
             public void onReady() {
                 messageListener.onReady();
@@ -671,18 +662,21 @@ public class JMailTM {
             @Override
             public void onError(String error) {
                 messageListener.onError(error);
-            }
-        }, retryInterval);
+                }
+            }, retryInterval);
     }
 
     /**
-     * (Asynchronous) Opens a MessageListener on a New Thread Default Refresh Time 3 seconds
+     * (Asynchronous) Opens a MessageListener with a default refresh interval of 3 seconds.
+     *
+     * @deprecated Use {@link #openEventListener(EventListener)} instead.
      * @see me.shivzee.callbacks.MessageListener
      * @param messageListener the {@code MessageListener} to handle message events
+     * @return the active (running) {@code EventSource} instance
      */
     @Deprecated
-    public void openMessageListener(MessageListener messageListener){
-        openMessageListener(messageListener , 3000);
+    public EventSource openMessageListener(MessageListener messageListener){
+        return openMessageListener(messageListener , 3000);
     }
 
     /**
