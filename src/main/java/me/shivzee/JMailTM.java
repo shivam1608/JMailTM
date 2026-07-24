@@ -72,7 +72,7 @@ public class JMailTM {
     /**
      * Thread pool for async IO worker tasks ({@code asyncDelete}, {@code asyncFetchMessages}, ...).
      * Default is a single-thread executor preserving FIFO order of submitted tasks.
-     * Replace via {@link #setThreadPool(ExecutorService)} or terminate via {@link #awaitAsyncThreadPool()}.
+     * Replace via {@link #setThreadPool(ExecutorService)} or terminate via {@link #awaitThreadPool(long, TimeUnit)}.
      */
     private volatile ExecutorService pool = Executors.newSingleThreadExecutor();
 
@@ -617,6 +617,18 @@ public class JMailTM {
     }
 
     /**
+     * Closes the message listener, shutting down the thread pool used for event handling.
+     * <p>
+     * This method is deprecated. Use {@link #awaitThreadPool(long, TimeUnit)}
+     * or {@link #shutdownThreadPoolNow()} instead.
+     * </p>
+     */
+    @Deprecated
+    public void closeMessageListener(){
+        pool.shutdown();
+    }
+
+    /**
      * (Asynchronous) Opens an SSE event listener with a default retry interval of 3 seconds.
      * @see JMailTM#openEventListener(EventListener, long)
      *
@@ -664,9 +676,9 @@ public class JMailTM {
     }
 
     /**
-     * (Asynchronous) Opens a MessageListener on a New Thread Default Refresh Time 1.5 seconds
+     * (Asynchronous) Opens a MessageListener on a New Thread Default Refresh Time 3 seconds
      * @see me.shivzee.callbacks.MessageListener
-     * @param messageListener MessageListener Implemented Class
+     * @param messageListener the {@code MessageListener} to handle message events
      */
     @Deprecated
     public void openMessageListener(MessageListener messageListener){
